@@ -33,7 +33,16 @@ def read_image_s3(s3Key):
         return None
     return Image.open(bbuf)
 
+def compress_image(im):
+    compressed = im.reduce(2)
+    compressed.save("Compressed_img.jpg")
+
 
 if __name__ == "__main__":
-    #print(get_s3_keys())
-    print(read_image_s3('NLM1/W2KG208132/archive/W2KG208132-I2KG208184/I2KG2081840003.tif'))
+    key_list = get_s3_keys()
+    # print(key_list)
+    # print(read_image_s3('NLM1/W2KG208132/archive/W2KG208132-I2KG208184/I2KG2081840003.tif'))
+    img =read_image_s3('NLM1/W2KG208132/archive/W2KG208132-I2KG208184/I2KG2081840003.tif')
+    compress_image(img)
+
+    # get_size_format(img)
