@@ -106,6 +106,7 @@ def del_img(filename):
     else:
         print("File not exist")
     
+    
 
 if __name__ == "__main__": 
     # key_list = get_s3_keys(prefix="NLM1")
