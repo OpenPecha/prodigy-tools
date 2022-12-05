@@ -9,6 +9,7 @@
 <!-- Replace the title of the repository -->
 
 <p align="center">
+  <a href="https://github.com/OpenPecha/Requests/issues/30">RFC</a> •
   <a href="#description">Description</a> •
   <a href="#owner">Owner</a> •
 <!--   <a href="#floppy_disk-install">Install</a> • -->
