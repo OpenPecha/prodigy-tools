@@ -11,7 +11,7 @@
 <p align="center">
   <a href="#description">Description</a> •
   <a href="#owner">Owner</a> •
-  <a href="#floppy_disk-install">Install</a> •
+<!--   <a href="#floppy_disk-install">Install</a> • -->
   <a href="#docs">Docs</a>
 </p>
 <hr>
