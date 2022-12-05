@@ -1,6 +1,7 @@
 import boto3
 import botocore
 import io
+import os
 import logging
 from PIL import Image
 
@@ -48,6 +49,7 @@ def compress_image(im):
     '''Compress the image'''
     compressed = im.reduce(2)
     list_compressed_img.append(compressed)
+    return compressed
 
 
 def get_filename(key):
@@ -55,18 +57,22 @@ def get_filename(key):
     title = key.split("/")
     return title[-1]
 
+def remove_extension_dot(filename):
+    filename =filename.replace(".", "_")
+    return filename
 
 def rename_file(key):
     '''Rename the file with the extension .jpg'''
     name = get_filename(key)
-    name = name.concate("x2.jpg")
+    name=remove_extension_dot(name)
+    print(name)
+    name = name + "_2.jpg"
     return name
 
 
 
 def evaluate_path(key):
     '''Check whether we are '''
-    result = True
     path_name = ["W2KG208132", "archive-web","W2KG208132-I2KG208184"]
     key_name = key.split("/")
     for i in range(len(key_name) - 1):
@@ -75,31 +81,42 @@ def evaluate_path(key):
     else:
         compressed = compress_image(key)
         name =rename_file(key)
-        return (compress_image, name)
+        return (compressed, name)
 
 def loop_key(key_list):
     '''Loop through the key list'''
     for i in range(len(key_list)):
         evaluate_path(key_list[i])
 
-def save_img():
-    '''Save the image with the file name '''
-    pass
 
-def del_img():
+def save_img(image,name):
+    '''Save the image with the file name '''
+    try: 
+        img = image.save(name, format="JPEG")
+        return img
+    except ValueError as e:
+        print(e)
+
+
+def del_img(filename):
     '''Delete the file after prodigy has reading the data'''
-    pass
+    path = os.getcwd()+"/"+filename
+    if os.path.exists(path):
+        os.remove(filename)
+    else:
+        print("File not exist")
+    
 
 if __name__ == "__main__": 
-    key_list = get_s3_keys(prefix="NLM1")
-    print("Total Keys : ", len(key_list))
-    n=500
-    print(key_list[n])
-    print(evaluate_path(key_list[n]))
-    # print(read_image_s3('NLM1/W2KG208132/archive/W2KG208132-I2KG208184/I2KG2081840003.tif'))
-    # img =read_image_s3('NLM1/W2KG208132/archive/W2KG208132-I2KG208184/I2KG2081840003.tif')
-    # get_filename('NLM1/W2KG208132/archive/W2KG208132-I2KG208184/I2KG2081840003.tif')
-    # print(img.filename)
-    # compress_image(img)
+    # key_list = get_s3_keys(prefix="NLM1")
+    # print("Total Keys : ", len(key_list))
+    # n=500
+    # print(key_list[n])
+    # print(evaluate_path(key_list[n]))
+    image = read_image_s3('NLM1/W2KG208132/archive/W2KG208132-I2KG208184/I2KG2081840003.tif')
+    filename =rename_file('NLM1/W2KG208132/archive/W2KG208132-I2KG208184/I2KG2081840003.tif')
+    image =compress_image(image)
+    image = save_img(image,filename)
+    del_img(filename)
 
     # get_size_format(img)
