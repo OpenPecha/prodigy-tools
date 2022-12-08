@@ -21,6 +21,7 @@ sdist/
 var/
 wheels/
 pip-wheel-metadata/
+prodigyenvironment/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
