@@ -47,17 +47,25 @@ class S3_Bucket:
         return Image.open(bbuf)
     
     def _update_json_file(self, key):
+        '''Update the processed file into the image.json for the prodigy '''
         try:
             with open("images.jsonl", 'a') as file:
-                json.dump({"image" : self.s3.generate_presigned_url(ClientMethod="get_object", ExpiresIn=2592000, Params= { "Bucket" : self.bucket, "Key" : key}),'type':'image/jpg'}, file)
+                json.dump({"image" : self.s3.generate_presigned_url(ClientMethod="get_object", ExpiresIn=2592000, Params= { "Bucket" : self.bucket, "Key" : key}),'type':'image/jpg'}, file, indent = 2)
         except FileNotFoundError as error:
             print(error)
 
     def _save_to_bucket(self, image, prefix,filename):
+        '''Save the image into the bucket'''
         object_name =  f"{prefix}{filename}"        
         try:
-            response = self.s3.upload_file(filename,self.bucket,object_name)
-            self._update_json_file(object_name)
+            objects = self.s3.list_objects_v2(Bucket=self.bucket, Prefix=prefix)
+            destination_keys = [o["Key"] for o in objects["Contents"]]
+            if object_name in destination_keys:
+                print(f"{filename} is already in the bucket")
+                return False
+            else:
+                response = self.s3.upload_file(filename,self.bucket,object_name)
+                self._update_json_file(object_name)
         except ClientError as error:
             print(error)
             return False
@@ -69,10 +77,17 @@ class S3_Bucket:
             return False
         return True
 
-    def delete_from_s3(self, key):
+    def delete_from_s3(self,prefix, key):
+        '''Delete the image from s3 bucket using the key'''
         s3 = boto3.client("s3")
         try:
-            response = s3.delete_object(Bucket=self.bucket,Key=key)
+            objects = self.s3.list_objects_v2(Bucket=self.bucket, Prefix=prefix)
+            destination_keys = [o["Key"] for o in objects["Contents"]]
+            if key not in destination_keys:
+                print("Specified image not in the bucket")
+                return False
+            else:
+                response = s3.delete_object(Bucket=self.bucket,Key=key)
         except ClientError as error:
             print(error)
             return False
@@ -87,7 +102,7 @@ class S3_Bucket:
     def loop_through_key(self):
         '''By using the key looping through each Image object'''
         size = len(self.key_list)
-        for i in range(0,2,1):
+        for i in range(0,3,1):
             image = self.read_image_s3(self.key_list[i])
             modify = modify_image(image,self.key_list[i])
             modify.compress_image()
@@ -104,13 +119,16 @@ class modify_image:
         self.degree = degree
     
     def compress_image(self):
+        '''Compressing the image'''
         self.image.resize((self.image.size[0]//self.degree, self.image.size[1]//self.degree))
     
     def _get_title(self):
+        '''Getting the image filename'''
         title = self.key.split('/')
         return title[-1]
     
     def _remove_extension_dot(self,title):
+        '''Remove the dot extension and convert it to _tif'''
         return title.replace(".", "_")
     
     def _rename_file(self):
