@@ -1,5 +1,6 @@
 from PIL import Image
 import os
+import io
 
 class modify_image:
     '''Different operation onto an individual image'''
@@ -31,9 +32,9 @@ class modify_image:
     def save_image(self):
         '''Save the image with changed fileName'''
         try:
-            filename = self._rename_file()
-            img = self.image.save(filename)
-            return filename
+            image_bytes_arr = io.BytesIO()
+            img = self.image.save(image_bytes_arr,format="JPEG")
+            return image_bytes_arr
         except ValueError as e:
             print(e)
     

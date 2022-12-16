@@ -64,7 +64,7 @@ class S3_Bucket:
                 print(f"{filename} is already in the bucket")
                 return False
             else:
-                response = self.s3.upload_file(filename,self.bucket,object_name)
+                response = self.s3.upload_fileobj(image,self.bucket,object_name)
                 self._update_json_file(object_name)
         except ClientError as error:
             print(error)
@@ -75,6 +75,9 @@ class S3_Bucket:
         except ValueError as error:
             print(error)
             return False
+        except KeyError as error: # this is require when no file is been uploaded to the key
+            response = self.s3.upload_fileobj(image,self.bucket,object_name)
+            self._update_json_file(object_name)
         return True
 
     def delete_from_s3(self,prefix, key):
@@ -97,6 +100,8 @@ class S3_Bucket:
         except ValueError as error:
             print(error)
             return False
+        except Keyerror as error:
+            print("No such key is exist")
         return True
     
     def loop_through_key(self):
@@ -106,8 +111,9 @@ class S3_Bucket:
             image = self.read_image_s3(self.key_list[i])
             modify = modify_image(image,self.key_list[i])
             modify.compress_image()
-            filename =modify.save_image()
-            self._save_to_bucket(modify.image, "NLM1/W2KG208132/archive-web/W2KG208132-I2KG208184/",filename)
+            bytes_arr =modify.save_image()
+            filename = modify._rename_file()
+            self._save_to_bucket(bytes_arr, "NLM1/W2KG208132/archive-web/W2KG208132-I2KG208184/",filename)
             modify.delete_image()
 
 if __name__ == "__main__":
