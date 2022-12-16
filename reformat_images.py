@@ -1,5 +1,7 @@
 import os
+import math
 import json
+import hashlib
 import io
 import boto3
 import botocore
@@ -12,14 +14,10 @@ from wand.image import Image as WandImage
 
 
 os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "~/.aws/credentials"
-IMAGES_BUCKET = "image-processing.bdrc.io"
 S3 = boto3.resource("s3")
 S3_client = boto3.client("s3")
-
-IMAGES = 'images'
-
-DATA_PATH = Path("./archive")
-IMAGES_BASE_DIR = DATA_PATH / IMAGES
+IMAGE_PROCESSING_BUCKET = "image-processing.bdrc.io"
+s3_bucket = S3.Bucket(IMAGE_PROCESSING_BUCKET)
 
 
 # logging config
@@ -33,38 +31,44 @@ logger.addHandler(file_handler)
 
 class ImageProcessing():
     
-    def __init__(self, s3_prefix, degree=None):
-        self.s3_prefix = s3_prefix,
-        self.degree = degree if degree != None else 2
-        self.s3_images_paths = []
+    def __init__(self, vol_s3_prefix, max_height=None, max_width=None):
+        self.vol_s3_prefix = vol_s3_prefix,
+        self.max_height = max_height if max_height != None else 700
+        self.max_width = max_width if max_width != None else 1000
+        self.degree = self.get_degree()
+        self.s3_image_paths = []
         self.origfilename = None
         self.new_filename = None
+        self.output_s3_path = self.create_output_s3_path()
+        
+        
+    def get_degree(self):
+        angle = math.atan2(self.max_height, self.max_width)
+        degree = math.degrees(angle)
+        return degree
 
-
-    def reformat_and_save_image(self, bits, origfilename, imagegroup_output_dir, binarize=False):
     
-        imagegroup_output_dir.mkdir(exist_ok=True, parents=True)
-        output_fn = imagegroup_output_dir / self.origfilename
-        if Path(origfilename).suffix in [".tif", ".tiff", ".TIF"]:
-            output_fn = imagegroup_output_dir / self.new_filename
-        if output_fn.is_file():
-            return
-        try:
-            img = PillowImage.open(bits)
-        except Exception as e:
-            logger.exception(f"Empty image: {output_fn}")
-            return
-        try:
-            img.resize(img.size[0]//self.degree, img.size[1]//self.degree)
-            img.save(str(output_fn))
-        except:
-            del img
-            logger.exception(f"image couldn't saved: {output_fn}")
-            return
+    def create_output_s3_path(self):
+        prefix = list(self.vol_s3_prefix.split("/"))
+        work_id = prefix[1]
+        vol_folder = prefix[3]
+        
+        # md5 = hashlib.md5(str.encode(work_id))
+        # two = md5.hexdigest()[:2]
+        
+        output_s3_path = "NLM1" / work_id / "archive-web" / vol_folder
+        return output_s3_path
+        
+        
+    def upload_image(self, image):
+        self.get_new_filename()
+        s3_key = self.output_s3_path / self.new_filename
+        s3_bucket.put_object(Key=s3_key, Body=image)
+    
 
     def get_s3_image_paths(self):
         
-        response = S3_client.list_objects_v2(Bucket=IMAGES_BUCKET, Prefix=self.s3_prefix)
+        response = S3_client.list_objects_v2(Bucket=IMAGE_PROCESSING_BUCKET, Prefix=self.vol_s3_prefix)
         if response:
             for info in response['content']:
                 s3_image_path = info['key']
@@ -82,42 +86,56 @@ class ImageProcessing():
             else:
                 raise
         return
-
-
-    def image_exists_locally(self, imagegroup_output_dir):
-        output_fn = imagegroup_output_dir / self.new_filename
-        if output_fn.is_file():
-            return True
         
 
     def get_new_filename(self):
         self.new_filename = f"{self.origfilename.split('.')[0]}"+ "_" + self.degree + ".jpg"
 
 
-    def save_reformated_images_for_vol(self):
-        prefix = list(self.s3_prefix.split("/"))
-        work_local_id = prefix[1]
-        vol_folder = prefix[3]
+    def is_archived(self, key):
+        try:
+            S3_client.head_object(Bucket=IMAGE_PROCESSING_BUCKET, Key=key)
+        except botocore.errorfactory.ClientError:
+            return False
+        return True
+
+
+    def process_binary_files(self, filebits):
+        pass
+    
+    
+    def process_image(self, filebits):
+        if Path(self.origfilename).suffix == "jpeg":
+            pass
+        else:
+            pass
+        
+        
+    def upload_reformated_images_for_vol(self):
         
         for s3_image_path in self.s3_image_paths:
+            
             self.origfilename = s3_image_path.split("/")[-1]
             self.get_new_filename()
-            imagegroup_output_dir = IMAGES_BASE_DIR / work_local_id / vol_folder
-            if self.image_exists_locally(imagegroup_output_dir):
+            s3_key = self.output_s3_path / self.new_filename
+            if self.is_archived(s3_key):
                 continue
-            filebits = self.get_s3_bits(s3_image_path, IMAGES_BUCKET)
-            self.reformat_and_save_image(filebits, imagegroup_output_dir)
+            
+            filebits = self.get_s3_bits(s3_image_path)
+            if Path(self.origfilename).suffix in [".tif", ".tiff", ".TIF"]:
+                image = self.process_binary_files(filebits)
+            else:
+                image = self.process_image(filebits)
+            self.upload_image(image)
 
 
-    def reformat_image_group(self):
+    def reformat_image_group_and_upload_to_s3(self):
         self.get_s3_image_paths()
-        self.save_reformated_images_for_vol()
-    
-    
+        self.upload_reformated_images_for_vol()
     
     
 if __name__ == "__main__":
     s3_prefix = "NLM1/W2KG208132/archive/W2KG208132-I2KG208184/"
     processor = ImageProcessing(s3_prefix)
-    processor.reformat_image_group()
+    processor.reformat_image_group_and_upload_to_s3()
     
