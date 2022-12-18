@@ -1,18 +1,33 @@
 from PIL import Image
 import os
 import io
+import mozjpeg_lossless_optimization
 
 class modify_image:
     '''Different operation onto an individual image'''
-    def __init__(self, im, key, degree=2):
+    def __init__(self, im, key):
         self.image = im
         self.key = key
-        self.degree = degree
     
-    def compress_image(self):
+    def resize_image(self):
         '''Compressing the image'''
-        self.image.resize((self.image.size[0]//self.degree, self.image.size[1]//self.degree))
+        compressed =self.image.thumbnail(size=(1000, 700),resample = Image.Resampling.LANCZOS)
     
+    def progressive_encoding(self):
+        """Encode the image in progressive so that it will load better in the website"""
+        pass
+    
+    def subsampling(self):
+        """Decrease the size of image by down grading the color sample"""
+        pass 
+
+    def compress_image(self):
+        byte_array = io.BytesIO()
+        self.image.save(byte_array,format="JPEG")
+        op_image = mozjpeg_lossless_optimization.optimize(byte_array)
+        self.image = Image.open(op_image)
+        self.image.save("output")
+
     def _get_title(self):
         '''Getting the image filename'''
         title = self.key.split('/')
@@ -33,7 +48,7 @@ class modify_image:
         '''Save the image with changed fileName'''
         try:
             image_bytes_arr = io.BytesIO()
-            img = self.image.save(image_bytes_arr,format="JPEG")
+            self.image.save(image_bytes_arr,format="JPEG")
             return image_bytes_arr
         except ValueError as e:
             print(e)
