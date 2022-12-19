@@ -3,12 +3,7 @@ import math
 import io
 import boto3
 import botocore
-import logging
 from PIL import Image
-from pathlib import Path
-import mozjpeg_lossless_optimization
-from PIL.JpegImagePlugin import JpegImageFile
-
 
 
 os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "~/.aws/credentials"
@@ -17,14 +12,6 @@ s3_client = boto3.client("s3")
 IMAGE_PROCESSING_BUCKET = "image-processing.bdrc.io"
 s3_bucket = s3.Bucket(IMAGE_PROCESSING_BUCKET)
 
-
-# logging config
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-formatter = logging.Formatter("%(asctime)s, %(levelname)s: %(message)s")
-file_handler = logging.FileHandler("image_processing.log")
-file_handler.setFormatter(formatter)
-logger.addHandler(file_handler)
 
 
 class ImageProcessing():
@@ -35,6 +22,7 @@ class ImageProcessing():
         self.max_width = image_options['max_width'] if 'max_width' in image_options else 1000
         self.quality = image_options['quality'] if 'quality' in image_options else 75
         self.greyscale = image_options['greyscale'] if 'greyscale' in image_options else False
+        self.progressive = image_options['progressive'] if 'progressive' in image_options else True
         self.degree = self.get_degree()
         self.s3_image_paths = []
         self.origfilename = None
@@ -92,6 +80,7 @@ class ImageProcessing():
         else:
             self.new_filename = f"{self.origfilename.split('.')[0]}"+ "_" + str(self.degree) + ".jpg"
 
+
     def is_archived(self, key):
         try:
             s3_client.head_object(Bucket=IMAGE_PROCESSING_BUCKET, Key=key)
@@ -115,20 +104,31 @@ class ImageProcessing():
         resized_img = image.resize((new_width, new_height))
         return resized_img
 
+
+    def compress_and_encode_image(self, resized_image):
+        
+        # do cofigurable compression with input quality if given else 75 and do progressive encoding
+        compressed_image_bytes = io.BytesIO()
+        resized_image.save(compressed_image_bytes, format='JPEG', quality=self.quality, progressive=self.progressive)
+        compressed_image = Image.open(compressed_image_bytes)
+        
+        # create new image to not include the metadata of compressed image
+        new_image = Image.new(mode=compressed_image.mode, size=resized_image.size)
+        new_image.putdata(list(compressed_image.getdata()))
+        return compressed_image
+    
     
     def process_non_binary_file(self, image):
-        
         #resize the image
         resized_image = self.resize_the_image(image)
-        # running configurable compression on image
+        
+        # check if greyscal option is True
         if self.greyscale:
             resized_image = resized_image.convert("L")
-        image_data = resized_image.tobytes()
-        image_bytes = io.BytesIO(image_data)
-        compressed_image = JpegImageFile.convert(image_bytes, quality=self.quality)
-        # encoding the jpeg file
-        output_jpeg_bytes = mozjpeg_lossless_optimization.optimize(compressed_image)
-        return output_jpeg_bytes       
+            
+        new_image = self.compress_and_encode_image(resized_image)
+        return new_image       
+        
         
     def upload_reformated_images_for_vol(self):
         
@@ -149,10 +149,11 @@ class ImageProcessing():
                 self.get_new_filename(False)
                 image = self.process_non_binary_file(image)
             image.save(self.new_filename)
-            # self.upload_image(image)
+            self.upload_image(image)
 
 
     def reformat_image_group_and_upload_to_s3(self, input_s3_prefix):
+        
         if self.input_s3_prefix == None:
             self.input_s3_prefix = input_s3_prefix
         self.output_s3_prefix = self.create_output_s3_prefix()
