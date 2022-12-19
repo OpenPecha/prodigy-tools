@@ -48,6 +48,7 @@ def test_binary_files():
         
         assert width == expected_width
         assert height == expected_height
+        # assert the memory size
         assert 11 >= abs(expected_image_file.tell() - new_image_file.tell())
 
 
