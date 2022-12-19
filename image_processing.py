@@ -2,11 +2,13 @@ from PIL import Image
 import os
 import io
 import mozjpeg_lossless_optimization
+import numpy as np
 
 class modify_image:
     '''Different operation onto an individual image'''
     def __init__(self, im, key):
         self.image = im
+        self.image.load()
         self.key = key
     
     def resize_image(self):
@@ -19,7 +21,11 @@ class modify_image:
     
     def subsampling(self):
         """Decrease the size of image by down grading the color sample"""
-        pass 
+        im_array = np.asarray(self.image)
+        im_array_copy = im_array.copy()
+        im_array_copy[:,1::2] = im_array_copy[:,::2] # 4:2:2
+        self.image = Image.fromarray(im_array_copy)
+        
 
     def compress_image(self):
         byte_array = io.BytesIO()
