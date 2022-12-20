@@ -3,7 +3,10 @@ import math
 import io
 import boto3
 import botocore
+from pathlib import Path
 from PIL import Image
+from wand.image import Image as WandImage
+import base64
 
 
 os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "~/.aws/credentials"
@@ -19,7 +22,7 @@ class ImageProcessing():
     def __init__(self, input_s3_prefix=None, image_options={}):
         
         self.max_height = image_options['max_height'] if 'max_height' in image_options else 700
-        self.max_width = image_options['max_width'] if 'max_width' in image_options else 1000
+        self.max_width = image_options['max_width'] if 'max_width' in image_options else 2000
         self.quality = image_options['quality'] if 'quality' in image_options else 75
         self.greyscale = image_options['greyscale'] if 'greyscale' in image_options else False
         self.progressive = image_options['progressive'] if 'progressive' in image_options else True
@@ -47,9 +50,9 @@ class ImageProcessing():
         
         
     def upload_image(self, image):
-        self.get_new_filename()
-        s3_key = self.output_s3_path / self.new_filename
-        s3_bucket.put_object(Key=s3_key, Body=image)
+        s3_key = f"{self.output_s3_prefix}/{self.new_filename}"
+        image_data = image.tobytes()
+        s3_bucket.put_object(Key=s3_key, Body=image_data)
     
 
     def get_s3_image_paths(self):
@@ -61,7 +64,7 @@ class ImageProcessing():
                 self.s3_image_paths.append(s3_image_path)
 
 
-    def get_s3_bits(self,s3path,):
+    def get_s3_bits(self,s3path):
         f = io.BytesIO()
         try:
             s3_bucket.download_fileobj(s3path, f)
@@ -69,16 +72,14 @@ class ImageProcessing():
         except botocore.exceptions.ClientError as e:
             if e.response["Error"]["Code"] == "404":
                 print(f"The object does not exist, {s3path}")
-            else:
-                raise
         return
         
 
     def get_new_filename(self, binary):
         if binary:
-            self.new_filename = f"{self.origfilename.split('.')[0]}"+ "_" + str(self.degree) + ".png"
+            self.new_filename = f"{self.origfilename.split('.')[0]}."+ "png_" + str(self.degree) + ".png"
         else:
-            self.new_filename = f"{self.origfilename.split('.')[0]}"+ "_" + str(self.degree) + ".jpg"
+            self.new_filename = f"{self.origfilename.split('.')[0]}."+ "jpg_" + str(self.degree) + ".jpg"
 
 
     def is_archived(self, key):
@@ -135,20 +136,22 @@ class ImageProcessing():
         for s3_image_path in self.s3_image_paths:
             self.origfilename = s3_image_path.split("/")[-1]
             
-            s3_key = f"{self.output_s3_prefix}/{self.new_filename}"
-            
-            if self.is_archived(s3_key):
-                continue
             filebits = self.get_s3_bits(s3_image_path)
             image = Image.open(filebits)
             
             if image.mode == '1':
                 self.get_new_filename(True)
+                s3_key = f"{self.output_s3_prefix}/{self.new_filename}"
+                if self.is_archived(s3_key):
+                    continue
                 image =  self.resize_the_image(image)
             else:
                 self.get_new_filename(False)
+                s3_key = f"{self.output_s3_prefix}/{self.new_filename}"
+                if self.is_archived(s3_key):
+                    continue
                 image = self.process_non_binary_file(image)
-            image.save(self.new_filename)
+
             self.upload_image(image)
 
 
@@ -167,3 +170,17 @@ if __name__ == "__main__":
     processor = ImageProcessing()
     processor.reformat_image_group_and_upload_to_s3(input_s3_prefix)
     
+    
+    
+    
+    
+    
+    
+    
+    # f = processor.get_s3_bits("NLM1/W2KG208132/archive-web/W2KG208132-I2KG208184/I2KG2081840001_png_19.png")
+    # # image_data = base64.b64decode(f.getvalue())
+    # # image = Image.open(image_data)
+    # # # f.seek(0)
+    # # # byteImgIO = io.BytesIO()
+    # # # f.save(byteImgIO, "PNG")
+   
