@@ -32,6 +32,7 @@ class ImageProcessing():
         self.new_filename = None
         self.input_s3_prefix = input_s3_prefix
         self.output_s3_prefix = []
+        self.s3_upload_paths = []
         
         
     def get_degree(self):
@@ -51,8 +52,16 @@ class ImageProcessing():
         
     def upload_image(self, image):
         s3_key = f"{self.output_s3_prefix}/{self.new_filename}"
-        image_data = image.tobytes()
+        image_bytes = io.BytesIO()
+        if self.new_filename.split(".")[-1] == "png":
+            extention = "png"
+        else:
+            extention = "jpeg"
+        image.save(image_bytes, extention)
+        image_bytes.seek(0)
+        image_data = image_bytes.read()
         s3_bucket.put_object(Key=s3_key, Body=image_data)
+        self.s3_upload_paths.append(s3_key)
     
 
     def get_s3_image_paths(self):
@@ -153,7 +162,7 @@ class ImageProcessing():
                 image = self.process_non_binary_file(image)
 
             self.upload_image(image)
-
+        
 
     def reformat_image_group_and_upload_to_s3(self, input_s3_prefix):
         
@@ -169,18 +178,3 @@ if __name__ == "__main__":
     input_s3_prefix = "NLM1/W2KG208132/archive/W2KG208132-I2KG208184/"
     processor = ImageProcessing()
     processor.reformat_image_group_and_upload_to_s3(input_s3_prefix)
-    
-    
-    
-    
-    
-    
-    
-    
-    # f = processor.get_s3_bits("NLM1/W2KG208132/archive-web/W2KG208132-I2KG208184/I2KG2081840001_png_19.png")
-    # # image_data = base64.b64decode(f.getvalue())
-    # # image = Image.open(image_data)
-    # # # f.seek(0)
-    # # # byteImgIO = io.BytesIO()
-    # # # f.save(byteImgIO, "PNG")
-   

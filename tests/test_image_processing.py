@@ -31,12 +31,12 @@ def test_binary_files():
 
 def test_non_binary_files():
     processor = ImageProcessing()
-    for binary_file_path in non_binary_input_dir_path.iterdir():
+    for non_binary_file_path in non_binary_input_dir_path.iterdir():
         
-        processor.origfilename = binary_file_path.name
+        processor.origfilename = non_binary_file_path.name
         processor.get_new_filename(False)
         
-        image = Image.open(binary_file_path)
+        image = Image.open(non_binary_file_path)
         new_image = processor.process_non_binary_file(image)
 
         width = new_image.width
