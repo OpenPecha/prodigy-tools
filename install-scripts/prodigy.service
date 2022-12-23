@@ -1,0 +1,22 @@
+[Unit]
+Description=Prodigy for images
+After=syslog.target network.target
+
+[Service]
+Type=simple
+
+SyslogIdentifier=prodigy_img
+Environment=PRODIGY_HOME="/usr/local/prodigy"
+Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/prodigy.json"
+WorkingDirectory=/usr/local/prodigy
+ExecStart=/usr/bin/python3.9 -m prodigy image.manual /usr/local/prodigy/tasks/images.jsonl --label PAGE
+
+User=prodigy
+Group=prodigy
+
+UMask=0007
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
