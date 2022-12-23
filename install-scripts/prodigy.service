@@ -7,9 +7,9 @@ Type=simple
 
 SyslogIdentifier=prodigy_img
 Environment=PRODIGY_HOME="/usr/local/prodigy"
-Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/prodigy.json"
+Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/prodigy-images.json"
 WorkingDirectory=/usr/local/prodigy
-ExecStart=/usr/bin/python3.9 -m prodigy image.manual /usr/local/prodigy/tasks/images.jsonl --label PAGE
+ExecStart=/usr/bin/python3.9 -m prodigy image.manual bdrc_crop /usr/local/prodigy/tasks/bdrc_crop.jsonl --label PAGE
 
 User=prodigy
 Group=prodigy
