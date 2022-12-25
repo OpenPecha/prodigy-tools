@@ -56,5 +56,6 @@ def test_non_binary_files():
 
 
 if __name__ == "__main__":
+    image_name = 'I2KG2081840206.tif'
     test_non_binary_files()
     test_binary_files()

@@ -145,9 +145,14 @@ class ImageProcessing():
         for s3_image_path in self.s3_image_paths:
             self.origfilename = s3_image_path.split("/")[-1]
             
+            # if self.origfilename != "I2KG2081840206.tif":
+            #     continue
             filebits = self.get_s3_bits(s3_image_path)
             image = Image.open(filebits)
             
+            # continue if image is all white or all black
+            if image.convert("L").getextrema() == (0,0) or image.convert("L").getextrema() == (255,255):
+                continue
             if image.mode == '1':
                 self.get_new_filename(True)
                 s3_key = f"{self.output_s3_prefix}/{self.new_filename}"
@@ -161,8 +166,8 @@ class ImageProcessing():
                     continue
                 image = self.process_non_binary_file(image)
 
-            self.upload_image(image)
-        
+            # self.upload_image(image)
+            image.save(f"{self.new_filename}")
 
     def reformat_image_group_and_upload_to_s3(self, input_s3_prefix):
         
