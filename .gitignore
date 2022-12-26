@@ -135,3 +135,5 @@ Test.py
 *.jpg
 *.jpeg
 *.jsonl
+
+.DS_Store

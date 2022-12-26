@@ -6,9 +6,10 @@ import botocore
 from pathlib import Path
 from PIL import Image
 from wand.image import Image as WandImage
-import base64
+import logging
 
 
+# s3 config
 os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "~/.aws/credentials"
 s3 = boto3.resource("s3")
 s3_client = boto3.client("s3")
@@ -16,6 +17,14 @@ IMAGE_PROCESSING_BUCKET = "image-processing.bdrc.io"
 s3_bucket = s3.Bucket(IMAGE_PROCESSING_BUCKET)
 
 
+# logging config
+log_file = "/usr/local/prodigy/logs/processing.log"
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.ERROR)
+formatter = logging.Formatter("%(asctime)s, %(levelname)s: %(message)s")
+file_handler = logging.FileHandler(filename=log_file)
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
 
 class ImageProcessing():
     
@@ -73,14 +82,16 @@ class ImageProcessing():
                 self.s3_image_paths.append(s3_image_path)
 
 
-    def get_s3_bits(self,s3path):
+    def get_s3_bits(self, s3path):
         f = io.BytesIO()
         try:
             s3_bucket.download_fileobj(s3path, f)
             return f
         except botocore.exceptions.ClientError as e:
             if e.response["Error"]["Code"] == "404":
-                print(f"The object does not exist, {s3path}")
+                logger.exception(f"The object does not exist: s3_path: {s3path}")
+            else:
+                logger.exception(f"The object didn't download due to error {e}: s3_path: {s3path}")
         return
         
 
@@ -99,20 +110,26 @@ class ImageProcessing():
         return True
 
     def resize_the_image(self, image):
-        width, height = image.size
-        aspect_ratio = width / height
+        try:
+            width, height = image.size
+            aspect_ratio = width / height
 
-        if aspect_ratio > 1:
-            # Image is wider than the maximum dimensions
-            new_width = self.max_width
-            new_height = int(self.max_width / aspect_ratio)
-        else:
-            # Image is taller than the maximum dimensions
-            new_height = self.max_height
-            new_width = int(self.max_height * aspect_ratio)
+            if aspect_ratio > 1:
+                # Image is wider than the maximum dimensions
+                new_width = self.max_width
+                new_height = int(self.max_width / aspect_ratio)
+            else:
+                # Image is taller than the maximum dimensions
+                new_height = self.max_height
+                new_width = int(self.max_height * aspect_ratio)
 
-        resized_img = image.resize((new_width, new_height))
-        return resized_img
+            resized_img = image.resize((new_width, new_height))
+            return resized_img
+        except Exception as e:
+            logger.exception(
+                f"Image corrupted can't resize, error {e}: original filename: {self.origfilename}"
+            )
+            return
 
 
     def compress_and_encode_image(self, resized_image):
@@ -132,27 +149,29 @@ class ImageProcessing():
         #resize the image
         resized_image = self.resize_the_image(image)
         
-        # check if greyscal option is True
-        if self.greyscale:
-            resized_image = resized_image.convert("L")
-            
-        new_image = self.compress_and_encode_image(resized_image)
-        return new_image       
+        if resized_image:
+            # check if greyscal option is True
+            if self.greyscale:
+                resized_image = resized_image.convert("L")
+                
+            new_image = self.compress_and_encode_image(resized_image)
+            return new_image
+        return      
         
         
     def upload_reformated_images_for_vol(self):
         
         for s3_image_path in self.s3_image_paths:
             self.origfilename = s3_image_path.split("/")[-1]
-            
-            # if self.origfilename != "I2KG2081840206.tif":
-            #     continue
+        
+            # download the image file
             filebits = self.get_s3_bits(s3_image_path)
-            image = Image.open(filebits)
             
-            # continue if image is all white or all black
-            if image.convert("L").getextrema() == (0,0) or image.convert("L").getextrema() == (255,255):
+            if filebits:
+                image = Image.open(filebits)
+            else:
                 continue
+            
             if image.mode == '1':
                 self.get_new_filename(True)
                 s3_key = f"{self.output_s3_prefix}/{self.new_filename}"
@@ -166,8 +185,8 @@ class ImageProcessing():
                     continue
                 image = self.process_non_binary_file(image)
 
-            # self.upload_image(image)
-            image.save(f"{self.new_filename}")
+            if image:
+                self.upload_image(image)
 
     def reformat_image_group_and_upload_to_s3(self, input_s3_prefix):
         
