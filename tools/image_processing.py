@@ -5,9 +5,7 @@ import boto3
 import botocore
 from pathlib import Path
 from PIL import Image
-from wand.image import Image as WandImage
 import logging
-
 
 # s3 config
 os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "~/.aws/credentials"
@@ -18,7 +16,8 @@ s3_bucket = s3.Bucket(IMAGE_PROCESSING_BUCKET)
 
 
 # logging config
-log_file = "/usr/local/prodigy/logs/processing.log"
+# log_file = "/usr/local/prodigy/logs/processing.log"
+log_file = 'processing.log'
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 formatter = logging.Formatter("%(asctime)s, %(levelname)s: %(message)s")
@@ -97,9 +96,9 @@ class ImageProcessing():
 
     def get_new_filename(self, binary):
         if binary:
-            self.new_filename = f"{self.origfilename.split('.')[0]}."+ "png_" + str(self.degree) + ".png"
+            self.new_filename = f"{self.origfilename.split('.')[0]}"+ "_" + str(self.degree) + ".png"
         else:
-            self.new_filename = f"{self.origfilename.split('.')[0]}."+ "jpg_" + str(self.degree) + ".jpg"
+            self.new_filename = f"{self.origfilename.split('.')[0]}"+ "_" + str(self.degree) + ".jpg"
 
 
     def is_archived(self, key):
@@ -137,6 +136,7 @@ class ImageProcessing():
         # do cofigurable compression with input quality if given else 75 and do progressive encoding
         compressed_image_bytes = io.BytesIO()
         resized_image.save(compressed_image_bytes, format='JPEG', quality=self.quality, progressive=self.progressive)
+
         compressed_image = Image.open(compressed_image_bytes)
         
         # create new image to not include the metadata of compressed image
@@ -163,7 +163,6 @@ class ImageProcessing():
         
         for s3_image_path in self.s3_image_paths:
             self.origfilename = s3_image_path.split("/")[-1]
-        
             # download the image file
             filebits = self.get_s3_bits(s3_image_path)
             
@@ -199,6 +198,7 @@ class ImageProcessing():
     
 if __name__ == "__main__":
     image_options = {}
-    input_s3_prefix = "NLM1/W2KG208132/archive/W2KG208132-I2KG208184/"
+    # input_s3_prefix = "NLM1/W2KG208132/archive/W2KG208132-I2KG208184/"
+    input_s3_prefix = 'NLM1/W2KG208129/sources/W2KG208129-I2KG208175/'
     processor = ImageProcessing()
     processor.reformat_image_group_and_upload_to_s3(input_s3_prefix)
