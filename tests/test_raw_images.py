@@ -36,5 +36,5 @@ def process_image_from_raw_image(s3_image_paths):
 
 if __name__ == "__main__":
     raw_images = list(Path(f"./raw_image_list.txt").read_text(encoding='utf-8').splitlines())
-    process_gz_images(raw_images[2:3])
+    # process_gz_images(raw_images[1:3])
     process_image_from_raw_image(raw_images[6:8])

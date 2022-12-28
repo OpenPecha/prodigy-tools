@@ -6,6 +6,7 @@ import botocore
 from pathlib import Path
 from PIL import Image
 import logging
+from raw_pillow_opener import register_raw_opener
 
 # s3 config
 os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "~/.aws/credentials"
@@ -137,7 +138,7 @@ class ImageProcessing():
         compressed_image_bytes = io.BytesIO()
         resized_image.save(compressed_image_bytes, format='JPEG', quality=self.quality, progressive=self.progressive)
 
-        compressed_image = Image.open(compressed_image_bytes)
+        compressed_image = Image.open(compressed_image_bytes, formats=['JPEG'])
         
         # create new image to not include the metadata of compressed image
         new_image = Image.new(mode=compressed_image.mode, size=resized_image.size)
@@ -167,7 +168,14 @@ class ImageProcessing():
             filebits = self.get_s3_bits(s3_image_path)
             
             if filebits:
-                image = Image.open(filebits)
+                # to check if the image is a raw image or not and use register_raw_opener if it is a raw image
+                if self.origfilename.split(".")[-1] == "CR2":
+                    register_raw_opener()
+                    image = Image.open(filebits)
+                elif self.origfilename.split(".")[-1] == "gz":
+                    continue
+                else:
+                    image = Image.open(filebits, formats=['JEPG'])
             else:
                 continue
             
