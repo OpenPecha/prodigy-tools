@@ -97,10 +97,9 @@ class ImageProcessing():
 
     def get_new_filename(self, binary):
         if binary:
-            self.new_filename = f"{self.origfilename.split('.')[0]}"+ "_" + str(self.degree) + ".png"
+            self.new_filename = self.origfilename + "_" + str(self.degree) + ".png"
         else:
-            self.new_filename = f"{self.origfilename.split('.')[0]}"+ "_" + str(self.degree) + ".jpg"
-
+            self.new_filename = self.origfilename + "_" + str(self.degree) + ".jpg"
 
     def is_archived(self, key):
         try:
@@ -175,7 +174,7 @@ class ImageProcessing():
                 elif self.origfilename.split(".")[-1] == "gz":
                     continue
                 else:
-                    image = Image.open(filebits, formats=['JEPG'])
+                    image = Image.open(filebits, formats=['JPEG'])
             else:
                 continue
             
