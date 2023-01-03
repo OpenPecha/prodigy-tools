@@ -1,7 +1,9 @@
 import os
 import math
 import io
+import gzip
 import boto3
+import json
 import botocore
 from pathlib import Path
 from PIL import Image
@@ -157,42 +159,59 @@ class ImageProcessing():
             new_image = self.compress_and_encode_image(resized_image)
             return new_image
         return      
+    def gzip_str(self, string_):
+        # taken from https://gist.github.com/Garrett-R/dc6f08fc1eab63f94d2cbb89cb61c33d
+        out = io.BytesIO()
+        with gzip.GzipFile(fileobj=out, mode="w") as fo:
+            fo.write(string_.encode())
+
+        bytes_obj = out.getvalue()
+        return bytes_obj
         
+    def processs_image(self, filebits):
+        # resize, compress and encode the image and return a processed image
+        if filebits:
         
-    def upload_reformated_images_for_vol(self):
+            if self.origfilename.split(".")[-1] == "CR2":
+                register_raw_opener()
+                image = Image.open(filebits)
+            elif self.origfilename.split(".")[-1] == "gz":
+                decompressed_data = gzip.decompress(filebits.getvalue())
+                image_bytes = io.BytesIO(decompressed_data)
+                image = Image.open(image_bytes)
+                self.origfilename = self.origfilename[:-3]
+            else:
+                image = Image.open(filebits, formats=['JPEG'])
+        else:
+            return
+            
+        if image.mode == '1':
+            self.get_new_filename(True)
+            s3_key = f"{self.output_s3_prefix}/{self.new_filename}"
+            if self.is_archived(s3_key):
+                return
+            image =  self.resize_the_image(image)
+        else:
+            self.get_new_filename(False)
+            s3_key = f"{self.output_s3_prefix}/{self.new_filename}"
+            if self.is_archived(s3_key):
+                return
+            image = self.process_non_binary_file(image)
+            
+        return image
+    
+    def upload_processed_images_for_vol(self):
         
-        for s3_image_path in self.s3_image_paths:
+        for s3_image_path in self.s3_image_paths[11:]:
             self.origfilename = s3_image_path.split("/")[-1]
             # download the image file
             filebits = self.get_s3_bits(s3_image_path)
-            
-            if filebits:
-                # to check if the image is a raw image or not and use register_raw_opener if it is a raw image
-                if self.origfilename.split(".")[-1] == "CR2":
-                    register_raw_opener()
-                    image = Image.open(filebits)
-                elif self.origfilename.split(".")[-1] == "gz":
-                    continue
-                else:
-                    image = Image.open(filebits, formats=['JPEG'])
-            else:
-                continue
-            
-            if image.mode == '1':
-                self.get_new_filename(True)
-                s3_key = f"{self.output_s3_prefix}/{self.new_filename}"
-                if self.is_archived(s3_key):
-                    continue
-                image =  self.resize_the_image(image)
-            else:
-                self.get_new_filename(False)
-                s3_key = f"{self.output_s3_prefix}/{self.new_filename}"
-                if self.is_archived(s3_key):
-                    continue
-                image = self.process_non_binary_file(image)
 
-            if image:
-                self.upload_image(image)
+            processed_image = self.processs_image(filebits)
+            
+            if processed_image:
+                self.upload_image(processed_image)
+
 
     def reformat_image_group_and_upload_to_s3(self, input_s3_prefix):
         
@@ -200,7 +219,7 @@ class ImageProcessing():
             self.input_s3_prefix = input_s3_prefix
         self.output_s3_prefix = self.create_output_s3_prefix()
         self.get_s3_image_paths()
-        self.upload_reformated_images_for_vol()
+        self.upload_processed_images_for_vol()
     
     
 if __name__ == "__main__":
