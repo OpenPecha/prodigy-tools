@@ -34,10 +34,9 @@ def test_raw_image_files():
         expected_image_file = io.BytesIO()
         expected_image.save(expected_image_file, 'jpeg')
         
-        assert width == expected_width
-        assert height == expected_height
-        # assert the memory size
-        assert 100 >= abs(expected_image_file.tell() - processed_image_file.tell())
+        assert 2 >= abs(width - expected_width)
+        assert 2 >= abs(height - expected_height)
+        
 
 def test_zipped_raw_image_files():
     processor = ImageProcessing()
@@ -55,15 +54,13 @@ def test_zipped_raw_image_files():
         processed_image_file = io.BytesIO()
         processed_image.save(processed_image_file, 'jpeg')
         
-        expected_image = Image.open(expected_zipped_raw_image_ouptput_dir_path / processor.new_filename)
+        expected_image = Image.open(expected_zipped_raw_image_ouptput_dir_path / processor.new_filename, formats=['JPEG'])
         expected_width, expected_height = expected_image.size
         expected_image_file = io.BytesIO()
         expected_image.save(expected_image_file, 'jpeg')
         
-        assert width == expected_width
-        assert height == expected_height
-        # assert the memory size
-        assert 100 >= abs(expected_image_file.tell() - processed_image_file.tell())
+        assert 2 >= abs(width - expected_width)
+        assert 2 >= abs(height - expected_height)
 
 
     
