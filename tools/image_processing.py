@@ -47,21 +47,23 @@ class ImageProcessing():
         
         
     def get_degree(self):
+        
         angle = math.atan2(self.max_height, self.max_width)
         degree = math.degrees(angle)
         return int(degree)
 
     
     def create_output_s3_prefix(self):
+        
         prefix = list(self.input_s3_prefix.split("/"))
         work_id = prefix[1]
         vol_folder = prefix[3]
-        
         output_s3_path = f"NLM1/{work_id}/archive-web/{vol_folder}"
         return output_s3_path
         
         
     def upload_image(self, image):
+        
         s3_key = f"{self.output_s3_prefix}/{self.new_filename}"
         image_bytes = io.BytesIO()
         if self.new_filename.split(".")[-1] == "png":
@@ -85,6 +87,7 @@ class ImageProcessing():
 
 
     def get_s3_bits(self, s3path):
+        
         f = io.BytesIO()
         try:
             s3_bucket.download_fileobj(s3path, f)
@@ -103,14 +106,18 @@ class ImageProcessing():
         else:
             self.new_filename = self.origfilename + "_" + str(self.degree) + ".jpg"
 
+
     def is_archived(self, key):
+        
         try:
             s3_client.head_object(Bucket=IMAGE_PROCESSING_BUCKET, Key=key)
         except botocore.errorfactory.ClientError:
             return False
         return True
 
+
     def resize_the_image(self, image):
+        
         try:
             width, height = image.size
             aspect_ratio = width / height
@@ -148,6 +155,7 @@ class ImageProcessing():
     
     
     def process_non_binary_file(self, image):
+        
         #resize the image
         resized_image = self.resize_the_image(image)
         
@@ -159,19 +167,12 @@ class ImageProcessing():
             new_image = self.compress_and_encode_image(resized_image)
             return new_image
         return      
-    def gzip_str(self, string_):
-        # taken from https://gist.github.com/Garrett-R/dc6f08fc1eab63f94d2cbb89cb61c33d
-        out = io.BytesIO()
-        with gzip.GzipFile(fileobj=out, mode="w") as fo:
-            fo.write(string_.encode())
 
-        bytes_obj = out.getvalue()
-        return bytes_obj
         
     def processs_image(self, filebits):
+        
         # resize, compress and encode the image and return a processed image
         if filebits:
-        
             if self.origfilename.split(".")[-1] == "CR2":
                 register_raw_opener()
                 image = Image.open(filebits)
@@ -181,7 +182,7 @@ class ImageProcessing():
                 image = Image.open(image_bytes)
                 self.origfilename = self.origfilename[:-3]
             else:
-                image = Image.open(filebits, formats=['JPEG'])
+                image = Image.open(filebits)
         else:
             return
             
@@ -202,13 +203,12 @@ class ImageProcessing():
     
     def upload_processed_images_for_vol(self):
         
-        for s3_image_path in self.s3_image_paths[11:]:
+        for s3_image_path in self.s3_image_paths:
             self.origfilename = s3_image_path.split("/")[-1]
             # download the image file
             filebits = self.get_s3_bits(s3_image_path)
 
             processed_image = self.processs_image(filebits)
-            
             if processed_image:
                 self.upload_image(processed_image)
 
