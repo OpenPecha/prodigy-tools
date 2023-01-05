@@ -19,8 +19,8 @@ s3_bucket = s3.Bucket(IMAGE_PROCESSING_BUCKET)
 
 
 # logging config
-# log_file = "/usr/local/prodigy/logs/processing.log"
-log_file = 'processing.log'
+log_file = "/usr/local/prodigy/logs/processing.log"
+#log_file = 'processing.log'
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 formatter = logging.Formatter("%(asctime)s, %(levelname)s: %(message)s")
@@ -57,8 +57,9 @@ class ImageProcessing():
         
         prefix = list(self.input_s3_prefix.split("/"))
         work_id = prefix[1]
+        _type  = prefix[2]
         vol_folder = prefix[3]
-        output_s3_path = f"NLM1/{work_id}/archive-web/{vol_folder}"
+        output_s3_path = f"NLM1/{work_id}/{_type}-web/{vol_folder}"
         return output_s3_path
         
         
@@ -224,7 +225,7 @@ class ImageProcessing():
     
 if __name__ == "__main__":
     image_options = {}
-    # input_s3_prefix = "NLM1/W2KG208132/archive/W2KG208132-I2KG208184/"
+    # input_s3_prefix = "NLM1/W2KG208132/archive-web/W2KG208132-I2KG208184/"
     input_s3_prefix = 'NLM1/W2KG208129/sources/W2KG208129-I2KG208175/'
     processor = ImageProcessing()
     processor.reformat_image_group_and_upload_to_s3(input_s3_prefix)
