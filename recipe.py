@@ -41,7 +41,8 @@ def stream_from_s3(s3_prefix):
             obj = s3.Object(IMAGE_PROCESSING_BUCKET, img_key)
             img = obj.get()['Body'].read()
             logging.info(f"s3_image_key: {img_key}")
+            logging.info(f"{'image': img_to_b64_uri(img, 'image/jpg')}")
 
             # Provide response that Prodigy expects.
-            yield json.dumps({'image': img_to_b64_uri(img, 'image/jpg')})
+            yield {'image': img_to_b64_uri(img, 'image/jpg')}
             
