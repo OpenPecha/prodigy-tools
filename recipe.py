@@ -13,6 +13,7 @@ def custom_recipe(dataset, s3_prefix):
         "dataset": dataset,
         "stream": stream_from_s3(s3_prefix),
         "view_id": "image"
+        "label": "PAGE"
     }
 
 def stream_from_s3(s3_prefix):
