@@ -15,6 +15,7 @@ def custom_recipe(dataset, s3_prefix):
         "view_id": "image"
         "config": {  # Additional config settings, mostly for app UI
             "labels": "PAGE"
+        }
     }
 
 def stream_from_s3(s3_prefix):
