@@ -22,25 +22,29 @@ logging.basicConfig(
 @prodigy.recipe("bdrc-crop-images-recipe")
 def bdrc_crop_images_recipe(dataset, s3_prefix):
     logging.info(f"dataset:{dataset}, s3_prefix:{s3_prefix}")
+    obj_list = s3_client.list_objects_v2(Bucket=IMAGE_PROCESSING_BUCKET, Prefix=s3_prefix)
+    if not response:
+        logging.error("no object in s3 prefix")
+        raise "no object in s3 prefix"
+    obj_keys = []
+    for obj in obj_list['Contents']:
+        obj_key = obj['Key']
+        # TODO: filter non-image files
+        obj_keys.append(obj_key)
     return {
         "dataset": dataset,
-        "stream": stream_from_s3(s3_prefix),
+        "stream": stream_from_s3(obj_keys),
         "view_id": "image_manual",
         "config": {
             "labels": ["PAGE"]
         }
     }
 
-def stream_from_s3(s3_prefix):
-    # Get all loaded images.
-    response = s3_client.list_objects_v2(Bucket=IMAGE_PROCESSING_BUCKET, Prefix=s3_prefix)
-    if response:
-        for info in response['Contents']:
-            img_key = info['Key']
-            # Read the image.
-            obj = s3.Object(IMAGE_PROCESSING_BUCKET, img_key)
-            img = obj.get()['Body'].read()
+def stream_from_s3(obj_keys):
+    for obj_key in obj_keys:
+        obj = s3.Object(IMAGE_PROCESSING_BUCKET, img_key)
+        img = obj.get()['Body'].read()
 
-            # Provide response that Prodigy expects.
-            yield {'image': img_to_b64_uri(img, 'image/jpg')}
+        # Provide response that Prodigy expects.
+        yield {'image': img_to_b64_uri(img, 'image/jpg')}
             
