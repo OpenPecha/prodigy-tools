@@ -11,7 +11,7 @@ import logging
 from raw_pillow_opener import register_raw_opener
 
 # s3 config
-os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "~/.aws/credentials"
+os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "/home/ta4tsering/.aws/credentials"
 s3 = boto3.resource("s3")
 s3_client = boto3.client("s3")
 IMAGE_PROCESSING_BUCKET = "image-processing.bdrc.io"
@@ -19,8 +19,8 @@ s3_bucket = s3.Bucket(IMAGE_PROCESSING_BUCKET)
 
 
 # logging config
-log_file = "/usr/local/prodigy/logs/processing.log"
-#log_file = 'processing.log'
+# log_file = "/usr/local/prodigy/logs/processing.log"
+log_file = 'processing.log'
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 formatter = logging.Formatter("%(asctime)s, %(levelname)s: %(message)s")
@@ -226,6 +226,6 @@ class ImageProcessing():
 if __name__ == "__main__":
     image_options = {}
     # input_s3_prefix = "NLM1/W2KG208132/archive-web/W2KG208132-I2KG208184/"
-    input_s3_prefix = 'NLM1/W2KG208129/sources/W2KG208129-I2KG208175/'
+    input_s3_prefix = 'NLM1/W2KG208129/sources-web/W2KG208129-I2KG208175/'
     processor = ImageProcessing()
     processor.reformat_image_group_and_upload_to_s3(input_s3_prefix)
