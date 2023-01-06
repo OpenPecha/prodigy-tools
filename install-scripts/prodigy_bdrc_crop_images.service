@@ -9,7 +9,7 @@ SyslogIdentifier=prodigy_img
 Environment=PRODIGY_HOME="/usr/local/prodigy"
 Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/bdrc_crop_images.json"
 WorkingDirectory=/usr/local/prodigy
-ExecStart=/usr/bin/python3.9 -m prodigy bdrc_crop_images_recipe bdrc_crop 'NLM1/W2KG208129/sources-web/W2KG208129-I2KG208175' /usr/local/prodigy/prodigy-tools/recipes/bdrc_crop_images.py
+ExecStart=/usr/bin/python3.9 -m prodigy bdrc-crop-images-recipe bdrc_crop 'NLM1/W2KG208129/sources-web/W2KG208129-I2KG208175' /usr/local/prodigy/prodigy-tools/recipes/bdrc_crop_images.py
 
 User=prodigy
 Group=prodigy
