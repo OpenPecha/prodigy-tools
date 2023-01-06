@@ -7,7 +7,7 @@ from typing import List, Optional
 @prodigy.recipe("custom-recipe")
 def custom_recipe(dataset, s3_prefix):
     return {
-        "data_set": dataset,
+        "dataset": dataset,
         "stream": stream_from_s3(s3_prefix),
         "view_id": "image"
     }
