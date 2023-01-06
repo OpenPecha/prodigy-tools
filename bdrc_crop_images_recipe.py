@@ -14,10 +14,10 @@ IMAGE_PROCESSING_BUCKET = "image-processing.bdrc.io"
 
 # log config 
 logging.basicConfig(
-filename="/usr/local/prodigy/logs/processing.log",
-format="%(levelname)s: %(message)s",
-level=logging.INFO,
-)
+    filename="/usr/local/prodigy/logs/bdrc_crop_images.log",
+    format="%(levelname)s: %(message)s",
+    level=logging.INFO,
+    )
 
 @prodigy.recipe("custom-recipe")
 def custom_recipe(dataset, s3_prefix):
