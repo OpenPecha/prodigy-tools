@@ -26,6 +26,9 @@ def bdrc_crop_images_recipe(dataset, s3_prefix):
         "dataset": dataset,
         "stream": stream_from_s3(s3_prefix),
         "view_id": "image_manual",
+        "config": {
+            "labels": ["PAGE"]
+        }
     }
 
 def stream_from_s3(s3_prefix):
