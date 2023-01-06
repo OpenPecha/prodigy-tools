@@ -42,7 +42,7 @@ def bdrc_crop_images_recipe(dataset, s3_prefix):
 
 def stream_from_s3(obj_keys):
     for obj_key in obj_keys:
-        obj = s3.Object(IMAGE_PROCESSING_BUCKET, img_key)
+        obj = s3.Object(IMAGE_PROCESSING_BUCKET, obj_key)
         img = obj.get()['Body'].read()
 
         # Provide response that Prodigy expects.
