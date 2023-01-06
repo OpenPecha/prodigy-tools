@@ -19,8 +19,8 @@ logging.basicConfig(
     level=logging.INFO,
     )
 
-@prodigy.recipe("custom-recipe")
-def custom_recipe(dataset, s3_prefix):
+@prodigy.recipe("bdrc-crop-images-recipe")
+def bdrc_crop_images_recipe(dataset, s3_prefix):
     logging.info(f"dataset:{dataset}, s3_prefix:{s3_prefix}")
     return {
         "dataset": dataset,
