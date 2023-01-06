@@ -21,7 +21,6 @@ def stream_from_s3(s3_prefix):
     s3 = boto3.resource("s3")
     s3_client = boto3.client("s3")
     IMAGE_PROCESSING_BUCKET = "image-processing.bdrc.io"
-    s3_bucket = s3.Bucket(IMAGE_PROCESSING_BUCKET)
     
     # Build a paginator for when there are a lot of objects.
     response = s3_client.list_objects_v2(Bucket=IMAGE_PROCESSING_BUCKET, Prefix=s3_prefix)
