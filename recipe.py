@@ -14,30 +14,20 @@ def custom_recipe(dataset, s3_prefix):
         "stream": stream_from_s3(s3_prefix),
         "view_id": "image"
     }
-def stream_from_s3(prefix):
+
+def stream_from_s3(s3_prefix):
     # Get all loaded images.
     os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "/home/ta4tsering/.aws/credentials"
-    s3 = boto3.client('s3')
-    s3_bucket = s3.Bucket("image-processing.bdrc.io")
+    s3 = boto3.resource("s3")
+    s3_client = boto3.client("s3")
+    IMAGE_PROCESSING_BUCKET = "image-processing.bdrc.io"
+    s3_bucket = s3.Bucket(IMAGE_PROCESSING_BUCKET)
     
     # Build a paginator for when there are a lot of objects.
-    paginator = s3.get_paginator('list_objects')
-    paginate_params = {
-        'Bucket': s3_bucket
-    }
-
-    # Check if only certain images from S3 should be loaded.
-    if prefix is not None:
-        paginate_params['Prefix'] = prefix
-
-    page_iterator = paginator.paginate(**paginate_params)
-
-    # Iterate through the pages.
-    for page in page_iterator:
-        # Iterate through items on the page.
-        for obj in page['Contents']:
-            img_key = obj['Key']
-
+    response = s3_client.list_objects_v2(Bucket=IMAGE_PROCESSING_BUCKET, Prefix=s3_prefix)
+    if response:
+        for info in response['Contents']:
+            image_key = info['Key']
             # Read the image.
             img = s3.get_object(Bucket=s3_bucket, Key=img_key).get('Body').read()
 
