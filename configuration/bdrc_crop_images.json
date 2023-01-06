@@ -4,13 +4,13 @@
   "buttons": ["accept", "reject", "ignore", "undo"],
   "batch_size": 10,
   "history_size": 10,
-  "port": 8080,
+  "port": 8090,
   "host": "localhost",
   "cors": true,
   "db": "sqlite",
   "db_settings": {
     "name": "images",
-    "path": "/usr/local/prodigy/images.sqlite"
+    "path": "/usr/local/prodigy/bdrc_crop_images.sqlite"
   },
   "validate": true,
   "auto_exclude_current": true,
