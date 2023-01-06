@@ -23,7 +23,7 @@ logging.basicConfig(
 def bdrc_crop_images_recipe(dataset, s3_prefix):
     logging.info(f"dataset:{dataset}, s3_prefix:{s3_prefix}")
     obj_list = s3_client.list_objects_v2(Bucket=IMAGE_PROCESSING_BUCKET, Prefix=s3_prefix)
-    if not response:
+    if not obj_list:
         logging.error("no object in s3 prefix")
         raise "no object in s3 prefix"
     obj_keys = []
