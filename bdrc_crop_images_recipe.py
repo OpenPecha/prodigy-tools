@@ -14,7 +14,7 @@ IMAGE_PROCESSING_BUCKET = "image-processing.bdrc.io"
 
 # log config 
 logging.basicConfig(
-filename="bdrc_crop_images.log",
+filename="/usr/local/prodigy/logs/processing.log",
 format="%(levelname)s: %(message)s",
 level=logging.INFO,
 )
