@@ -12,9 +12,9 @@ def custom_recipe(dataset, s3_prefix):
     return {
         "dataset": dataset,
         "stream": stream_from_s3(s3_prefix),
-        "view_id": "image"
+        "view_id": "image",
         "config": {  # Additional config settings, mostly for app UI
-            "labels": "PAGE"
+            "label": "PAGE"
         }
     }
 
