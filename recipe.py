@@ -3,6 +3,9 @@ import prodigy
 import json
 from prodigy.util import img_to_b64_uri
 from typing import List, Optional
+import os
+
+
 
 @prodigy.recipe("custom-recipe")
 def custom_recipe(dataset, s3_prefix):
@@ -13,9 +16,9 @@ def custom_recipe(dataset, s3_prefix):
     }
 def stream_from_s3(prefix):
     # Get all loaded images.
+    os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "/home/ta4tsering/.aws/credentials"
     s3 = boto3.client('s3')
-    IMAGE_PROCESSING_BUCKET = "image-processing.bdrc.io"
-    s3_bucket = s3.Bucket(IMAGE_PROCESSING_BUCKET)
+    s3_bucket = s3.Bucket("image-processing.bdrc.io")
     
     # Build a paginator for when there are a lot of objects.
     paginator = s3.get_paginator('list_objects')
