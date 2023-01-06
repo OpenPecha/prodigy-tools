@@ -26,9 +26,6 @@ def bdrc_crop_images_recipe(dataset, s3_prefix):
         "dataset": dataset,
         "stream": stream_from_s3(s3_prefix),
         "view_id": "image_manual",
-        "config": {  # Additional config settings, mostly for app UI
-            "label": "PAGE"
-        }
     }
 
 def stream_from_s3(s3_prefix):
@@ -40,8 +37,6 @@ def stream_from_s3(s3_prefix):
             # Read the image.
             obj = s3.Object(IMAGE_PROCESSING_BUCKET, img_key)
             img = obj.get()['Body'].read()
-            logging.info(f"s3_image_key: {img_key}")
-            logging.info(f"image: {img_to_b64_uri(img, 'image/jpg')}")
 
             # Provide response that Prodigy expects.
             yield {'image': img_to_b64_uri(img, 'image/jpg')}
