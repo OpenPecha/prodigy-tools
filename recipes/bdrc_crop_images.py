@@ -21,7 +21,6 @@ logging.basicConfig(
 
 # Prodigy has a logger named "prodigy" according to 
 # https://support.prodi.gy/t/how-to-write-log-data-to-file/1427/10
-
 prodigy_logger = logging.getLogger('prodigy')
 prodigy_logger.setLevel(logging.INFO)
 

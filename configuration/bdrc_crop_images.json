@@ -11,7 +11,7 @@
   "db_settings": {
     "sqlite": {
       "name": "bdrc_crop_images.sqlite",
-      "path": "/usr/local/prodigy "
+      "path": "/usr/local/prodigy"
     }
   },
   "validate": true,
