@@ -9,8 +9,10 @@
   "cors": true,
   "db": "sqlite",
   "db_settings": {
-    "name": "images",
-    "path": "/usr/local/prodigy/bdrc_crop_images.sqlite"
+    "sqlite": {
+      "name": "images",
+      "path": "/usr/local/prodigy/bdrc_crop_images.sqlite"
+    }
   },
   "validate": true,
   "auto_exclude_current": true,
