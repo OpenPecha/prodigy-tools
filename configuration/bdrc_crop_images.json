@@ -10,8 +10,8 @@
   "db": "sqlite",
   "db_settings": {
     "sqlite": {
-      "name": "images",
-      "path": "/usr/local/prodigy/bdrc_crop_images.sqlite"
+      "name": "bdrc_crop_images.sqlite",
+      "path": "/usr/local/prodigy "
     }
   },
   "validate": true,
