@@ -19,6 +19,12 @@ logging.basicConfig(
     level=logging.INFO,
     )
 
+# Prodigy has a logger named "prodigy" according to 
+# https://support.prodi.gy/t/how-to-write-log-data-to-file/1427/10
+
+prodigy_logger = logging.getLogger('prodigy')
+prodigy_logger.setLevel(logging.INFO)
+
 @prodigy.recipe("bdrc-crop-images-recipe")
 def bdrc_crop_images_recipe(dataset, s3_prefix):
     logging.info(f"dataset:{dataset}, s3_prefix:{s3_prefix}")
