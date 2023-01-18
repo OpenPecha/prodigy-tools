@@ -49,6 +49,6 @@ def stream_from_s3(obj_keys):
         image_url = s3_client.generate_presigned_url(
             ClientMethod="get_object",
             Params={"Bucket": IMAGE_PROCESSING_BUCKET, "Key": obj_key},
-            ExpiresIn=36000
+            ExpiresIn=31536000
         )
         yield {"image": image_url}
