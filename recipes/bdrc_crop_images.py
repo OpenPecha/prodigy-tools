@@ -2,7 +2,6 @@ import boto3
 import prodigy
 import json
 from prodigy.util import img_to_b64_uri
-from typing import List, Optional
 import os
 import logging
 
@@ -47,9 +46,19 @@ def bdrc_crop_images_recipe(dataset, s3_prefix):
 
 def stream_from_s3(obj_keys):
     for obj_key in obj_keys:
-        obj = s3.Object(IMAGE_PROCESSING_BUCKET, obj_key)
-        img = obj.get()['Body'].read()
+        image_url = s3_client.generate_presigned_url(
+            ClientMethod="get_object",
+            Params={"Bucket": IMAGE_PROCESSING_BUCKET, "Key": obj_key},
+            ExpiresIn=3600
+        )
+        yield {"image": image_url}
 
-        # Provide response that Prodigy expects.
-        yield {'image': img_to_b64_uri(img, 'image/jpg')}
+# def stream_from_s3(obj_keys):
+#     for obj_key in obj_keys:
+#         obj = s3.Object(IMAGE_PROCESSING_BUCKET, obj_key)
+#         img = obj.get()['Body'].read()
+
+#         # Provide response that Prodigy expects.
+#         yield {'image': img_to_b64_uri(img, 'image/jpg')}
             
+
