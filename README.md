@@ -34,3 +34,15 @@ Tools for OpenPecha's use of Prodigy
 
 <!-- This section must link to the docs which are in the root of the repository in /docs -->
 
+#### List all the datasets
+
+
+```sh
+sudo -u prodigy PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/bdrc_crop_images.json" python3 -m prodigy stats -l
+```
+
+#### Export a dataset
+
+```sh
+sudo -u prodigy PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/bdrc_crop_images.json" python3 -m prodigy db-out bdrc_crop exports/
+```
