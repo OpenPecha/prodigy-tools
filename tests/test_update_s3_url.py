@@ -35,5 +35,5 @@ def update_url(prev_url):
             ExpiresIn=604800
         )
     response = requests.get(new_url)
-    assert response.status_code == "200"
+    assert response.status_code == 200
     return new_url
