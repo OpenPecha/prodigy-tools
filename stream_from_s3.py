@@ -1,9 +1,6 @@
 import boto3
-# import prodigy
-import json
-# from prodigy.util import img_to_b64_uri
-from typing import List, Optional
 import os
+import datetime
 import logging
 
 # s3 cofig
@@ -20,6 +17,7 @@ logging.basicConfig(
     )
 
 def stream_from_s3(obj_keys):
+    # using generate_presigned_url
     for obj_key in obj_keys:
         image_url = s3_client.generate_presigned_url(
             ClientMethod="get_object",
@@ -40,16 +38,14 @@ def bdrc_crop_images_recipe(dataset, s3_prefix):
         # TODO: filter non-image files
         obj_keys.append(obj_key)
     stream_from_s3(obj_keys)
-    # return {
-    #     "dataset": dataset,
-    #     "stream": stream_from_s3(obj_keys),
-    #     "view_id": "image_manual",
-    #     "config": {
-    #         "labels": ["PAGE"]
-    #     }
-    # }
-
-
+    return {
+        "dataset": dataset,
+        "stream": stream_from_s3(obj_keys),
+        "view_id": "image_manual",
+        "config": {
+            "labels": ["PAGE"]
+        }
+    }
 
         
 if __name__ == "__main__":
