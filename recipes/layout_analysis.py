@@ -1,5 +1,6 @@
 import boto3
 import prodigy
+import json
 import os
 import logging
 
@@ -7,11 +8,11 @@ import logging
 os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "/home/ta4tsering/.aws/credentials"
 s3 = boto3.resource("s3")
 s3_client = boto3.client("s3")
-BUCKET_NAME = "image-processing.bdrc.io"
+BUCKET_NAME = "archive.tbrc.org"
 
 # log config 
 logging.basicConfig(
-    filename="/usr/local/prodigy/logs/bdrc_crop_images.log",
+    filename="/usr/local/prodigy/logs/layout_analysis.log",
     format="%(levelname)s: %(message)s",
     level=logging.INFO,
     )
@@ -21,8 +22,8 @@ logging.basicConfig(
 prodigy_logger = logging.getLogger('prodigy')
 prodigy_logger.setLevel(logging.INFO)
 
-@prodigy.recipe("bdrc-crop-images-recipe")
-def bdrc_crop_images_recipe(dataset, s3_prefix):
+@prodigy.recipe("layout-analysis-recipe")
+def layout_analysis_recipe(dataset, s3_prefix):
     logging.info(f"dataset:{dataset}, s3_prefix:{s3_prefix}")
     obj_list = s3_client.list_objects_v2(Bucket=BUCKET_NAME, Prefix=s3_prefix)
     if not obj_list:
@@ -38,7 +39,7 @@ def bdrc_crop_images_recipe(dataset, s3_prefix):
         "stream": stream_from_s3(obj_keys),
         "view_id": "image_manual",
         "config": {
-            "labels": ["PAGE"]
+            "labels": ["Text-Area", "Illustration", "Caption", "Margin", "Header", "Footer", "Hole", "Other"]
         }
     }
 
