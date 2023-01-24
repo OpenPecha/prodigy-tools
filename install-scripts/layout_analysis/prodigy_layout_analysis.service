@@ -1,0 +1,23 @@
+[Unit]
+Description=Prodigy for layout analysis
+After=syslog.target network.target
+
+[Service]
+Type=simple
+
+SyslogIdentifier=prodigy_img
+Environment=PRODIGY_HOME="/usr/local/prodigy"
+Environment=PRODIGY_LOGGING=verbose
+Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/layout_analysis.json"
+WorkingDirectory=/usr/local/prodigy
+ExecStart=/usr/bin/python3.9 -m prodigy layout-analysis-recipe layout_analysis 'NLM1/W2KG208129/sources-web/W2KG208129-I2KG208175' -F /usr/local/prodigy/prodigy-tools/recipes/layout_analysis.py
+
+User=prodigy
+Group=prodigy
+
+UMask=0007
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
