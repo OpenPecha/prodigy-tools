@@ -3,7 +3,7 @@ import math
 import io
 import gzip
 import boto3
-import json
+import csv
 import botocore
 from pathlib import Path
 from PIL import Image
@@ -214,18 +214,28 @@ class ImageProcessing():
                 self.upload_image(processed_image)
 
 
-    def reformat_image_group_and_upload_to_s3(self, input_s3_prefix):
+    def reformat_image_group_and_upload_to_s3(self, input_s3_prefix, output_s3_prefix):
         
         if self.input_s3_prefix == None:
             self.input_s3_prefix = input_s3_prefix
-        self.output_s3_prefix = self.create_output_s3_prefix()
+        if output_s3_prefix == None:
+            self.output_s3_prefix = self.create_output_s3_prefix()
+        else:
+            self.output_s3_prefix = output_s3_prefix
         self.get_s3_image_paths()
         self.upload_processed_images_for_vol()
-    
+
+
+def parse_csv_file(csv_path):
+    with open(csv_path, newline="") as csvfile:
+        infos = list(csv.reader(csvfile, delimiter=","))
+        for info in infos[1:]:
+            input_s3_prefix = info[1]
+            output_s3_prefix = info[2]
+            yield input_s3_prefix, output_s3_prefix
+
     
 if __name__ == "__main__":
-    image_options = {}
-    # input_s3_prefix = "NLM1/W2KG208132/archive-web/W2KG208132-I2KG208184/"
-    input_s3_prefix = 'NLM1/W2KG208129/sources-web/W2KG208129-I2KG208175/'
-    processor = ImageProcessing()
-    processor.reformat_image_group_and_upload_to_s3(input_s3_prefix)
+    for input_s3_prefix, output_s3_prefix in parse_csv_file(f"./input_data.csv"):
+        processor = ImageProcessing()
+        processor.reformat_image_group_and_upload_to_s3(input_s3_prefix, output_s3_prefix)
