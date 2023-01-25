@@ -40,8 +40,6 @@ def bdrc_crop_images_recipe(dataset, s3_prefix):
         "config": {
             "labels": ["PAGE"], 
             "custom_theme" :  {"cardMaxWidth": 2000},
-            "exclude_by": "input",
-            "auto_count_stream": True,
         }
     }
 
