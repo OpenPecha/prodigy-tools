@@ -83,7 +83,7 @@ def get_volume_infos(work_prefix_url):
         f"http://purl.bdrc.io/query/table/volumesForWork?R_RES={work_prefix_url}&format=json&pageSize=500"
     )
     if response.status_code != 200:
-        logger.error(
+        print(
             f"Volume Info Error: No info found for Work {work_prefix_url}: status code: {response.status_code}"
         )
         return
