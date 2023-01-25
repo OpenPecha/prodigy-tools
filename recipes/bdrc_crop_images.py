@@ -38,7 +38,10 @@ def bdrc_crop_images_recipe(dataset, s3_prefix):
         "stream": stream_from_s3(obj_keys),
         "view_id": "image_manual",
         "config": {
-            "labels": ["PAGE"]
+            "labels": ["PAGE"], 
+            "custom_theme" :  {"cardMaxWidth": width},
+            "exclude_by": "input",
+            "auto_count_stream": True,
         }
     }
 
