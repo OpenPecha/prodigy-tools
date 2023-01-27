@@ -50,4 +50,5 @@ def stream_from_s3(obj_keys):
             Params={"Bucket": BUCKET_NAME, "Key": obj_key},
             ExpiresIn=31536000
         )
-        yield {"image": image_url}
+        image_id = (obj_key.split("/"))[-1]
+        yield {"id": image_id, "image": image_url}
