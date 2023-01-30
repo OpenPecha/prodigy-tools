@@ -25,6 +25,8 @@ def update_db(db_path):
     conn.close()
 
 def update_url(prev_url):
+    if "iiif" in prev_url:
+        return prev_url
     url_contents = (prev_url.split("?")[0]).split("/")
     bucket_name = url_contents[3]
     obj_key = '/'.join(url_contents[4:])
