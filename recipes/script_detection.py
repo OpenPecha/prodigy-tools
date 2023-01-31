@@ -7,7 +7,7 @@ import logging
 os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "/home/ta4tsering/.aws/credentials"
 s3 = boto3.resource("s3")
 s3_client = boto3.client("s3")
-BUCKET_NAME = "archive.tbrc.org"
+BUCKET_NAME = "image-processing.bdrc.io"
 
 # log config 
 logging.basicConfig(

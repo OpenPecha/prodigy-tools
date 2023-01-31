@@ -5,7 +5,7 @@ After=syslog.target network.target
 [Service]
 Type=simple
 
-SyslogIdentifier=prodigy_img
+SyslogIdentifier=layout_analysis
 Environment=PRODIGY_HOME="/usr/local/prodigy"
 Environment=PRODIGY_LOGGING=verbose
 Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/layout_analysis.json"
