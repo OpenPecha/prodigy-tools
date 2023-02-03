@@ -4,13 +4,13 @@
     "buttons": ["accept", "reject", "ignore", "undo"],
     "batch_size": 10,
     "history_size": 10,
-    "port": 8010,
+    "port": 8050,
     "host": "localhost",
     "cors": true,
     "db": "sqlite",
     "db_settings": {
       "sqlite": {
-        "name": "layout_analysis.sqlite",
+        "name": "script_detection.sqlite",
         "path": "/usr/local/prodigy"
       }
     },
