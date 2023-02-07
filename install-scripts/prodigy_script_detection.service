@@ -1,0 +1,23 @@
+[Unit]
+Description=Prodigy for script detection
+After=syslog.target network.target
+
+[Service]
+Type=simple
+
+SyslogIdentifier=script_detection
+Environment=PRODIGY_HOME="/usr/local/prodigy"
+Environment=PRODIGY_LOGGING=verbose
+Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/script_detection.json"
+WorkingDirectory=/usr/local/prodigy
+ExecStart=/usr/bin/python3.9 -m prodigy script-detection-recipe script_detection 'NLM1/W2KG208129/sources-web/W2KG208129-I2KG208175' -F /usr/local/prodigy/prodigy-tools/recipes/script_detection.py
+
+User=prodigy
+Group=prodigy
+
+UMask=0007
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

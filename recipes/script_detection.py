@@ -7,7 +7,7 @@ import logging
 os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "/home/ta4tsering/.aws/credentials"
 s3 = boto3.resource("s3")
 s3_client = boto3.client("s3")
-BUCKET_NAME = "archive.tbrc.org"
+BUCKET_NAME = "image-processing.bdrc.io"
 
 # log config 
 logging.basicConfig(
@@ -56,4 +56,5 @@ def stream_from_s3(obj_keys):
             Params={"Bucket": BUCKET_NAME, "Key": obj_key},
             ExpiresIn=31536000
         )
-        yield {"image": image_url, "options": options}
+        image_id = (obj_key.split("/"))[-1]
+        yield {"id": image_id, "image": image_url, "options": options}
