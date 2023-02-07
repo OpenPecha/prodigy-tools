@@ -1,6 +1,5 @@
 import boto3
 import prodigy
-import json
 import os
 import logging
 

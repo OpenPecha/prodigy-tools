@@ -1,8 +1,6 @@
 from pathlib import Path
 from tools.image_processing import ImageProcessing
 from PIL import Image
-from raw_pillow_opener import register_raw_opener
-import gzip
 import io
 
 
