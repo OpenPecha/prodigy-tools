@@ -24,7 +24,7 @@ prodigy_logger.setLevel(logging.INFO)
 
 @prodigy.recipe("bdrc-crop-images-recipe")
 def bdrc_crop_images_recipe(dataset, csv_file):
-    logging.info(f"dataset:{dataset}, s3_prefix:{csv_file}")
+    logging.info(f"dataset:{dataset}, csv_file_path:{csv_file}")
     obj_keys = []
     with open(csv_file) as _file:
         for csv_line in list(csv.reader(_file, delimiter=",")):
