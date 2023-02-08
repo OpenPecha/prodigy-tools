@@ -1,13 +1,14 @@
+import os
+import csv
 import boto3
 import prodigy
-import os
 import logging
 
 # s3 cofig
 os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "/home/ta4tsering/.aws/credentials"
 s3 = boto3.resource("s3")
 s3_client = boto3.client("s3")
-BUCKET_NAME = "archive.tbrc.org"
+BUCKET_NAME = "image-processing.bdrc.io"
 
 # log config 
 logging.basicConfig(
@@ -22,17 +23,14 @@ prodigy_logger = logging.getLogger('prodigy')
 prodigy_logger.setLevel(logging.INFO)
 
 @prodigy.recipe("script-detection-recipe")
-def script_detection_recipe(dataset, s3_prefix):
-    logging.info(f"dataset:{dataset}, s3_prefix:{s3_prefix}")
-    obj_list = s3_client.list_objects_v2(Bucket=BUCKET_NAME, Prefix=s3_prefix)
-    if not obj_list:
-        logging.error("no object in s3 prefix")
-        raise "no object in s3 prefix"
-    obj_keys = []
-    for obj in obj_list['Contents']:
-        obj_key = obj['Key']
-        # TODO: filter non-image files
-        obj_keys.append(obj_key)
+def script_detection_recipe(dataset, csv_file):
+    logging.info(f"dataset:{dataset}, csv_file_path:{csv_file}")
+    with open(csv_file) as _file:
+        obj_keys = []
+        for csv_line in list(csv.reader(_file, delimiter=",")):
+            s3_key = csv_line[0]
+            # TODO: filter non-image files
+            obj_keys.append(s3_key)
     return {
         "dataset": dataset,
         "stream": stream_from_s3(obj_keys),
@@ -56,4 +54,5 @@ def stream_from_s3(obj_keys):
             Params={"Bucket": BUCKET_NAME, "Key": obj_key},
             ExpiresIn=31536000
         )
-        yield {"image": image_url, "options": options}
+        image_id = (obj_key.split("/"))[-1]
+        yield {"id": image_id, "image": image_url, "options": options}
