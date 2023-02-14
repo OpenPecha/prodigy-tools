@@ -141,7 +141,7 @@ class ImageProcessing():
             if error.response["Error"]["Code"] == "404":
                 logger.exception(f"The object does not exist: s3__key: {s3_image_key}")
             else:
-                logger.exception(f"The object didn't download due to error {e}: s3__key: {s3_image_key}")
+                logger.exception(f"The object didn't download due to error {error}: s3__key: {s3_image_key}")
                 return
         processed_image = self.processs_image(filebits)
         if processed_image:
