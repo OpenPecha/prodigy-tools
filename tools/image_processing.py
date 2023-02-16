@@ -133,7 +133,7 @@ class ImageProcessing():
         return image
     
 
-    def processed_and_upload_image_to_s3(self, s3_image_key):
+    def processed_and_upload_image_to_s3(self, s3_image_key, csv_name):
         self.output_s3_prefix = create_output_s3_prefix(s3_prefix=s3_image_key)
         self.origfilename = s3_image_key.split("/")[-1]
         filebits, error = get_s3_bits(s3_image_key)
@@ -146,11 +146,11 @@ class ImageProcessing():
         processed_image = self.processs_image(filebits)
         if processed_image:
             s3_key = self.upload_image(processed_image)
-            update_catalog(s3_key)
+            update_catalog(s3_key, csv_name)
 
     
 if __name__ == "__main__":
-    input_s3_prefixs = (Path(f"./data/page_cropping/sample_images_batch1.txt").read_text(encoding='utf-8')).splitlines()
+    input_s3_prefixs = (Path(f"./data/layout_analysis/sample_images.txt").read_text(encoding='utf-8')).splitlines()
     for input_s3_prefix in input_s3_prefixs:
         processor = ImageProcessing()
-        processor.processed_and_upload_image_to_s3(input_s3_prefix)
+        processor.processed_and_upload_image_to_s3(input_s3_prefix, "layout_analysis")

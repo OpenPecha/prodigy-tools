@@ -4,7 +4,6 @@ import csv
 import boto3
 import botocore
 
-
 # s3 config
 # os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "/home/ta4tsering/.aws/credentials"
 os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "~/.aws/credentials"
@@ -54,10 +53,7 @@ def get_s3_bits(s3_key):
     except botocore.exceptions.ClientError as error:
         return None, error
 
-def update_catalog(s3_key):
-    with open(f"./data/page_cropping.csv",'a') as f:
+def update_catalog(s3_key, csv_name):
+    with open(f"./data/{csv_name}.csv",'a') as f:
         writer = csv.writer(f)
         writer.writerow([s3_key])
-
-if __name__ == "__main__":
-    pass

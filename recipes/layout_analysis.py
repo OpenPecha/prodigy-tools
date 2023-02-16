@@ -1,13 +1,14 @@
+import os
+import csv
+import logging
 import boto3
 import prodigy
-import os
-import logging
 
 # s3 cofig
 os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "/home/ta4tsering/.aws/credentials"
 s3 = boto3.resource("s3")
 s3_client = boto3.client("s3")
-BUCKET_NAME = "archive.tbrc.org"
+BUCKET_NAME = "image-processing.openpecha"
 
 # log config 
 logging.basicConfig(
@@ -22,17 +23,14 @@ prodigy_logger = logging.getLogger('prodigy')
 prodigy_logger.setLevel(logging.INFO)
 
 @prodigy.recipe("layout-analysis-recipe")
-def layout_analysis_recipe(dataset, s3_prefix):
-    logging.info(f"dataset:{dataset}, s3_prefix:{s3_prefix}")
-    obj_list = s3_client.list_objects_v2(Bucket=BUCKET_NAME, Prefix=s3_prefix)
-    if not obj_list:
-        logging.error("no object in s3 prefix")
-        raise "no object in s3 prefix"
+def layout_analysis_recipe(dataset, csv_file):
+    logging.info(f"dataset:{dataset}, csv_file_path:{csv_file}")
     obj_keys = []
-    for obj in obj_list['Contents']:
-        obj_key = obj['Key']
-        # TODO: filter non-image files
-        obj_keys.append(obj_key)
+    with open(csv_file) as _file:
+        for csv_line in list(csv.reader(_file, delimiter=",")):
+            s3_key = csv_line[0]
+            # TODO: filter non-image files
+            obj_keys.append(s3_key)
     return {
         "dataset": dataset,
         "stream": stream_from_s3(obj_keys),

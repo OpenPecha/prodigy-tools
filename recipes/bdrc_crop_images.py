@@ -1,8 +1,8 @@
-import boto3
-import prodigy
 import os
 import csv
 import logging
+import boto3
+import prodigy
 
 # s3 cofig
 os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "/home/ta4tsering/.aws/credentials"
