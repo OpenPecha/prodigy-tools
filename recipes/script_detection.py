@@ -3,12 +3,11 @@ import csv
 import boto3
 import prodigy
 import logging
+from tools.config import s3_client1, PAGE_CROPPPING_BUCKET
 
 # s3 cofig
-os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "/home/ta4tsering/.aws/credentials"
-s3 = boto3.resource("s3")
-s3_client = boto3.client("s3")
-BUCKET_NAME = "image-processing.bdrc.io"
+s3_client = s3_client1
+bucket_name = PAGE_CROPPPING_BUCKET
 
 # log config 
 logging.basicConfig(
@@ -51,7 +50,7 @@ def stream_from_s3(obj_keys):
     for obj_key in obj_keys:
         image_url = s3_client.generate_presigned_url(
             ClientMethod="get_object",
-            Params={"Bucket": BUCKET_NAME, "Key": obj_key},
+            Params={"Bucket": bucket_name, "Key": obj_key},
             ExpiresIn=31536000
         )
         image_id = (obj_key.split("/"))[-1]

@@ -1,22 +1,8 @@
-
-import os
-import io
 import re
-import json
-import boto3
 import random
-import hashlib
 from pathlib import Path
-from git import Repo
-
-
-# s3 config
-os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "~/.aws/credentials"
-s3 = boto3.resource("s3")
-s3_client = boto3.client("s3")
-BUCKET_NAME = "image-processing.bdrc.io"
-s3_bucket = s3.Bucket(BUCKET_NAME)
-
+from tools.utils import list_obj_keys
+from tools.config import s3_client1, PAGE_CROPPPING_BUCKET
 
 
 def get_five_random_images(work_id):
@@ -24,21 +10,7 @@ def get_five_random_images(work_id):
     s3_keys = []
     keys = ""
     prefix = f"NLM1/{work_id}"
-    continuation_token = None
-    while True:
-        if continuation_token:
-            response = s3_client.list_objects_v2(Bucket=BUCKET_NAME, Prefix=prefix, ContinuationToken=continuation_token)
-        else:
-            response = s3_client.list_objects_v2(Bucket=BUCKET_NAME, Prefix=prefix)
-        if response['Contents']:
-            for obj in response['Contents']:
-                obj_key = obj['Key']
-                obj_keys.append(obj_key)
-                keys += obj_key+"\n"
-        continuation_token = response.get("NextContinuationToken")
-        if not continuation_token:
-            break
-    Path(f"./source_keys.txt").write_text(keys, encoding='utf-8')
+    obj_keys = list_obj_keys(prefix=prefix, s3_client=s3_client1, bucket_name=PAGE_CROPPPING_BUCKET)
     if len(obj_keys) < 10:
         total = len(obj_keys)
     else:
@@ -69,12 +41,16 @@ def get_five_random_numbers(total, stop):
     return nums
 
 
-if __name__ == "__main__":
+def create_sample_images_txt(work_ids):
     all_keys = ''
-    work_ids = (Path(f"./data/page_cropping/mongolia_folders.txt").read_text(encoding="utf-8")).splitlines()
     for work_id in work_ids:
         images_key = get_five_random_images(work_id)
         if images_key:
             for key in images_key:
                 all_keys += key+"\n"
     Path(f"./data/page_cropping/sample_images_batch1.txt").write_text(all_keys, encoding='utf-8')
+
+
+if __name__ == "__main__":
+    work_ids = (Path(f"./data/page_cropping/mongolia_folders.txt").read_text(encoding="utf-8")).splitlines()
+    create_sample_images_txt(work_ids)

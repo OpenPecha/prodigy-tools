@@ -19,7 +19,7 @@ logger.addHandler(file_handler)
 
 
 class ImageProcessing():
-    def __init__(self, image_options={}):
+    def __init__(self, image_options={}, config={}):
         self.max_height = image_options['max_height'] if 'max_height' in image_options else 700
         self.max_width = image_options['max_width'] if 'max_width' in image_options else 2000
         self.quality = image_options['quality'] if 'quality' in image_options else 75
@@ -29,6 +29,7 @@ class ImageProcessing():
         self.origfilename = None
         self.new_filename = None
         self.output_s3_prefix = ""
+        self.config = config
         
         
     def get_degree(self):
@@ -37,7 +38,7 @@ class ImageProcessing():
         return int(degree)
         
         
-    def upload_image(self, image):
+    def upload_image(self, image, s3_bucket):
         s3_key = f"{self.output_s3_prefix}/{self.new_filename}"
         image_bytes = io.BytesIO()
         if self.new_filename.split(".")[-1] == "png":
@@ -47,7 +48,7 @@ class ImageProcessing():
         image.save(image_bytes, extention)
         image_bytes.seek(0)
         image_data = image_bytes.read()
-        upload_to_s3(image_data, s3_key)
+        upload_to_s3(image_data, s3_key, s3_bucket)
         return s3_key
         
 
@@ -121,22 +122,22 @@ class ImageProcessing():
         if image.mode == '1':
             self.get_new_filename(True)
             s3_key = f"{self.output_s3_prefix}/{self.new_filename}"
-            if is_archived(s3_key):
+            if is_archived(s3_key, self.config):
                 return
             image =  self.resize_the_image(image)
         else:
             self.get_new_filename(False)
             s3_key = f"{self.output_s3_prefix}/{self.new_filename}"
-            if is_archived(s3_key):
+            if is_archived(s3_key, self.config):
                 return
             image = self.process_non_binary_file(image)
         return image
     
 
-    def processed_and_upload_image_to_s3(self, s3_image_key, csv_name):
+    def processed_and_upload_image_to_s3(self, s3_image_key):
         self.output_s3_prefix = create_output_s3_prefix(s3_prefix=s3_image_key)
         self.origfilename = s3_image_key.split("/")[-1]
-        filebits, error = get_s3_bits(s3_image_key)
+        filebits, error = get_s3_bits(s3_image_key, self.config['source_s3_bucket'])
         if filebits == None:
             if error.response["Error"]["Code"] == "404":
                 logger.exception(f"The object does not exist: s3__key: {s3_image_key}")
@@ -145,12 +146,5 @@ class ImageProcessing():
                 return
         processed_image = self.processs_image(filebits)
         if processed_image:
-            s3_key = self.upload_image(processed_image)
-            update_catalog(s3_key, csv_name)
-
-    
-if __name__ == "__main__":
-    input_s3_prefixs = (Path(f"./data/layout_analysis/sample_images.txt").read_text(encoding='utf-8')).splitlines()
-    for input_s3_prefix in input_s3_prefixs:
-        processor = ImageProcessing()
-        processor.processed_and_upload_image_to_s3(input_s3_prefix, "layout_analysis")
+            s3_key = self.upload_image(processed_image, self.config['target_s3_bucket'])
+            update_catalog(s3_key, self.config['csv_name'])
