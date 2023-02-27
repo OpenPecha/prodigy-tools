@@ -1,10 +1,7 @@
 import sqlite3
 import argparse
-import boto3
 import json
-import requests
 
-s3_client = boto3.client("s3")
 
 def update_db(db_path):
     conn = sqlite3.connect(db_path)
@@ -24,7 +21,7 @@ def update_db(db_path):
     conn.commit()
     conn.close()
 
-def update_url(prev_url):
+def update_url(prev_url, s3_client):
     if "iiif" in prev_url:
         return prev_url
     url_contents = (prev_url.split("?")[0]).split("/")

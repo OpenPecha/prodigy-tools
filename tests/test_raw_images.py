@@ -1,7 +1,7 @@
 from pathlib import Path
 from tools.image_processing import ImageProcessing
 from PIL import Image
-import io
+import io 
 
 
 raw_image_input_dir_path = Path(__file__).parent / "data" / "inputs" / "raw_image_files"
