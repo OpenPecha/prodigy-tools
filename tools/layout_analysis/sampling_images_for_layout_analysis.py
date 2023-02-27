@@ -4,8 +4,10 @@ import hashlib
 from git import Repo
 from pathlib import Path
 from tools.utils import list_obj_keys
-from tools.config import s3_client2, BDRC_ARCHIVE_BUCKET
+from tools.config import bdrc_archive_s3_client, BDRC_ARCHIVE_BUCKET
 
+
+s3_client = bdrc_archive_s3_client
 
 def clean_dir(dir):
     if dir.is_dir():
@@ -33,7 +35,7 @@ def get_s3_images_list_of_work(work_id):
     md5 = hashlib.md5(str.encode(work_id))
     two = md5.hexdigest()[:2]
     prefix = f"Works/{two}/{work_id}/images"
-    obj_keys = list_obj_keys(prefix=prefix, s3_client=s3_client2, bucket_name=BDRC_ARCHIVE_BUCKET)
+    obj_keys = list_obj_keys(prefix=prefix, s3_client=s3_client, bucket_name=BDRC_ARCHIVE_BUCKET)
     return obj_keys
 
 
@@ -75,7 +77,8 @@ def get_image_keys(repo_name, work_id, number_of_images):
 
 def parse_csv(csv_file):
     with open(csv_file) as _file:
-        for csv_line in (csv.reader(_file, delimiter=",")):
+        repos = list(csv.reader(_file, delimiter=","))
+        for csv_line in repos[6:]:
             work_id = csv_line[0]
             repo_name = csv_line[1]
             number_of_images = csv_line[2]

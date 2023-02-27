@@ -12,28 +12,28 @@ config = configparser.ConfigParser()
 config.read(aws_credentials_file)
 
 
-session1 = boto3.Session(
+page_cropping_session = boto3.Session(
     aws_access_key_id= config.get("image_processing_bdrc_io", "aws_access_key_id"),
     aws_secret_access_key= config.get("image_processing_bdrc_io", "aws_secret_access_key")
 )
-s3_client1 = session1.client('s3')
-s3_resource1 = session1.resource('s3')
-page_cropping_bucket = s3_resource1.Bucket(PAGE_CROPPPING_BUCKET)
+page_cropping_s3_client = page_cropping_session.client('s3')
+page_cropping_s3_resource = page_cropping_session.resource('s3')
+page_cropping_bucket = page_cropping_s3_resource.Bucket(PAGE_CROPPPING_BUCKET)
 
 
-session2 = boto3.Session(
+bdrc_archive_session = boto3.Session(
     aws_access_key_id= config.get("archive_tbrc_org", "aws_access_key_id"),
     aws_secret_access_key= config.get("archive_tbrc_org", "aws_secret_access_key")
 )
-s3_client2 = session2.client('s3')
-s3_resource2 = session2.resource('s3')
-bdrc_archive_bucket = s3_resource2.Bucket(BDRC_ARCHIVE_BUCKET)
+bdrc_archive_s3_client = bdrc_archive_session.client('s3')
+bdrc_archive_s3_resource = bdrc_archive_session.resource('s3')
+bdrc_archive_bucket = bdrc_archive_s3_resource.Bucket(BDRC_ARCHIVE_BUCKET)
 
 
-session3 = boto3.Session(
+layout_analysis_session = boto3.Session(
     aws_access_key_id= config.get("image_processing_openpecha", "aws_access_key_id"),
     aws_secret_access_key= config.get("image_processing_openpecha", "aws_secret_access_key")
 )
-s3_client3 = session3.client('s3')
-s3_resource3 = session3.resource('s3')
-layout_analysis_bucket = s3_resource3.Bucket(LAYOUT_ANALYSIS_BUCKET)
+layout_analysis_s3_client = layout_analysis_session .client('s3')
+layout_analysis_s3_resource = layout_analysis_session .resource('s3')
+layout_analysis_bucket = layout_analysis_s3_resource.Bucket(LAYOUT_ANALYSIS_BUCKET)
