@@ -1,7 +1,9 @@
 from pathlib import Path
-from tools.image_processing import ImageProcessing
-from tools.config import bdrc_archive_s3_client, layout_analysis_s3_client, bdrc_archive_bucket, layout_analysis_bucket, BDRC_ARCHIVE_BUCKET, LAYOUT_ANALYSIS_BUCKET
 
+from tools.config import (BDRC_ARCHIVE_BUCKET, LAYOUT_ANALYSIS_BUCKET,
+                          bdrc_archive_bucket, bdrc_archive_s3_client,
+                          layout_analysis_bucket, layout_analysis_s3_client)
+from tools.image_processing import ImageProcessing
 
 _config = {
     "source_s3_client": bdrc_archive_s3_client,

@@ -1,11 +1,12 @@
 import csv
-import shutil
 import hashlib
-from git import Repo
+import shutil
 from pathlib import Path
-from tools.utils import list_obj_keys
-from tools.config import bdrc_archive_s3_client, BDRC_ARCHIVE_BUCKET
 
+from git import Repo
+
+from tools.config import BDRC_ARCHIVE_BUCKET, bdrc_archive_s3_client
+from tools.utils import list_obj_keys
 
 s3_client = bdrc_archive_s3_client
 

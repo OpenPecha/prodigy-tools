@@ -1,8 +1,9 @@
 import io
-from tools.image_processing import ImageProcessing
 from pathlib import Path
+
 from PIL import Image
-    
+
+from tools.image_processing import ImageProcessing
 
 binary_input_dir_path = Path(__file__).parent / "data" / "inputs" / "binary_files"
 expected_binary_ouptput_dir_path = Path(__file__).parent / "data" / "expected_outputs" / "binary_files"
@@ -53,9 +54,3 @@ def test_non_binary_files():
         assert height == expected_height
         # assert the memory size
         assert 100 >= abs(expected_image_file.tell() - new_image_file.tell())
-
-
-if __name__ == "__main__":
-    image_name = 'I2KG2081840206.tif'
-    test_non_binary_files()
-    test_binary_files()

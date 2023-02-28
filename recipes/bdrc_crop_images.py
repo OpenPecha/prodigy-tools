@@ -1,13 +1,12 @@
-import os
 import csv
 import logging
-import boto3
-import prodigy
-from tools.config import s3_client1, PAGE_CROPPPING_BUCKET
 
+import prodigy
+
+from tools.config import PAGE_CROPPPING_BUCKET, page_cropping_s3_client
 
 # s3 cofig
-s3_client = s3_client1
+s3_client = page_cropping_s3_client
 bucket_name = PAGE_CROPPPING_BUCKET
 
 

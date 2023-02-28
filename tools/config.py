@@ -1,6 +1,7 @@
-import os
-import boto3
 import configparser
+import os
+
+import boto3
 
 PAGE_CROPPPING_BUCKET = "image-processing.bdrc.io"
 BDRC_ARCHIVE_BUCKET = "archive.tbrc.org"
