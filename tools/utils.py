@@ -1,7 +1,6 @@
-import os
-import io
 import csv
-import boto3
+import io
+
 import botocore
 
 

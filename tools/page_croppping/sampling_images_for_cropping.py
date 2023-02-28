@@ -1,8 +1,5 @@
-import boto3
-import os
-from tools.utils import list_obj_keys, get_base_directories
-from tools.config import page_cropping_s3_client, PAGE_CROPPPING_BUCKET
-
+from tools.config import PAGE_CROPPPING_BUCKET, page_cropping_s3_client
+from tools.utils import get_base_directories, list_obj_keys
 
 s3_client = page_cropping_s3_client
 

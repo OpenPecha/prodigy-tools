@@ -1,6 +1,6 @@
-import sqlite3
 import argparse
 import json
+import sqlite3
 
 
 def update_db(db_path):

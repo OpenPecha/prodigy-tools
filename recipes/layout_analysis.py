@@ -1,11 +1,13 @@
-import os
+
 import csv
 import logging
-import boto3
+
 import prodigy
-from tools.config import s3_client3, LAYOUT_ANALYSIS_BUCKET
+
+from tools.config import LAYOUT_ANALYSIS_BUCKET, layout_analysis_s3_client
+
 # s3 cofig
-s3_client = s3_client3
+s3_client = layout_analysis_s3_client
 bucket_name = LAYOUT_ANALYSIS_BUCKET
 
 # log config 

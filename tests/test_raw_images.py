@@ -1,15 +1,15 @@
+import io
 from pathlib import Path
-from tools.image_processing import ImageProcessing
-from PIL import Image
-import io 
 
+from PIL import Image
+
+from tools.image_processing import ImageProcessing
 
 raw_image_input_dir_path = Path(__file__).parent / "data" / "inputs" / "raw_image_files"
 expected_raw_image_ouptput_dir_path = Path(__file__).parent / "data" / "expected_outputs" / "raw_image_files"
 
 zipped_raw_image_input_dir_path = Path(__file__).parent / "data" / "inputs" / "zipped_raw_image_files"
 expected_zipped_raw_image_ouptput_dir_path = Path(__file__).parent / "data" / "expected_outputs" / "zipped_raw_image_files"
-
 
 
 def test_raw_image_files():
@@ -59,10 +59,3 @@ def test_zipped_raw_image_files():
         
         assert 2 >= abs(width - expected_width)
         assert 2 >= abs(height - expected_height)
-
-
-    
-
-if __name__ == "__main__":
-    test_raw_image_files()
-    test_zipped_raw_image_files()

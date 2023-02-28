@@ -1,13 +1,13 @@
-import math
-import io
 import gzip
-import csv
-from pathlib import Path
-from PIL import Image
+import io
 import logging
-from tools.utils import upload_to_s3, create_output_s3_prefix, is_archived, get_s3_bits, update_catalog
+import math
+
+from PIL import Image
 from raw_pillow_opener import register_raw_opener
 
+from tools.utils import (create_output_s3_prefix, get_s3_bits, is_archived,
+                         update_catalog, upload_to_s3)
 
 log_file = 'processing.log'
 logger = logging.getLogger(__name__)

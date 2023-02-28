@@ -1,8 +1,9 @@
-import re
 import random
+import re
 from pathlib import Path
+
+from tools.config import PAGE_CROPPPING_BUCKET, page_cropping_s3_client
 from tools.utils import list_obj_keys
-from tools.config import page_cropping_s3_client, PAGE_CROPPPING_BUCKET
 
 s3_client = page_cropping_s3_client
 
