@@ -1,30 +1,13 @@
 
-import configparser
 import csv
 import logging
-import os
 
-import boto3
 import prodigy
 
-LAYOUT_ANALYSIS_BUCKET = "image-processing.openpecha"
+from tools.config import layout_analysis_s3_client, LAYOUT_ANALYSIS_BUCKET
 
-aws_credentials_file = os.path.expanduser("/home/ta4tsering/.aws/credentials")
-config = configparser.ConfigParser()
-config.read(aws_credentials_file)
-
-
-layout_analysis_session = boto3.Session(
-    aws_access_key_id= config.get("image_processing_openpecha", "aws_access_key_id"),
-    aws_secret_access_key= config.get("image_processing_openpecha", "aws_secret_access_key")
-)
-layout_analysis_s3_client = layout_analysis_session .client('s3')
-layout_analysis_s3_resource = layout_analysis_session .resource('s3')
-layout_analysis_bucket = layout_analysis_s3_resource.Bucket(LAYOUT_ANALYSIS_BUCKET)
-# s3 cofig
 s3_client = layout_analysis_s3_client
 bucket_name = LAYOUT_ANALYSIS_BUCKET
-
 # log config 
 logging.basicConfig(
     filename="/usr/local/prodigy/logs/layout_analysis.log",

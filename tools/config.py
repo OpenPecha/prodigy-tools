@@ -3,7 +3,7 @@ import os
 
 import boto3
 
-PAGE_CROPPPING_BUCKET = "image-processing.bdrc.io"
+PAGE_CROPPING_BUCKET = "image-processing.bdrc.io"
 BDRC_ARCHIVE_BUCKET = "archive.tbrc.org"
 LAYOUT_ANALYSIS_BUCKET = "image-processing.openpecha"
 
@@ -19,7 +19,7 @@ page_cropping_session = boto3.Session(
 )
 page_cropping_s3_client = page_cropping_session.client('s3')
 page_cropping_s3_resource = page_cropping_session.resource('s3')
-page_cropping_bucket = page_cropping_s3_resource.Bucket(PAGE_CROPPPING_BUCKET)
+page_cropping_bucket = page_cropping_s3_resource.Bucket(PAGE_CROPPING_BUCKET)
 
 
 bdrc_archive_session = boto3.Session(
