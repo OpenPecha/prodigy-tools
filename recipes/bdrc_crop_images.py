@@ -40,6 +40,7 @@ def bdrc_crop_images_recipe(dataset, csv_file):
         }
     }
 
+
 def stream_from_s3(obj_keys):
     for obj_key in obj_keys:
         image_url = s3_client.generate_presigned_url(

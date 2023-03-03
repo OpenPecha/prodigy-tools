@@ -1,16 +1,16 @@
 from pathlib import Path
 
-from tools.config import (PAGE_CROPPPING_BUCKET, page_cropping_bucket,
+from tools.config import (PAGE_CROPPING_BUCKET, page_cropping_bucket,
                           page_cropping_s3_client)
 from tools.image_processing import ImageProcessing
 
 _config = {
     "source_s3_client": page_cropping_s3_client,
     "source_s3_bucket": page_cropping_bucket,
-    "source_bucket_name": PAGE_CROPPPING_BUCKET,
+    "source_bucket_name": PAGE_CROPPING_BUCKET,
     "target_s3_client": page_cropping_s3_client,
     "target_s3_bucket": page_cropping_bucket,
-    "target_bucket_name": PAGE_CROPPPING_BUCKET,
+    "target_bucket_name": PAGE_CROPPING_BUCKET,
     "csv_name": "page_cropping"
 }
 

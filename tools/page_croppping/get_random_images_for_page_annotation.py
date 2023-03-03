@@ -2,7 +2,7 @@ import random
 import re
 from pathlib import Path
 
-from tools.config import PAGE_CROPPPING_BUCKET, page_cropping_s3_client
+from tools.config import PAGE_CROPPING_BUCKET, page_cropping_s3_client
 from tools.utils import list_obj_keys
 
 s3_client = page_cropping_s3_client
@@ -12,7 +12,7 @@ def get_five_random_images(work_id):
     s3_keys = []
     keys = ""
     prefix = f"NLM1/{work_id}"
-    obj_keys = list_obj_keys(prefix=prefix, s3_client=s3_client, bucket_name=PAGE_CROPPPING_BUCKET)
+    obj_keys = list_obj_keys(prefix=prefix, s3_client=s3_client, bucket_name=PAGE_CROPPING_BUCKET)
     if len(obj_keys) < 10:
         total = len(obj_keys)
     else:

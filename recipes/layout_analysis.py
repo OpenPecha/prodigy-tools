@@ -4,10 +4,11 @@ import logging
 
 import prodigy
 
-from tools.config import layout_analysis_s3_client, LAYOUT_ANALYSIS_BUCKET
+from tools.config import LAYOUT_ANALYSIS_BUCKET, layout_analysis_s3_client
 
 s3_client = layout_analysis_s3_client
 bucket_name = LAYOUT_ANALYSIS_BUCKET
+
 # log config 
 logging.basicConfig(
     filename="/usr/local/prodigy/logs/layout_analysis.log",
@@ -37,6 +38,7 @@ def layout_analysis_recipe(dataset, csv_file):
             "labels": ["Text-Area", "Illustration", "Caption", "Margin", "Header", "Footer", "Hole", "Other"]
         }
     }
+
 
 def stream_from_s3(obj_keys):
     for obj_key in obj_keys:
