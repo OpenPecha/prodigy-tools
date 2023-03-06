@@ -79,7 +79,7 @@ def get_image_keys(repo_name, work_id, number_of_images):
 def parse_csv(csv_file):
     with open(csv_file) as _file:
         repos = list(csv.reader(_file, delimiter=","))
-        for csv_line in repos[6:]:
+        for csv_line in repos[17:]:
             work_id = csv_line[0]
             repo_name = csv_line[1]
             number_of_images = csv_line[2]
