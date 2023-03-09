@@ -20,5 +20,5 @@ input_s3_prefixs = (Path(f"./data/layout_analysis/sample_images.txt").read_text(
 
 if __name__ == "__main__":
     processor = ImageProcessing(config=_config)
-    for input_s3_prefix in input_s3_prefixs[275:]:
+    for input_s3_prefix in input_s3_prefixs:
         processor.processed_and_upload_image_to_s3(input_s3_prefix)
