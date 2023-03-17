@@ -35,7 +35,7 @@ def layout_analysis_recipe(dataset, csv_file):
         "stream": stream_from_s3(obj_keys),
         "view_id": "image_manual",
         "config": {
-            "labels": ["Text-Area", "Illustration", "Caption", "Margin", "Header", "Footer", "Hole", "Other"]
+            "labels": ["Text-Area", "Illustration", "Caption", "Margin", "Header", "Footer", "Hole", "Table", "Other"]
         }
     }
 
