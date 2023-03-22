@@ -4,7 +4,7 @@ import logging
 import math
 
 from PIL import Image
-from raw_pillow_opener import register_raw_opener
+# from raw_pillow_opener import register_raw_opener
 
 from tools.utils import (create_output_s3_prefix, get_s3_bits, is_archived,
                          update_catalog, upload_to_s3)
@@ -107,7 +107,7 @@ class ImageProcessing():
         # resize, compress and encode the image and return a processed image
         if filebits:
             if self.origfilename.split(".")[-1] == "CR2":
-                register_raw_opener()
+                # register_raw_opener()
                 image = Image.open(filebits)
             elif self.origfilename.split(".")[-1] == "gz":
                 decompressed_data = gzip.decompress(filebits.getvalue())
