@@ -4,7 +4,7 @@ import logging
 import math
 
 from PIL import Image
-# from raw_pillow_opener import register_raw_opener
+from raw_pillow_opener import register_raw_opener
 
 from tools.utils import (create_output_s3_prefix, get_s3_bits, is_archived,
                          update_catalog, upload_to_s3)
@@ -147,4 +147,4 @@ class ImageProcessing():
         processed_image = self.processs_image(filebits)
         if processed_image:
             s3_key = self.upload_image(processed_image, self.config['target_s3_bucket'])
-            update_catalog(s3_key, self.config['csv_name'])
+            update_catalog(s3_key, self.config['csv_path'])

@@ -1,4 +1,4 @@
-from tools.layout_analysis.sampling_images_for_layout_analysis import \
+from tools.layout_analysis.list_images_for_layout_analysis import \
     get_image_keys
 
 expected_s3_keys = [
