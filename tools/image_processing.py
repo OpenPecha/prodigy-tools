@@ -113,7 +113,7 @@ class ImageProcessing():
                 try:
                     image = Image.open(filebits)
                 except:
-                    print("cannot open "+self.originalfilename)
+                    print("cannot open "+self.origfilename)
                     return
             elif self.origfilename.split(".")[-1] == "gz":
                 decompressed_data = gzip.decompress(filebits.getvalue())
