@@ -30,7 +30,10 @@ def review_layout_annotation_recipe(dataset, db_path):
     return {
         "dataset": dataset,
         "stream": get_stream_from_sqlite(db_path),
-        "view_id": "image_manual"
+        "view_id": "image_manual",
+        "config": {
+            "labels": ["Text-Area", "Illustration", "Caption", "Margin", "Header", "Footer", "Hole", "Table", "Other"]
+        }
     }
 
 
