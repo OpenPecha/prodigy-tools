@@ -22,6 +22,7 @@ class ImageProcessing():
     def __init__(self, image_options={}, config={}):
         self.max_height = image_options['max_height'] if 'max_height' in image_options else 700
         self.max_width = image_options['max_width'] if 'max_width' in image_options else 2000
+        self.png_for_1 = image_options['png_for_1'] if 'png_for_1' in image_options else True
         self.quality = image_options['quality'] if 'quality' in image_options else 75
         self.greyscale = image_options['greyscale'] if 'greyscale' in image_options else False
         self.progressive = image_options['progressive'] if 'progressive' in image_options else True
@@ -54,9 +55,9 @@ class ImageProcessing():
 
     def get_new_filename(self, binary):
         if binary:
-            self.new_filename = self.origfilename + "_" + str(self.degree) + ".png"
+            self.new_filename = self.origfilename + "_" + str(self.max_width) + "x" + str(self.max_height) +".png"
         else:
-            self.new_filename = self.origfilename + "_" + str(self.degree) + ".jpg"
+            self.new_filename = self.origfilename + "_" + str(self.max_width) + "x" + str(self.max_height) + ".jpg"
 
 
     def resize_the_image(self, image):
@@ -113,13 +114,12 @@ class ImageProcessing():
                 decompressed_data = gzip.decompress(filebits.getvalue())
                 image_bytes = io.BytesIO(decompressed_data)
                 image = Image.open(image_bytes)
-                self.origfilename = self.origfilename[:-3]
             else:
                 image = Image.open(filebits)
         else:
             return
             
-        if image.mode == '1':
+        if image.mode == '1' and self.png_for_1:
             self.get_new_filename(True)
             s3_key = f"{self.output_s3_prefix}/{self.new_filename}"
             if is_archived(s3_key, self.config):
@@ -137,6 +137,13 @@ class ImageProcessing():
     def processed_and_upload_image_to_s3(self, s3_image_key):
         self.output_s3_prefix = create_output_s3_prefix(s3_prefix=s3_image_key)
         self.origfilename = s3_image_key.split("/")[-1]
+        print("process %s" % s3_image_key)
+        if not self.png_for_1:
+            # no need to get the s3 bits if no processing is necessary
+            self.get_new_filename(False)
+            s3_key = f"{self.output_s3_prefix}/{self.new_filename}"
+            if is_archived(s3_key, self.config):
+                return
         filebits, error = get_s3_bits(s3_image_key, self.config['source_s3_bucket'])
         if filebits == None:
             if error.response["Error"]["Code"] == "404":
