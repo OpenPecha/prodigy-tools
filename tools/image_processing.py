@@ -17,6 +17,7 @@ file_handler = logging.FileHandler(filename=log_file)
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
+register_raw_opener()
 
 class ImageProcessing():
     def __init__(self, image_options={}, config={}):
@@ -109,7 +110,11 @@ class ImageProcessing():
         if filebits:
             if self.origfilename.split(".")[-1] == "CR2":
                 # register_raw_opener()
-                image = Image.open(filebits)
+                try:
+                    image = Image.open(filebits)
+                except:
+                    print("cannot open "+self.originalfilename)
+                    return
             elif self.origfilename.split(".")[-1] == "gz":
                 decompressed_data = gzip.decompress(filebits.getvalue())
                 image_bytes = io.BytesIO(decompressed_data)
