@@ -12,7 +12,7 @@ _config = {
     "target_s3_client": layout_analysis_s3_client,
     "target_s3_bucket": layout_analysis_bucket,
     "target_bucket_name": LAYOUT_ANALYSIS_BUCKET,
-    "csv_name": "layout_analysis"
+    "csv_path": "./data/Q3_layout_analysis.csv"
 }
 
 input_s3_prefixs = (Path(f"./data/layout_analysis/sample_images.txt").read_text(encoding='utf-8')).splitlines()
