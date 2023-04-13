@@ -10,7 +10,7 @@
     "db": "sqlite",
     "db_settings": {
       "sqlite": {
-        "name": "layout_analysis.sqlite",
+        "name": "reviewed_annotations.sqlite",
         "path": "/usr/local/prodigy"
       }
     },

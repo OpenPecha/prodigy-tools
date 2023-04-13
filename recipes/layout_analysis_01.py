@@ -11,7 +11,7 @@ bucket_name = LAYOUT_ANALYSIS_BUCKET
 
 # log config 
 logging.basicConfig(
-    filename="/usr/local/prodigy/logs/layout_analysis.log",
+    filename="/usr/local/prodigy/logs/layout_analysis_01.log",
     format="%(levelname)s: %(message)s",
     level=logging.INFO,
     )
