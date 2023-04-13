@@ -38,12 +38,12 @@ def review_layout_annotation_recipe(dataset, jsonl_path):
 
 
 def get_stream_from_jsonl(jsonl_path):
-        with open(jsonl_path) as f:
-            for line in f:
-                content_dict = json.loads(line)
-                spans = content_dict['spans']
-                new_url = get_new_url(content_dict['image'])
-                yield  {"id": id,"image": new_url, "spans": spans}
+    with open(jsonl_path) as f:
+        for line in f:
+            content_dict = json.loads(line)
+            spans = content_dict['spans']
+            new_url = get_new_url(content_dict['image'])
+            yield  {"id": id,"image": new_url, "spans": spans}
 
 
 def get_new_url(image_url):
