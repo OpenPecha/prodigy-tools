@@ -8,7 +8,7 @@ BDRC_ARCHIVE_BUCKET = "archive.tbrc.org"
 LAYOUT_ANALYSIS_BUCKET = "image-processing.openpecha"
 
 
-aws_credentials_file = os.path.expanduser("~/.aws/credentials")
+aws_credentials_file = os.path.expanduser("/home/ta4tsering/.aws/credentials")
 config = configparser.ConfigParser()
 config.read(aws_credentials_file)
 
