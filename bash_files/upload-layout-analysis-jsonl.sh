@@ -6,7 +6,7 @@ sudo -u prodigy PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/l
 sudo -u prodigy PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/layout_analysis_03.json" /usr/bin/python3.9 -m prodigy db-out layout_analysis_03 > ./layout_analysis_03.jsonl
 
 # Create a zip archive of the exported files
-backup_filename=$(date +%Y-%m-%d).zip
+backup_filename=$(date +%Y-%m-%d-%H-%M-%S).zip
 zip -r $backup_filename layout_analysis_01.jsonl layout_analysis_02.jsonl layout_analysis_03.jsonl
 
 # Upload the zip archive to S3 using the AWS CLI

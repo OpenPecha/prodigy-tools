@@ -1,7 +1,7 @@
 sudo -u prodigy PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/review_layout_annotation.json" /usr/bin/python3.9 -m prodigy db-out reviewed_annotations > ./reviewed_layout_annotations.jsonl
 
 # Create a zip archive of the exported files
-backup_filename=$(date +%Y-%m-%d).zip
+backup_filename=$(date +%Y-%m-%d-%H-%M-%S).zip
 zip -r $backup_filename reviewed_layout_annotations.jsonl
 
 # Upload the zip archive to S3 using the AWS CLI

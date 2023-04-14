@@ -1,8 +1,6 @@
 
-import csv
 import json
 import logging
-import sqlite3
 
 import prodigy
 
@@ -41,6 +39,7 @@ def get_stream_from_jsonl(jsonl_path):
     with open(jsonl_path) as f:
         for line in f:
             content_dict = json.loads(line)
+            id = content_dict['id']
             spans = content_dict['spans']
             new_url = get_new_url(content_dict['image'])
             yield  {"id": id,"image": new_url, "spans": spans}
