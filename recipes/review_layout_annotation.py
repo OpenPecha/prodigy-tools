@@ -1,8 +1,6 @@
 
-import csv
 import json
 import logging
-import sqlite3
 
 import prodigy
 
@@ -14,7 +12,7 @@ bucket_name = LAYOUT_ANALYSIS_BUCKET
 
 # log config 
 logging.basicConfig(
-    filename="/usr/local/prodigy/logs/layout_analysis.log",
+    filename="/usr/local/prodigy/logs/review_annotations.log",
     format="%(levelname)s: %(message)s",
     level=logging.INFO,
     )
@@ -25,11 +23,11 @@ prodigy_logger = logging.getLogger('prodigy')
 prodigy_logger.setLevel(logging.INFO)
 
 @prodigy.recipe("review-layout-annotation-recipe")
-def review_layout_annotation_recipe(dataset, db_path):
-    logging.info(f"dataset: {dataset}, db_path: {db_path}")
+def review_layout_annotation_recipe(dataset, jsonl_path):
+    logging.info(f"dataset: {dataset}, jsonl_path: {jsonl_path}")
     return {
         "dataset": dataset,
-        "stream": get_stream_from_sqlite(db_path),
+        "stream": get_stream_from_jsonl(jsonl_path),
         "view_id": "image_manual",
         "config": {
             "labels": ["Text-Area", "Illustration", "Caption", "Margin", "Header", "Footer", "Hole", "Table", "Other"]
@@ -37,19 +35,14 @@ def review_layout_annotation_recipe(dataset, db_path):
     }
 
 
-def get_stream_from_sqlite(db_path):
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    cursor.execute("SELECT id, content FROM example")
-    rows = cursor.fetchall()
-
-    for row in rows:
-        id = row[0]
-        content = row[1]
-        content_dict = json.loads(content)
-        spans = content_dict['spans']
-        new_url = get_new_url(content_dict['image'])
-        yield  {"id": id,"image": new_url, "spans": spans}
+def get_stream_from_jsonl(jsonl_path):
+    with open(jsonl_path) as f:
+        for line in f:
+            content_dict = json.loads(line)
+            id = content_dict['id']
+            spans = content_dict['spans']
+            new_url = get_new_url(content_dict['image'])
+            yield  {"id": id,"image": new_url, "spans": spans}
 
 
 def get_new_url(image_url):

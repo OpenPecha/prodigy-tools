@@ -1,6 +1,6 @@
 import csv
 import hashlib
-import shutil
+import os
 from pathlib import Path
 
 from tools.config import BDRC_ARCHIVE_BUCKET, bdrc_archive_s3_client
@@ -33,8 +33,9 @@ def get_s3_images_list_of_work(work_id):
     return obj_keys
 
 
-def get_image_keys(repo_name, work_id, number_of_images):
+def get_image_keys(repo_name):
     repo_path = download_repo(repo_name, "./")
+    work_id, number_of_images = get_repo_info(repo_path)
     unique_images = get_list_of_unique_images(repo_path, work_id, number_of_images)
     s3_images_list = get_s3_images_list_of_work(work_id)
     images_s3_keys = get_s3_keys_of_unique_images(unique_images, s3_images_list)
@@ -51,13 +52,27 @@ def parse_csv(csv_file):
             number_of_images = csv_line[2]
             yield repo_name, work_id, number_of_images
 
+def get_repo_name():
+    for num in range(333,352):
+        repo_name = f"OCR_LA{num:05}"
+        yield repo_name
 
-def sample_images_for_layout_analysis(csv_file):
-    for repo_name, work_id, number_of_images in parse_csv(csv_file):
-        images_s3_keys = get_image_keys(repo_name, work_id, number_of_images)
+def get_repo_info(repo_path):
+    folder_paths = list(repo_path.iterdir())
+    for folder_path in folder_paths:
+        if folder_path.name in ['.git', 'readme.md', '.gitignore']:
+            continue
+        elif  os.path.isdir(folder_path):
+            work_id = (folder_path.name).split("-")[0]
+            number_of_images = (folder_path.name).split("-")[-1]
+            return work_id, number_of_images
+
+def sample_images_for_layout_analysis():
+    for repo_name in get_repo_name():
+        images_s3_keys = get_image_keys(repo_name)
         write_unique_images_s3_keys(images_s3_keys)
 
 
 if __name__ == "__main__":
-    csv_file = "./data/layout_analysis/repos.csv"
-    sample_images_for_layout_analysis(csv_file)
+    # csv_file = "./data/layout_analysis/repos.csv"
+    sample_images_for_layout_analysis()

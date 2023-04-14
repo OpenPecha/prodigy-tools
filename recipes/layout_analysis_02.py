@@ -11,7 +11,7 @@ bucket_name = LAYOUT_ANALYSIS_BUCKET
 
 # log config 
 logging.basicConfig(
-    filename="/usr/local/prodigy/logs/layout_analysis.log",
+    filename="/usr/local/prodigy/logs/layout_analysis_02.log",
     format="%(levelname)s: %(message)s",
     level=logging.INFO,
     )
@@ -21,8 +21,8 @@ logging.basicConfig(
 prodigy_logger = logging.getLogger('prodigy')
 prodigy_logger.setLevel(logging.INFO)
 
-@prodigy.recipe("layout-analysis-recipe")
-def layout_analysis_recipe(dataset, csv_file):
+@prodigy.recipe("layout-analysis-02-recipe")
+def layout_analysis_02_recipe(dataset, csv_file):
     logging.info(f"dataset:{dataset}, csv_file_path:{csv_file}")
     obj_keys = []
     with open(csv_file) as _file:

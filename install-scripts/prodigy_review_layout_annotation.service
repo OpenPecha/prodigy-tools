@@ -10,7 +10,7 @@ Environment=PRODIGY_HOME="/usr/local/prodigy"
 Environment=PRODIGY_LOGGING=verbose
 Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/review_layout_annotation.json"
 WorkingDirectory=/usr/local/prodigy
-ExecStart=/usr/bin/python3.9 -m prodigy review-layout-annotation-recipe layout_analysis '/usr/local/prodigy/layout_analysis.sqlite' -F /usr/local/prodigy/prodigy-tools/recipes/review_layout_annotation.py
+ExecStart=/usr/bin/python3.9 -m prodigy review-layout-annotation-recipe reviewed_annotations '/home/ta4tsering/layout_analysis.jsonl' -F /usr/local/prodigy/prodigy-tools/recipes/review_layout_annotation.py
 
 User=prodigy
 Group=prodigy

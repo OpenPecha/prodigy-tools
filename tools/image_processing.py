@@ -17,7 +17,7 @@ file_handler = logging.FileHandler(filename=log_file)
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
-register_raw_opener()
+# register_raw_opener()
 
 class ImageProcessing():
     def __init__(self, image_options={}, config={}):
@@ -109,7 +109,7 @@ class ImageProcessing():
         # resize, compress and encode the image and return a processed image
         if filebits:
             if self.origfilename.split(".")[-1] == "CR2":
-                # register_raw_opener()
+                register_raw_opener()
                 try:
                     image = Image.open(filebits)
                 except:
