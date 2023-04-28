@@ -42,7 +42,7 @@ def custom(
         stream = fetch_media_preprocessor(stream, ["audio", "video"])
 
     blocks = [
-        {"view_id": "audio_manual"},
+        {"view_id": "audio"},
         {
             "view_id": "text_input",
             "field_rows": 6,
