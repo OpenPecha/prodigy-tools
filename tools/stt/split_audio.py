@@ -85,5 +85,7 @@ if __name__ == "__main__":
     stt_folders = [filename for filename in os.listdir('.') if filename.startswith('STT_MV') and os.path.isdir(filename)]
     print(stt_folders)
     for stt_folder in stt_folders:
-        split_audio(audio_file=f"./{stt_folder}/{stt_folder}.mp3", output_folder=stt_folder)
-        # delete_file(file=f"./{stt_folder}/{stt_folder}.mp3")
+        if len([name for name in os.listdir(stt_folder)]) == 1:
+            print(stt_folder)
+            split_audio(audio_file=f"./{stt_folder}/{stt_folder}.mp3", output_folder=stt_folder)
+            # delete_file(file=f"./{stt_folder}/{stt_folder}.mp3")
