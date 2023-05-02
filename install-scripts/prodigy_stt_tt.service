@@ -1,0 +1,23 @@
+[Unit]
+Description=Prodigy for stt
+After=syslog.target network.target
+
+[Service]
+Type=simple
+
+SyslogIdentifier=prodigy_stt
+Environment="PRODIGY_HOME=/usr/local/prodigy"
+Environment="PRODIGY_LOGGING=verbose"
+Environment="PRODIGY_CONFIG=/usr/local/prodigy/prodigy-tools/configuration/stt_tt.json"
+WorkingDirectory=/usr/local/prodigy
+ExecStart=/usr/bin/python3.9 -m prodigy audio.manual-with-transcript test_stt_tt /home/spsither/STT_TT/STT_TT0001 -F  /usr/local/prodigy/prodigy-tools/recipes/stt_audio.py
+
+User=prodigy
+Group=prodigy
+
+UMask=0007
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
