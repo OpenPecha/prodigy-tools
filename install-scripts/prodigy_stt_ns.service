@@ -10,7 +10,7 @@ Environment="PRODIGY_HOME=/usr/local/prodigy"
 Environment="PRODIGY_LOGGING=verbose"
 Environment="PRODIGY_CONFIG=/usr/local/prodigy/prodigy-tools/configuration/stt_ns.json"
 WorkingDirectory=/usr/local/prodigy
-ExecStart=/usr/bin/python3.9 -m prodigy audio.manual-with-transcript speaker_transcripts /home/spsither/STT_NS/STT_NS0001 --label person_a,person_b  -F  /usr/local/prodigy/prodigy-tools/recipes/stt_audio_manual.py
+ExecStart=/usr/bin/python3.9 -m prodigy audio.manual-with-transcript test_stt_ns /home/spsither/STT_NS/STT_NS0001  -F  /usr/local/prodigy/prodigy-tools/recipes/stt_audio.py
 
 User=prodigy
 Group=prodigy
