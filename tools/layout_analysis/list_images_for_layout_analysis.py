@@ -53,7 +53,7 @@ def parse_csv(csv_file):
             yield repo_name, work_id, number_of_images
 
 def get_repo_name():
-    for num in range(377,393):
+    for num in range(240,279):
         repo_name = f"OCR_LA{num:05}"
         yield repo_name
 
