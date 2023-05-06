@@ -93,7 +93,7 @@ def save_records(out_path: str, ds_name: str, prodigy_records: list) -> None:
 
 
 if __name__ == "__main__":
-    data_root = "D:\\Github\\tibetan-ocr-dev\\Data"
+    data_root = "./data/lineSeg_phudrak/page"
     data_set = "Gampopa100"
     page_xml_path = os.path.join(data_root, data_set, "page")
     page_xml_files = natsorted(glob(f"{page_xml_path}/*.xml"))
