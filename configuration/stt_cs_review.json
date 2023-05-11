@@ -10,7 +10,7 @@
     "db": "sqlite",
     "db_settings": {
       "sqlite": {
-        "name": "stt.sqlite",
+        "name": "stt_cs.sqlite",
         "path": "/usr/local/prodigy"
       }
     },
