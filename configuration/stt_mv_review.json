@@ -4,13 +4,13 @@
     "buttons": ["accept", "reject", "ignore", "undo"],
     "batch_size": 10,
     "history_size": 10,
-    "port": 8110,
+    "port": 8170,
     "host": "localhost",
     "cors": true,
     "db": "sqlite",
     "db_settings": {
       "sqlite": {
-        "name": "stt_ab.sqlite",
+        "name": "stt_mv.sqlite",
         "path": "/usr/local/prodigy"
       }
     },
