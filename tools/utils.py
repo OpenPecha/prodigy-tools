@@ -67,13 +67,34 @@ def is_archived(key, config):
     
 
 
-def get_s3_bits(s3_key, s3_bucket):
-    filebits = io.BytesIO()
+def save_file(bits, origfilename, imagegroup_output_dir, binarize=False):
+    """
+    uses pillow to interpret the bits as an image and save as a format
+    that is appropriate for Google Vision (png instead of tiff for instance).
+    This may also apply some automatic treatment
+    """
+    imagegroup_output_dir.mkdir(exist_ok=True, parents=True)
+    output_fn = imagegroup_output_dir / origfilename
+    if Path(origfilename).suffix in [".tif", ".tiff", ".TIF"]:
+        output_fn = imagegroup_output_dir / f'{origfilename.split(".")[0]}.png'
+    if output_fn.is_file():
+        return
     try:
-        s3_bucket.download_fileobj(s3_key, filebits)
-        return filebits, None
-    except botocore.exceptions.ClientError as error:
-        return None, error
+        img = PillowImage.open(bits)
+        if binarize:
+            img = _binarize(img)
+    except Exception as e:
+        if bits.getvalue():
+            save_with_wand(bits, output_fn)
+        else:
+            logger.exception(f"Empty image: {output_fn}")
+        return
+
+    try:
+        img.save(str(output_fn))
+    except:
+        del img
+        save_with_wand(bits, output_fn)
 
 
 def update_catalog(s3_key, csv_path):
