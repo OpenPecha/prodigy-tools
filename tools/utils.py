@@ -66,16 +66,6 @@ def is_archived(key, config):
     return False
     
 
-
-def get_s3_bits(s3_key, s3_bucket):
-    filebits = io.BytesIO()
-    try:
-        s3_bucket.download_fileobj(s3_key, filebits)
-        return filebits, None
-    except botocore.exceptions.ClientError as error:
-        return None, error
-
-
 def update_catalog(s3_key, csv_path):
     with open(f"{csv_path}",'a') as f:
         writer = csv.writer(f)
