@@ -10,7 +10,7 @@ Environment=PRODIGY_HOME="/usr/local/prodigy"
 Environment=PRODIGY_LOGGING=verbose
 Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/layout_analysis_01.json"
 WorkingDirectory=/usr/local/prodigy
-ExecStart=/usr/bin/python3.9 -m prodigy layout-analysis-01-recipe layout_analysis_01 '/usr/local/prodigy/prodigy-tools/data/layout_analysis_01.csv' -F /usr/local/prodigy/prodigy-tools/recipes/layout_analysis_01.py
+ExecStart=/usr/bin/python3.9 -m prodigy layout-analysis-recipe layout_analysis_01 '/usr/local/prodigy/prodigy-tools/data/layout_analysis_01.csv' -F /usr/local/prodigy/prodigy-tools/recipes/layout_analysis.py
 
 User=prodigy
 Group=prodigy
