@@ -10,7 +10,7 @@ Environment=PRODIGY_HOME="/usr/local/prodigy"
 Environment=PRODIGY_LOGGING=verbose
 Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/script_detection.json"
 WorkingDirectory=/usr/local/prodigy
-ExecStart=/usr/bin/python3.9 -m prodigy script-detection-recipe script_detection 'NLM1/W2KG208129/sources-web/W2KG208129-I2KG208175' -F /usr/local/prodigy/prodigy-tools/recipes/script_detection.py
+ExecStart=/usr/bin/python3.9 -m prodigy line-segmentation-recipe line_segmentation '/usr/local/prodigy/prodigy-tools/data/line_segmentation.csv' -F /usr/local/prodigy/prodigy-tools/recipes/line_segmentation.py
 
 User=prodigy
 Group=prodigy

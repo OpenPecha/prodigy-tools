@@ -4,15 +4,14 @@ import logging
 
 import prodigy
 
-from tools.config import PAGE_CROPPING_BUCKET, page_cropping_s3_client
+from tools.config import LAYOUT_ANALYSIS_BUCKET, layout_analysis_s3_client
 
-# s3 cofig
-s3_client = page_cropping_s3_client
-bucket_name = PAGE_CROPPING_BUCKET
+s3_client = layout_analysis_s3_client
+bucket_name = LAYOUT_ANALYSIS_BUCKET
 
 # log config 
 logging.basicConfig(
-    filename="/usr/local/prodigy/logs/script_detection.log",
+    filename="/usr/local/prodigy/logs/line_segmentation.log",
     format="%(levelname)s: %(message)s",
     level=logging.INFO,
     )
@@ -22,8 +21,8 @@ logging.basicConfig(
 prodigy_logger = logging.getLogger('prodigy')
 prodigy_logger.setLevel(logging.INFO)
 
-@prodigy.recipe("script-detection-recipe")
-def script_detection_recipe(dataset, csv_file):
+@prodigy.recipe("line-segmentation-recipe")
+def line_segmentation_recipe(dataset, csv_file):
     logging.info(f"dataset:{dataset}, csv_file_path:{csv_file}")
     with open(csv_file) as _file:
         obj_keys = []
@@ -34,21 +33,14 @@ def script_detection_recipe(dataset, csv_file):
     return {
         "dataset": dataset,
         "stream": stream_from_s3(obj_keys),
-        "view_id": "blocks",
+        "view_id": "image_manual",
         "config": {
-            "blocks": [
-                {"view_id": "choice", "text": None}
-                ]
-            } 
+            "labels": ["Line"]
         }
+    }
 
 
 def stream_from_s3(obj_keys):
-    options = [
-        {"id": 2, "text": "Uchen"},
-        {"id": 1, "text": "Ume"},
-        {"id": 0, "text": "etc"}
-    ]
     for obj_key in obj_keys:
         image_url = s3_client.generate_presigned_url(
             ClientMethod="get_object",
@@ -56,4 +48,4 @@ def stream_from_s3(obj_keys):
             ExpiresIn=31536000
         )
         image_id = (obj_key.split("/"))[-1]
-        yield {"id": image_id, "image": image_url, "options": options}
+        yield {"id": image_id, "image": image_url}

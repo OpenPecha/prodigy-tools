@@ -2,7 +2,7 @@
     "theme": "basic",
     "custom_theme": { "cardMaxWidth": 2000 },
     "buttons": ["accept", "reject", "ignore", "undo"],
-    "batch_size": 10,
+    "batch_size": 5,
     "history_size": 10,
     "port": 8050,
     "host": "localhost",
@@ -10,7 +10,7 @@
     "db": "sqlite",
     "db_settings": {
       "sqlite": {
-        "name": "script_detection.sqlite",
+        "name": "line_segmentation.sqlite",
         "path": "/usr/local/prodigy"
       }
     },
