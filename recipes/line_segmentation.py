@@ -24,8 +24,8 @@ prodigy_logger.setLevel(logging.INFO)
 @prodigy.recipe("line-segmentation-recipe")
 def line_segmentation_recipe(dataset, csv_file):
     logging.info(f"dataset:{dataset}, csv_file_path:{csv_file}")
+    obj_keys = []
     with open(csv_file) as _file:
-        obj_keys = []
         for csv_line in list(csv.reader(_file, delimiter=",")):
             s3_key = csv_line[0]
             # TODO: filter non-image files
