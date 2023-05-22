@@ -2,7 +2,7 @@
     "theme": "basic",
     "custom_theme": { "cardMaxWidth": 2000 },
     "buttons": ["accept", "reject", "ignore", "undo"],
-    "batch_size": 5,
+    "batch_size": 10,
     "history_size": 10,
     "port": 8040,
     "host": "localhost",
