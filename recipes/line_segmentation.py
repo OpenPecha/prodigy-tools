@@ -49,3 +49,4 @@ def stream_from_s3(obj_keys):
         )
         image_id = (obj_key.split("/"))[-1]
         yield {"id": image_id, "image": image_url}
+    

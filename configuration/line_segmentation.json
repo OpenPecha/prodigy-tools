@@ -4,7 +4,7 @@
     "buttons": ["accept", "reject", "ignore", "undo"],
     "batch_size": 5,
     "history_size": 10,
-    "port": 8050,
+    "port": 8040,
     "host": "localhost",
     "cors": true,
     "db": "sqlite",
