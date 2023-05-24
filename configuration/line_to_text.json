@@ -10,7 +10,7 @@
     "db": "sqlite",
     "db_settings": {
       "sqlite": {
-        "name": "line_segmentation.sqlite",
+        "name": "line_to_text.sqlite",
         "path": "/usr/local/prodigy"
       }
     },
