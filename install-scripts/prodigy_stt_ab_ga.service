@@ -10,7 +10,7 @@ Environment="PRODIGY_HOME=/usr/local/prodigy"
 Environment="PRODIGY_LOGGING=verbose"
 Environment="PRODIGY_CONFIG=/usr/local/prodigy/prodigy-tools/configuration/stt_ab_ga.json"
 WorkingDirectory=/usr/local/prodigy
-ExecStart=/usr/bin/python3.9 -m prodigy stt-ab-recipe stt_ab '/usr/local/prodigy/prodigy-tools/data/stt_ab_gb.jsonl' -F /usr/local/prodigy/prodigy-tools/recipes/stt_ab.py
+ExecStart=/usr/bin/python3.9 -m prodigy stt-ab-recipe stt_ab_ga '/usr/local/prodigy/prodigy-tools/data/stt_ab_ga.jsonl' -F /usr/local/prodigy/prodigy-tools/recipes/stt_ab.py
 
 User=prodigy
 Group=prodigy
@@ -18,6 +18,3 @@ Group=prodigy
 UMask=0007
 RestartSec=10
 Restart=always
-
-[Install]
-WantedBy=multi-user.target
