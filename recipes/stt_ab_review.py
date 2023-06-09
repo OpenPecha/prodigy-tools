@@ -29,7 +29,7 @@ def stt_ab_recipe(dataset, database):
         },
     ]
     return {
-        "dataset": dataset,
+        "dataset": str(dataset)+'_review',
         "stream": stream_from_sqlite(dataset, database),
         "view_id": "blocks",
         "config": {"blocks": blocks, "editable": True},
