@@ -1,5 +1,3 @@
-[Install]
-WantedBy=multi-user.target
 [Unit]
 Description=Prodigy for stt
 After=syslog.target network.target
@@ -12,7 +10,7 @@ Environment="PRODIGY_HOME=/usr/local/prodigy"
 Environment="PRODIGY_LOGGING=verbose"
 Environment="PRODIGY_CONFIG=/usr/local/prodigy/prodigy-tools/configuration/stt_ab_gh_review.json"
 WorkingDirectory=/usr/local/prodigy
-ExecStart=/usr/bin/python3.9 -m prodigy audio.transcribe stt_ab_gh_review dataset:stt_ab_gh --fetch-media
+ExecStart=/usr/bin/python3.9 -m prodigy stt-ab-review-recipe stt_ab_gh '/usr/local/prodigy/stt_ab.sqlite' -F /usr/local/prodigy/prodigy-tools/recipes/stt_ab_review.py
 
 User=prodigy
 Group=prodigy
