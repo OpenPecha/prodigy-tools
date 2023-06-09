@@ -42,5 +42,5 @@ def stream_from_jsonl(jsonl_file):
         for line in reader:
             audio_id = line["id"]
             audio_url = line["audio_url"]
-            text = line["transcript"]
-            yield {"id": audio_id, "audio": audio_url, "transcript": text}
+            transcript = line["transcript"]
+            yield {"id": audio_id, "audio": audio_url, "user_input": transcript}
