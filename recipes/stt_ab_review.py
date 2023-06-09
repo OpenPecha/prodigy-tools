@@ -66,5 +66,5 @@ AND example.rowid NOT IN (
         json_content = json.loads(row[1])
         audio_id = json_content["id"]
         audio_url = json_content["audio"]
-        transcript = json_content["transcript"] 
-        yield {"id": audio_id, "audio": audio_url, "transcript": transcript}
+        transcript = json_content["user_input"] 
+        yield {"id": audio_id, "audio": audio_url, "user_input": transcript}
