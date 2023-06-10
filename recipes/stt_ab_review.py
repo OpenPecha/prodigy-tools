@@ -48,12 +48,12 @@ FROM example
 JOIN link ON example.rowid = link.example_id 
 JOIN dataset ON link.dataset_id = dataset.id 
 WHERE dataset.name='{dataset}'
-AND example.rowid NOT IN (
+AND example.id NOT IN (
     SELECT example.rowid 
     FROM example 
     JOIN link ON example.rowid = link.example_id 
     JOIN dataset ON link.dataset_id = dataset.id 
-    WHERE dataset.name='{str(dataset)+'_review'}'
+    WHERE dataset.name='{dataset}_review'
 )
     """
     )
