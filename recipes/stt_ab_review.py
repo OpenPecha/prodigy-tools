@@ -43,13 +43,13 @@ def stream_from_sqlite(dataset, database):
     # Fetch the content from the database
     cursor.execute(
         f"""
-SELECT example.rowid, example.content 
+SELECT COUNT(*) 
 FROM example 
 JOIN link ON example.rowid = link.example_id 
 JOIN dataset ON link.dataset_id = dataset.id 
 WHERE dataset.name='{dataset}'
-AND example.id NOT IN (
-    SELECT example.rowid 
+AND json_extract(example.content, '$.id') NOT IN (
+    SELECT json_extract(example.content, '$.id') 
     FROM example 
     JOIN link ON example.rowid = link.example_id 
     JOIN dataset ON link.dataset_id = dataset.id 
