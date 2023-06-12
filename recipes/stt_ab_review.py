@@ -21,7 +21,13 @@ def stt_ab_recipe(dataset, database):
     logging.info(f"dataset:{dataset}")
     blocks = [
         {"view_id": "audio"},
-        {"view_id": "text_input"},
+        {
+            "view_id": "text_input",
+            "field_rows": 6,
+            "field_label": "Transcript",
+            "field_id": "transcript",
+            "field_autofocus": True,
+        }, 
         {
             "view_id": "html",
             "html_template": "<button style='margin: 5px;' onclick='window.wavesurfer.setPlaybackRate(0.5)'>0.5x speed</button><button style='margin: 5px;' onclick='window.wavesurfer.setPlaybackRate(0.7)'>0.7x speed</button><button style='margin: 5px;' onclick='window.wavesurfer.setPlaybackRate(1)'>1x speed</button><button style='margin: 5px;' onclick='window.wavesurfer.setPlaybackRate(1.3)'>1.3x speed</button><button style='margin: 5px;' onclick='window.wavesurfer.setPlaybackRate(1.5)'>1.5x speed</button>",
@@ -66,4 +72,4 @@ AND json_extract(example.content, '$.id') NOT IN (
         audio_id = json_content["id"]
         audio_url = json_content["audio"]
         transcript = json_content["user_input"] 
-        yield {"id": audio_id, "audio": audio_url, "user_input": transcript}
+        yield {"id": audio_id, "audio": audio_url, "transcript": transcript}
