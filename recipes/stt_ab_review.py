@@ -68,8 +68,8 @@ AND json_extract(example.content, '$.id') NOT IN (
     # Loop through each row
     for row in rows:
         # Load the JSON
-        json_content = json.loads(row[1])
+        json_content = json.loads(row[3])
         audio_id = json_content["id"]
         audio_url = json_content["audio"]
-        transcript = json_content["user_input"] 
+        transcript = json_content["transcript"] 
         yield {"id": audio_id, "audio": audio_url, "transcript": transcript}
