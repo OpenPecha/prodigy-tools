@@ -8,7 +8,12 @@
   "host": "localhost",
   "cors": true,
   "db": "sqlite",
-  "db_settings": {},
+  "db_settings": {
+    "sqlite": {
+      "name": "stt_ab.sqlite",
+      "path": "/usr/local/prodigy"
+    }
+  },
   "validate": true,
   "auto_exclude_current": true,
   "instant_submit": false,
