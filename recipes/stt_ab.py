@@ -41,11 +41,33 @@ def stt_ab_recipe(dataset, jsonl_file):
         }
     }
 
+def stream_from_jsonl(jsonl_file, dataset):
+    # Connect to the SQLite database (replace 'my_database.db' with your database name)
+    conn = sqlite3.connect('my_database.db')
+    cursor = conn.cursor()
 
-def stream_from_jsonl(jsonl_file):
     with jsonlines.open(jsonl_file) as reader:
         for line in reader:
             audio_id = line["id"]
             audio_url = line["audio_url"]
             transcript = line["transcript"]
-            yield {"id": audio_id, "audio": audio_url, "transcript": transcript}
+            
+            # Check if the ID already exists in the given dataset in the database
+            cursor.execute(
+                f"""
+                SELECT COUNT(*)
+                FROM example
+                JOIN link ON example.rowid = link.example_id
+                JOIN dataset ON link.dataset_id = dataset.id
+                WHERE dataset.name = '{dataset}' AND json_extract(example.content, '$.id') = '{line["id"]}'
+                """, 
+                (dataset, audio_id)
+            )
+            count = cursor.fetchone()[0]
+
+            if count == 0:
+                # If the ID is not in the dataset, yield this line
+                yield {"id": audio_id, "audio": audio_url, "transcript": transcript}
+
+    # Don't forget to close the connection when you're done
+    conn.close()
