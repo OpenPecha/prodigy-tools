@@ -1,16 +1,16 @@
 [Unit]
-Description=Prodigy for layout analysis 01
+Description=Prodigy for ltt review ga
 After=syslog.target network.target
 
 [Service]
 Type=simple
 
-SyslogIdentifier=layout_analysis_01
+SyslogIdentifier=ltt_review_ga
 Environment=PRODIGY_HOME="/usr/local/prodigy"
 Environment=PRODIGY_LOGGING=verbose
-Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/layout_analysis_01.json"
+Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/ltt_review_ga.json"
 WorkingDirectory=/usr/local/prodigy
-ExecStart=/usr/bin/python3.9 -m prodigy layout-analysis-recipe layout_analysis_01 '/usr/local/prodigy/prodigy-tools/data/layout_analysis_01.csv' -F /usr/local/prodigy/prodigy-tools/recipes/layout_analysis.py
+ExecStart=/usr/bin/python3.9 -m prodigy ltt-review-recipe ltt_review_ga '/usr/local/prodigy/prodigy-tools/data/ltt_annotation_ga.jsonl' -F /usr/local/prodigy/prodigy-tools/recipes/ltt_review.py
 
 User=prodigy
 Group=prodigy
