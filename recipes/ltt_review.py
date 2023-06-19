@@ -50,7 +50,7 @@ def stream_from_jsonl(jsonl_file):
         for line in reader:
             image_id = line["id"]
             image_url = line["image"]
-            obj_key = get_obj_key()
+            obj_key = get_obj_key(image_url)
             text = line["user_input"]
             image_url = get_new_url(obj_key)
             yield {"id": image_id, "image": image_url, "user_input": text}
