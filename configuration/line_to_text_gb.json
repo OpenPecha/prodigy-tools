@@ -10,7 +10,7 @@
     "db": "sqlite",
     "db_settings": {
       "sqlite": {
-        "name": "line_to_text_gb.sqlite",
+        "name": "ltt_batch3-4.sqlite",
         "path": "/usr/local/prodigy"
       }
     },

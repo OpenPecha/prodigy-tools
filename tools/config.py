@@ -6,7 +6,7 @@ import boto3
 PAGE_CROPPING_BUCKET = "image-processing.bdrc.io"
 BDRC_ARCHIVE_BUCKET = "archive.tbrc.org"
 LAYOUT_ANALYSIS_BUCKET = "image-processing.openpecha"
-
+MONLAM_AI_OCR_BUCKET = "monlam.ai.ocr"
 
 aws_credentials_file = os.path.expanduser("/home/ta4tsering/.aws/credentials")
 config = configparser.ConfigParser()
@@ -38,3 +38,11 @@ layout_analysis_session = boto3.Session(
 layout_analysis_s3_client = layout_analysis_session .client('s3')
 layout_analysis_s3_resource = layout_analysis_session .resource('s3')
 layout_analysis_bucket = layout_analysis_s3_resource.Bucket(LAYOUT_ANALYSIS_BUCKET)
+
+monlam_ocr_session = boto3.Session(
+    aws_access_key_id= config.get("monlam_ai_ocr", "aws_access_key_id"),
+    aws_secret_access_key= config.get("monlam_ai_ocr", "aws_secret_access_key")
+)
+monlam_ocr_s3_client = monlam_ocr_session.client('s3')
+monlam_ocr_s3_resource = monlam_ocr_session.resource('s3')
+monlam_ocr_bucket = monlam_ocr_s3_resource.Bucket(MONLAM_AI_OCR_BUCKET)
