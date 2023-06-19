@@ -1,12 +1,12 @@
 
 import logging
 import prodigy
-from tools.config import LAYOUT_ANALYSIS_BUCKET, layout_analysis_s3_client
+from tools.config import MONLAM_AI_OCR_BUCKET, monlam_ocr_s3_client
 import jsonlines
 
 
-s3_client = layout_analysis_s3_client
-bucket_name = LAYOUT_ANALYSIS_BUCKET
+s3_client = monlam_ocr_s3_client
+bucket_name = MONLAM_AI_OCR_BUCKET
 
 # log config 
 logging.basicConfig(
