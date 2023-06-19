@@ -10,7 +10,7 @@
     "db": "sqlite",
     "db_settings": {
       "sqlite": {
-        "name": "reviewed_annotations.sqlite",
+        "name": "line_segmentation.sqlite",
         "path": "/usr/local/prodigy"
       }
     },
