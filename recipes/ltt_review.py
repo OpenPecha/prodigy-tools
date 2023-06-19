@@ -19,8 +19,8 @@ logging.basicConfig(
 prodigy_logger = logging.getLogger('prodigy')
 prodigy_logger.setLevel(logging.INFO)
 
-@prodigy.recipe("line-to-text-recipe")
-def line_to_text_recipe(dataset, jsonl_file):
+@prodigy.recipe("ltt-review-recipe")
+def ltt_review_recipe(dataset, jsonl_file):
     logging.info(f"dataset:{dataset}, jsonl_file_path:{jsonl_file}")
     blocks = [ 
         {"view_id": "image"},
