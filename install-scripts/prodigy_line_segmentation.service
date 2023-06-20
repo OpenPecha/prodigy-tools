@@ -10,7 +10,7 @@ Environment=PRODIGY_HOME="/usr/local/prodigy"
 Environment=PRODIGY_LOGGING=verbose
 Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/line_segmentation.json"
 WorkingDirectory=/usr/local/prodigy
-ExecStart=/usr/bin/python3.9 -m prodigy line-segmentation-recipe line_segments '/usr/local/prodigy/prodigy-tools/data/layout_analysis_01.jsonl' -F /usr/local/prodigy/prodigy-tools/recipes/line_segmentation.py
+ExecStart=/usr/bin/python3.9 -m prodigy line-segmentation-recipe line_segments '/usr/local/prodigy/prodigy-tools/data/layout_analysis_01.csv' -F /usr/local/prodigy/prodigy-tools/recipes/line_segmentation.py
 
 User=prodigy
 Group=prodigy
