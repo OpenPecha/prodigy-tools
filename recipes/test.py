@@ -14,14 +14,14 @@ logging.basicConfig(
 prodigy_logger = logging.getLogger('prodigy')
 prodigy_logger.setLevel(logging.INFO)
 
-with open('recipes/js/index.js', 'r') as index_js:
-    with open('recipes/js/tribute.js', 'r') as tribute_js:
+with open('/usr/local/prodigy/prodigy-tools/recipes/js/index.js', 'r') as index_js:
+    with open('/usr/local/prodigy/prodigy-tools/recipes/js/tribute.js', 'r') as tribute_js:
         index_js_text = index_js.read()
         tribute_js_text = tribute_js.read()
         js_code = index_js_text +' '+ tribute_js_text
 
 
-with open('recipes/css/style.css', 'r') as file:
+with open('/usr/local/prodigy/prodigy-tools/recipes/css/style.css', 'r') as file:
     css_code = file.read()
 
 
