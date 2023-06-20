@@ -16,9 +16,10 @@ prodigy_logger.setLevel(logging.INFO)
 
 with open('/usr/local/prodigy/prodigy-tools/recipes/js/index.js', 'r') as index_js:
     with open('/usr/local/prodigy/prodigy-tools/recipes/js/tribute.js', 'r') as tribute_js:
-        index_js_text = index_js.read()
-        tribute_js_text = tribute_js.read()
-        js_code = index_js_text +' '+ tribute_js_text
+        with open('/usr/local/prodigy/prodigy-tools/recipes/js/dictionary.js', 'r') as dictionary_js:
+            index_js_text = index_js.read()
+            tribute_js_text = tribute_js.read()
+            js_code = index_js_text +' '+ tribute_js_text+' '+dictionary_js.read()
 
 
 with open('/usr/local/prodigy/prodigy-tools/recipes/css/style.css', 'r') as file:
