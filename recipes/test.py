@@ -14,6 +14,17 @@ logging.basicConfig(
 prodigy_logger = logging.getLogger('prodigy')
 prodigy_logger.setLevel(logging.INFO)
 
+with open('recipes/js/index.js', 'r') as index_js:
+    with open('recipes/js/tribute.js', 'r') as tribute_js:
+        index_js_text = index_js.read()
+        tribute_js_text = tribute_js.read()
+        js_code = index_js_text +' '+ tribute_js_text
+
+
+with open('recipes/css/style.css', 'r') as file:
+    css_code = file.read()
+
+
 @prodigy.recipe("stt-ab-recipe")
 def stt_ab_recipe(dataset, jsonl_file):
     logging.info(f"dataset:{dataset}, jsonl_file_path:{jsonl_file}")
@@ -37,7 +48,9 @@ def stt_ab_recipe(dataset, jsonl_file):
         "view_id": "blocks",
         "config": {
             "blocks": blocks,
-            "editable": True
+            "editable": True,
+             "javascript":js_code,
+             "global_css":css_code,
         }
     }
 
