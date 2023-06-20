@@ -23,7 +23,7 @@ prodigy_logger = logging.getLogger('prodigy')
 prodigy_logger.setLevel(logging.INFO)
 
 @prodigy.recipe("line-segmentation-recipe")
-def line_segmentation_recipe(dataset, jsonl_path):
+def line_segmentation_recipe(dataset, csv_file):
     logging.info(f"dataset:{dataset}, csv_file_path:{csv_file}")
     obj_keys = []
     with open(csv_file) as _file:
