@@ -25,8 +25,8 @@ with open('recipes/css/style.css', 'r') as file:
     css_code = file.read()
 
 
-@prodigy.recipe("stt-ab-recipe")
-def stt_ab_recipe(dataset, jsonl_file):
+@prodigy.recipe("test-recipe")
+def test_recipe(dataset, jsonl_file):
     logging.info(f"dataset:{dataset}, jsonl_file_path:{jsonl_file}")
     blocks = [
         {"view_id": "audio"},
