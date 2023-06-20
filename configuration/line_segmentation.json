@@ -18,7 +18,7 @@
     "auto_exclude_current": true,
     "instant_submit": true,
     "feed_overlap": false,
-    "auto_count_stream": false,
+    "auto_count_stream": true,
     "total_examples_target": 0,
     "ui_lang": "en",
     "project_info": ["dataset", "session", "lang", "recipe_name", "view_id", "label"],
