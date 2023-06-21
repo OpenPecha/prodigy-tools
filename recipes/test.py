@@ -17,9 +17,11 @@ prodigy_logger.setLevel(logging.INFO)
 with open('/usr/local/prodigy/prodigy-tools/recipes/js/index.js', 'r') as index_js:
     with open('/usr/local/prodigy/prodigy-tools/recipes/js/tribute.js', 'r') as tribute_js:
         with open('/usr/local/prodigy/prodigy-tools/recipes/js/dictionary.js', 'r') as dictionary_js:
-            index_js_text = index_js.read()
-            tribute_js_text = tribute_js.read()
-            js_code = index_js_text +' '+ tribute_js_text+' '+dictionary_js.read()
+             with open('/usr/local/prodigy/prodigy-tools/recipes/js/time_stretcher.js', 'r') as time_stretcher:
+                index_js_text = index_js.read()
+                tribute_js_text = tribute_js.read()
+                time_stretcher= time_stretcher.read()
+                js_code = time_stretcher+' '+ tribute_js_text+' '+dictionary_js.read()+' '+index_js_text 
 
 
 with open('/usr/local/prodigy/prodigy-tools/recipes/css/style.css', 'r') as file:
@@ -40,7 +42,7 @@ def test_recipe(dataset, jsonl_file):
         }, 
         {
             "view_id": "html",
-            "html_template" : "<button style='margin: 5px;' onclick='window.wavesurfer.setPlaybackRate(0.5)'>0.5x speed</button><button style='margin: 5px;' onclick='window.wavesurfer.setPlaybackRate(0.7)'>0.7x speed</button><button style='margin: 5px;' onclick='window.wavesurfer.setPlaybackRate(1)'>1x speed</button><button style='margin: 5px;' onclick='window.wavesurfer.setPlaybackRate(1.3)'>1.3x speed</button><button style='margin: 5px;' onclick='window.wavesurfer.setPlaybackRate(1.5)'>1.5x speed</button>"
+            "html_template" : "<button style='margin: 5px;' onclick='setplaybackrate(0.5)'>0.5x speed</button><button style='margin: 5px;' onclick='setplaybackrate(0.7)'>0.7x speed</button><button style='margin: 5px;' onclick='setplaybackrate(1)'>1x speed</button><button style='margin: 5px;' onclick='setplaybackrate(1.3)'>1.3x speed</button><button style='margin: 5px;' onclick='setplaybackrate(1.5)'>1.5x speed</button>"
         }
     ]
     return {

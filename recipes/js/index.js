@@ -1,4 +1,74 @@
 let tribute;
+
+setTimeout(() => {
+  var wavesurfer2 = window.wavesurfer;
+  wavesurfer2.on("ready", function () {
+    console.log("audio wavesurfer ready");
+    var st = new window.soundtouch.SoundTouch(
+      wavesurfer2.backend.ac.sampleRate
+    );
+    var buffer = wavesurfer2.backend.buffer;
+    var channels = buffer.numberOfChannels;
+    var l = buffer.getChannelData(0);
+    var r = channels > 1 ? buffer.getChannelData(1) : l;
+    var length = buffer.length;
+    var seekingPos = null;
+    var seekingDiff = 0;
+
+    var source = {
+      extract: function (target, numFrames, position) {
+        if (seekingPos != null) {
+          seekingDiff = seekingPos - position;
+          seekingPos = null;
+        }
+
+        position += seekingDiff;
+
+        for (var i = 0; i < numFrames; i++) {
+          target[i * 2] = l[i + position];
+          target[i * 2 + 1] = r[i + position];
+        }
+
+        return Math.min(numFrames, length - position);
+      },
+    };
+
+
+    wavesurfer2.on("play", function () {
+     
+      seekingPos = ~~(wavesurfer2.backend.getPlayedPercents() * length);
+      st.tempo = wavesurfer2.getPlaybackRate();
+      if (st.tempo === 1) {
+        wavesurfer2.backend.disconnectFilters();
+      } else {
+        if (!soundtouchNode) {
+          var filter = new window.soundtouch.SimpleFilter(source, st);
+          soundtouchNode = window.soundtouch.getWebAudioNode(
+            wavesurfer2.backend.ac,
+            filter
+          );
+        }
+        wavesurfer2.backend.setFilter(soundtouchNode);
+      }
+    });
+  
+    wavesurfer2.on("pause", function () {
+      console.log('paused')
+      soundtouchNode && soundtouchNode.disconnect();
+    });
+
+    wavesurfer2.on("seek", function () {
+      seekingPos = ~~(wavesurfer2.backend.getPlayedPercents() * length);
+    });
+  });
+}, 0);
+function setplaybackrate(rate) {
+  var wavesurfer2 = window.wavesurfer;
+  wavesurfer2.pause();
+  wavesurfer2.setPlaybackRate(rate);
+  wavesurfer2.play();
+}
+
 setTimeout(() => {
   changeTitles();
   let transcript = document.getElementById("transcript");
