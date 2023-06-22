@@ -1,21 +1,20 @@
 let tribute;
-let wavesurfer2;
 let isUnsupportedBrowser = false;
+let wavesurfer2;
 var soundtouchNode;
-
-
-if (navigator.userAgent.indexOf("Chrome") !== -1) {
-  console.log("You are using Google Chrome.");
-} else if (navigator.userAgent.indexOf("Firefox") !== -1) {
-  console.log("You are using Mozilla Firefox.");
-  isUnsupportedBrowser=true;
-} else {
-  console.log("Browser detection not supported or unknown browser.");
-}
 
 setTimeout(() => {
   wavesurfertool();
 }, 0);
+function setplaybackrate(rate) {
+  if (!supportedBrowser()&& rate!==1  ) {
+    alert('please use chrome or brave browser to use this feature properly')
+  }
+  wavesurfer2.pause();
+  wavesurfer2.setPlaybackRate(rate);
+  wavesurfer2.play();
+}
+
 setTimeout(() => {
   changeTitles();
   let transcript = document.getElementById("transcript");
@@ -69,7 +68,6 @@ function changeTitles() {
 function wavesurfertool() {
   wavesurfer2 = window.wavesurfer;
    wavesurfer2.on("ready", function () {
-     console.log("audio wavesurfer ready");
      var st = new window.soundtouch.SoundTouch(
        wavesurfer2.backend.ac.sampleRate
        );
@@ -106,10 +104,9 @@ function wavesurfertool() {
        );
      }
      wavesurfer2.on("play", function () {
-       console.log(wavesurfer2.getDuration())
        seekingPos = ~~(wavesurfer2.backend.getPlayedPercents() * length);
        st.tempo = wavesurfer2.getPlaybackRate();
-       if (st.tempo === 1 || isUnsupportedBrowser) {
+       if (st.tempo === 1 || !supportedBrowser()) {
          wavesurfer2.backend.disconnectFilters();
        } else {
          wavesurfer2.backend.setFilter(soundtouchNode);
@@ -138,4 +135,18 @@ function wavesurfertool() {
        soundtouchNode = null;
       })
    });
+}
+
+
+function supportedBrowser() {
+  if (navigator.userAgent.indexOf("Chrome") !== -1) {
+    console.log("You are using Google Chrome.");
+    return true;
+  } else if (navigator.userAgent.indexOf("Firefox") !== -1) {
+    console.log("You are using Mozilla Firefox.");
+   return false;
+  } else {
+    console.log("Browser detection not supported or unknown browser.");
+    return null;
+  }
 }
