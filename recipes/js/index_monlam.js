@@ -114,22 +114,14 @@ function wavesurfertool() {
      });
 
      wavesurfer2.on("pause", function () {
-       console.log("paused");
        soundtouchNode && soundtouchNode.disconnect();
      });
-     wavesurfer2.on("finish", function () {
-       console.log("finished");
-     });
-     wavesurfer2.on("interaction", function () {
-       console.log("interaction");
-     });
+   
      wavesurfer2.on("seek", function () {
-       console.log("seek");
        seekingPos = ~~(wavesurfer2.backend.getPlayedPercents() * length);
      });
 
      wavesurfer2.on("redraw", function () {
-       console.log('redraw')
        soundtouchNode && soundtouchNode.disconnect();
          wavesurfer2.backend.disconnectFilters();
        soundtouchNode = null;
