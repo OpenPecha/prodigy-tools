@@ -14,7 +14,7 @@ logging.basicConfig(
 prodigy_logger = logging.getLogger('prodigy')
 prodigy_logger.setLevel(logging.INFO)
 
-with open('/usr/local/prodigy/prodigy-tools/recipes/js/index.js', 'r') as index_js:
+with open('/usr/local/prodigy/prodigy-tools/recipes/js/index_monlam.js', 'r') as index_js:
     with open('/usr/local/prodigy/prodigy-tools/recipes/js/tribute.js', 'r') as tribute_js:
         with open('/usr/local/prodigy/prodigy-tools/recipes/js/dictionary.js', 'r') as dictionary_js:
              with open('/usr/local/prodigy/prodigy-tools/recipes/js/time_stretcher.js', 'r') as time_stretcher:
