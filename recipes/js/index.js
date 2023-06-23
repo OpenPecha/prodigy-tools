@@ -2,14 +2,13 @@ let tribute;
 let isUnsupportedBrowser = false;
 let wavesurfer2;
 
-
 var soundtouchNode;
 setTimeout(() => {
   wavesurfertool();
 }, 0);
 function setplaybackrate(rate) {
-  if (!supportedBrowser()&& rate!==1  ) {
-    alert('please use chrome or brave browser to use this feature properly')
+  if (!supportedBrowser() && rate !== 1) {
+    alert("please use chrome or brave browser to use this feature properly");
   }
   wavesurfer2.pause();
   wavesurfer2.setPlaybackRate(rate);
@@ -22,11 +21,12 @@ setTimeout(() => {
 
   tribute = new Tribute({
     values: function (text, callback) {
-       fetch(`https://dictionaryprodigy.netlify.app/api/dictionary/${text}`)
-         .then((res) => res.json())
-         .then((data) => {
-           callback(data);
-         }).catch(err=>console.log(err))
+      fetch(`https://dictionaryprodigy.netlify.app/api/dictionary/${text}`)
+        .then((res) => res.json())
+        .then((data) => {
+          callback(data);
+        })
+        .catch((err) => console.log(err));
     },
     autocompleteMode: true,
     noMatchTemplate: function (item) {
@@ -63,82 +63,93 @@ function changeTitles() {
   sideBarTitle.innerHTML = "<h1>" + title + "</h1>";
 }
 
-
 function wavesurfertool() {
   wavesurfer2 = window.wavesurfer;
-   wavesurfer2.on("ready", function () {
-     var st = new window.soundtouch.SoundTouch(
-       wavesurfer2.backend.ac.sampleRate
-       );
-     var buffer = wavesurfer2.backend.buffer;
-     var channels = buffer.numberOfChannels;
-     var l = buffer.getChannelData(0);
-     var r = channels > 1 ? buffer.getChannelData(1) : l;
-     var length = buffer.length;
-     var seekingPos = null;
-     var seekingDiff = 0;
-     var source = {
-       extract: function (target, numFrames, position) {
-         if (seekingPos != null) {
-           seekingDiff = seekingPos - position;
-           seekingPos = null;
-          }
-          
-         position += seekingDiff;
+  let finished = false;
+  let pauseClicked = false;
+  wavesurfer2.on("ready", function () {
+    console.log("ready");
+    var st = new window.soundtouch.SoundTouch(
+      wavesurfer2.backend.ac.sampleRate
+    );
+    var buffer = wavesurfer2.backend.buffer;
+    var channels = buffer.numberOfChannels;
+    var l = buffer.getChannelData(0);
+    var r = channels > 1 ? buffer.getChannelData(1) : l;
+    var length = buffer.length;
+    var seekingPos = null;
+    var seekingDiff = 0;
+    var source = {
+      extract: function (target, numFrames, position) {
+        if (seekingPos != null) {
+          seekingDiff = seekingPos - position;
+          seekingPos = null;
+        }
 
-         for (var i = 0; i < numFrames; i++) {
-           target[i * 2] = l[i + position];
-           target[i * 2 + 1] = r[i + position];
-          }
-          
-          return Math.min(numFrames, length - position);
-        },
-      };
-      
-     if (!soundtouchNode) {
-       const filter = new window.soundtouch.SimpleFilter(source, st);
-       soundtouchNode = window.soundtouch.getWebAudioNode(
-         wavesurfer2.backend.ac,
-         filter
-       );
-     }
-     wavesurfer2.on("play", function () {
-       seekingPos = ~~(wavesurfer2.backend.getPlayedPercents() * length);
-       st.tempo = wavesurfer2.getPlaybackRate();
-       if (st.tempo === 1 || !supportedBrowser()) {
-         wavesurfer2.backend.disconnectFilters();
-       } else {
-         wavesurfer2.backend.setFilter(soundtouchNode);
-       }
-     });
+        position += seekingDiff;
 
-     wavesurfer2.on("pause", function () {
-       soundtouchNode && soundtouchNode.disconnect();
-     });
-   
-     wavesurfer2.on("seek", function () {
-       seekingPos = ~~(wavesurfer2.backend.getPlayedPercents() * length);
-     });
+        for (var i = 0; i < numFrames; i++) {
+          target[i * 2] = l[i + position];
+          target[i * 2 + 1] = r[i + position];
+        }
 
-     wavesurfer2.on("redraw", function () {
-       soundtouchNode && soundtouchNode.disconnect();
-         wavesurfer2.backend.disconnectFilters();
-       soundtouchNode = null;
-      })
-   });
+        return Math.min(numFrames, length - position);
+      },
+    };
+    if (!soundtouchNode) {
+      const filter = new window.soundtouch.SimpleFilter(source, st);
+      soundtouchNode = window.soundtouch.getWebAudioNode(
+        wavesurfer2.backend.ac,
+        filter
+      );
+    }
+
+    wavesurfer2.on("play", function () {
+      finished = false;
+      pauseClicked = false;
+      let pausebutton = document.querySelector(['[data-test="pause"]']);
+      pausebutton?.addEventListener("click", () => {
+        pauseClicked = true;
+      });
+      seekingPos = ~~(wavesurfer2.backend.getPlayedPercents() * length);
+      st.tempo = wavesurfer2.getPlaybackRate();
+      if (st.tempo === 1 || !supportedBrowser()) {
+        wavesurfer2.backend.disconnectFilters();
+      } else {
+        wavesurfer2.backend.setFilter(soundtouchNode);
+      }
+    });
+
+    wavesurfer2.on("pause", function () {
+      if (pauseClicked) {
+        soundtouchNode && soundtouchNode.disconnect();
+      } else {
+        if (!finished) soundtouchNode && soundtouchNode.disconnect();
+        //  wavesurfer2.backend.setFilter(soundtouchNode);
+      }
+    });
+    wavesurfer2.on("finish", function () {
+      finished = true;
+    });
+    wavesurfer2.on("seek", function () {
+      console.log("seek");
+      seekingPos = ~~(wavesurfer2.backend.getPlayedPercents() * length);
+    });
+    wavesurfer2.on("redraw", function () {
+      soundtouchNode && soundtouchNode.disconnect();
+      wavesurfer2.backend.disconnectFilters();
+      soundtouchNode = null;
+    });
+  });
 }
-
 
 function supportedBrowser() {
   if (navigator.userAgent.indexOf("Chrome") !== -1) {
-    console.log("You are using Google Chrome.");
     return true;
   } else if (navigator.userAgent.indexOf("Firefox") !== -1) {
-    console.log("You are using Mozilla Firefox.");
-   return false;
+    return false;
   } else {
     console.log("Browser detection not supported or unknown browser.");
     return null;
   }
-  
 }
