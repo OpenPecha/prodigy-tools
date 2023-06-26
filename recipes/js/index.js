@@ -7,9 +7,12 @@ setTimeout(() => {
   wavesurfertool();
 }, 0);
 function setplaybackrate(rate) {
+let speedDetail = document.getElementById("rangeValue");
+  
   if (!supportedBrowser() && rate !== 1) {
     alert("please use chrome or brave browser to use this feature properly");
   }
+  speedDetail.innerHTML=rate+'x';
   wavesurfer2.pause();
   wavesurfer2.setPlaybackRate(rate);
   wavesurfer2.play();
@@ -17,26 +20,7 @@ function setplaybackrate(rate) {
 
 setTimeout(() => {
   changeTitles();
-  let transcript = document.getElementById("transcript");
-
-  tribute = new Tribute({
-    values: function (text, callback) {
-      fetch(`https://dictionaryprodigy.netlify.app/api/dictionary/${text}`)
-        .then((res) => res.json())
-        .then((data) => {
-          callback(data);
-        })
-        .catch((err) => console.log(err));
-    },
-    autocompleteMode: true,
-    noMatchTemplate: function (item) {
-      return null;
-    },
-    requireLeadingSpace: false,
-    menuShowMinLength: 0,
-  });
-
-  tribute.attach(transcript);
+  initTribute();
 }, 100);
 
 let buttons = [
@@ -57,7 +41,7 @@ for (let i = 0; i < buttons.length; i++) {
 }
 
 function changeTitles() {
-  let title = "Pecha Tools";
+  let title = "pecha.tools";
   document.title = title;
   let sideBarTitle = document.querySelector(".prodigy-sidebar-title");
   sideBarTitle.innerHTML = "<h1>" + title + "</h1>";
@@ -152,4 +136,33 @@ function supportedBrowser() {
     console.log("Browser detection not supported or unknown browser.");
     return null;
   }
+}
+function initTribute() {
+  let transcript = document.getElementById("transcript");
+  tribute = new Tribute({
+    values: function (text, callback) {
+      fetch(`https://dictionaryprodigy.netlify.app/api/dictionary/${text}`)
+        .then((res) => res.json())
+        .then((data) => {
+          let addedot = data.map((item) => {
+            if (item.value.endsWith('་')) {
+              value = item.value.slice(0, -1);
+              return {key:value,value:value};
+            }
+            return item;
+        });
+          callback(addedot);
+        })
+        .catch((err) => console.log(err));
+    },
+    autocompleteMode: true,
+    noMatchTemplate: function (item) {
+      return null;
+    },
+    allowSpaces: true,
+    replaceTextSuffix: "་",
+    requireLeadingSpace: false,
+    menuShowMinLength: 0,
+  });
+  tribute.attach(transcript);
 }

@@ -14,14 +14,13 @@ logging.basicConfig(
 prodigy_logger = logging.getLogger('prodigy')
 prodigy_logger.setLevel(logging.INFO)
 
-with open('/usr/local/prodigy/prodigy-tools/recipes/js/index_monlam.js', 'r') as index_js:
+with open('/usr/local/prodigy/prodigy-tools/recipes/js/index.js', 'r') as index_js:
     with open('/usr/local/prodigy/prodigy-tools/recipes/js/tribute.js', 'r') as tribute_js:
-        with open('/usr/local/prodigy/prodigy-tools/recipes/js/dictionary.js', 'r') as dictionary_js:
              with open('/usr/local/prodigy/prodigy-tools/recipes/js/time_stretcher.js', 'r') as time_stretcher:
                 index_js_text = index_js.read()
                 tribute_js_text = tribute_js.read()
                 time_stretcher= time_stretcher.read()
-                js_code = time_stretcher+' '+ tribute_js_text+' '+dictionary_js.read()+' '+index_js_text 
+                js_code = time_stretcher+' '+ tribute_js_text+' '+index_js_text 
 
 
 with open('/usr/local/prodigy/prodigy-tools/recipes/css/style.css', 'r') as file:
@@ -40,9 +39,9 @@ def test_recipe(dataset, jsonl_file):
             "field_id": "transcript",
             "field_autofocus": True,
         }, 
-        {
+         {
             "view_id": "html",
-            "html_template" : "<button style='margin: 5px;' onclick='setplaybackrate(0.5)'>0.5x speed</button><button style='margin: 5px;' onclick='setplaybackrate(0.7)'>0.7x speed</button><button style='margin: 5px;' onclick='setplaybackrate(1)'>1x speed</button><button style='margin: 5px;' onclick='setplaybackrate(1.3)'>1.3x speed</button><button style='margin: 5px;' onclick='setplaybackrate(1.5)'>1.5x speed</button>"
+            "html_template" : "<label for='speed'><img width='20' height='20' src='https://img.icons8.com/ios/50/speed--v1.png' alt='speed'/></label><input id='speed' type='range' onchange='setplaybackrate(this.value)' min='0.5' max='1.5' step='0.1' value='1'/><span class='range-value' id='rangeValue'>1x</span>"
         }
     ]
     return {
