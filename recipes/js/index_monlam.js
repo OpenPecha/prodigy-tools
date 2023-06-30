@@ -11,9 +11,7 @@ function setplaybackrate(rate) {
   if (!supportedBrowser()&& rate!==1  ) {
     alert('please use chrome or brave browser to use this feature properly')
   }
-  wavesurfer2.pause();
   wavesurfer2.setPlaybackRate(rate);
-  wavesurfer2.play();
 }
 
 setTimeout(() => {

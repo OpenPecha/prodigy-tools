@@ -13,9 +13,7 @@ let speedDetail = document.getElementById("rangeValue");
     alert("please use chrome or brave browser to use this feature properly");
   }
   speedDetail.innerHTML=rate+'x';
-  wavesurfer2.pause();
   wavesurfer2.setPlaybackRate(rate);
-  wavesurfer2.play();
 }
 
 setTimeout(() => {
