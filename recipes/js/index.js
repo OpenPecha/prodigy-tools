@@ -142,14 +142,23 @@ function initTribute() {
       fetch(`https://dictionaryprodigy.netlify.app/api/dictionary/${text}`)
         .then((res) => res.json())
         .then((data) => {
+          let localdata = JSON.parse(localStorage.getItem('suggestion'));
+          
           let addedot = data.map((item) => {
-            if (item.value.endsWith('་')) {
+            
+            if (item.value.endsWith("་")) {
               value = item.value.slice(0, -1);
-              return {key:value,value:value};
+              return { key: value, value: value };
             }
             return item;
-        });
-          callback(addedot);
+          });
+           if(localdata && localdata.length > 0) {
+             let finaldata = sortAccording(addedot, localdata);
+             console.log(finaldata)
+             callback(finaldata);
+           } else {
+             callback(addedot);
+          }
         })
         .catch((err) => console.log(err));
     },
@@ -157,10 +166,47 @@ function initTribute() {
     noMatchTemplate: function (item) {
       return null;
     },
+    selectTemplate: function (item) {
+      let value = item.original.value;
+      if (localStorage.getItem("suggestion")===null) {
+        localStorage.setItem("suggestion", "[]");
+      }
+      
+      let old_data = JSON.parse(localStorage.getItem('suggestion'));
+      if (old_data.some(d=>d.value===value)) { 
+        let index = old_data.findIndex((item)=>item.value===value);
+        old_data[index].frequency += 1;
+      }
+      else {
+        old_data.push({value:value,frequency:1});
+      }
+      localStorage.setItem("suggestion", JSON.stringify(old_data));
+      
+      return value;
+    },
     allowSpaces: true,
     replaceTextSuffix: "་",
     requireLeadingSpace: false,
     menuShowMinLength: 0,
   });
   tribute.attach(transcript);
+}
+
+function sortAccording(addedot, localdata) {
+  const contained = [];
+  const notContained = [];
+
+  addedot.forEach((item) => {
+    const word = item.value;
+    const found = localdata.find((data) => data.value === word);
+    if (found) {
+      contained.push({ ...found, key: item.key }); // Include the 'key' property from 'addedot'
+    } else {
+      notContained.push(item);
+    }
+  });
+
+  contained.sort((a, b) => b.frequency - a.frequency);
+
+  return contained.concat(notContained);
 }
