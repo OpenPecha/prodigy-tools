@@ -10,7 +10,7 @@
     "db": "sqlite",
     "db_settings": {
       "sqlite": {
-        "name": "ltt_batch1-2_review.sqlite",
+        "name": "ltt_batch3-4_review.sqlite",
         "path": "/usr/local/prodigy"
       }
     },
