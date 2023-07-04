@@ -1,12 +1,13 @@
 
 import logging
 import prodigy
-from tools.config import LAYOUT_ANALYSIS_BUCKET, layout_analysis_s3_client
+from tools.config import MONLAM_AI_OCR_BUCKET, monlam_ocr_s3_client
 import jsonlines
 
 
-s3_client = layout_analysis_s3_client
-bucket_name = LAYOUT_ANALYSIS_BUCKET
+s3_client = monlam_ocr_s3_client
+bucket_name = MONLAM_AI_OCR_BUCKET
+
 # log config 
 logging.basicConfig(
     filename="/usr/local/prodigy/logs/line_to_text.log",
@@ -38,10 +39,7 @@ def ltt_review_recipe(dataset, jsonl_file):
 
 def get_obj_key(image_url):
     parts = image_url.split("/")
-    if parts[5] == "batch2":
-        obj_key = "/".join(parts[4:7]).split("?")[0]
-    else:
-        obj_key = "/".join(parts[4:6]).split("?")[0]
+    obj_key = "/".join(parts[4:7]).split("?")[0]
     return obj_key
 
 
