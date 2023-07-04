@@ -38,10 +38,7 @@ def ltt_review_recipe(dataset, jsonl_file):
 
 def get_obj_key(image_url):
     parts = image_url.split("/")
-    if parts[5] == "batch2":
-        obj_key = "/".join(parts[4:7]).split("?")[0]
-    else:
-        obj_key = "/".join(parts[4:6]).split("?")[0]
+    obj_key = "/".join(parts[4:7]).split("?")[0]
     return obj_key
 
 
