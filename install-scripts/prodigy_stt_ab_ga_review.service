@@ -10,7 +10,7 @@ Environment="PRODIGY_HOME=/usr/local/prodigy"
 Environment="PRODIGY_LOGGING=verbose"
 Environment="PRODIGY_CONFIG=/usr/local/prodigy/prodigy-tools/configuration/stt_ab_ga_review.json"
 WorkingDirectory=/usr/local/prodigy
-ExecStart=/usr/bin/python3.9 -m prodigy stt-ab-review-recipe stt_ab_ga '/usr/local/prodigy/stt_ab.sqlite' -F /usr/local/prodigy/prodigy-tools/recipes/stt_ab_review.py
+ExecStart=/usr/bin/python3.9 -m prodigy audio.transcribe stt_ab_ga_review dataset:stt_ab_ga --fetch-media
 User=prodigy
 Group=prodigy
 UMask=0007
