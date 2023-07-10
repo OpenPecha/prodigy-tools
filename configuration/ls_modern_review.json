@@ -4,13 +4,13 @@
     "buttons": ["accept", "reject", "ignore", "undo"],
     "batch_size": 5,
     "history_size": 10,
-    "port": 8060,
+    "port": 8062,
     "host": "localhost",
     "cors": true,
     "db": "sqlite",
     "db_settings": {
       "sqlite": {
-        "name": "line_segmentation.sqlite",
+        "name": "line_segmentation_review.sqlite",
         "path": "/usr/local/prodigy"
       }
     },
@@ -38,4 +38,3 @@
     "show_whitespace": false,
     "exclude_by": "task"
   }
-  
