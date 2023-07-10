@@ -10,7 +10,7 @@ Environment="PRODIGY_HOME=/usr/local/prodigy"
 Environment="PRODIGY_LOGGING=verbose"
 Environment="PRODIGY_CONFIG=/usr/local/prodigy/prodigy-tools/configuration/stt_second_review_diff.json"
 WorkingDirectory=/usr/local/prodigy
-ExecStart=/usr/bin/python3.9 -m prodigy audio.transcribe stt_second_review dataset:stt_tt_ga_review --fetch-media
+ExecStart=/usr/bin/python3.9 -m prodigy color-diff-recipe stt_second_review '/home/spsither/test/merged.jsonl' -F /usr/local/prodigy/prodigy-tools/recipes/stt_second_review.py
 
 User=prodigy
 Group=prodigy
