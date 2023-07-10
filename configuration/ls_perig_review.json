@@ -2,26 +2,25 @@
     "theme": "basic",
     "custom_theme": { "cardMaxWidth": 2000 },
     "buttons": ["accept", "reject", "ignore", "undo"],
-    "batch_size": 10,
+    "batch_size": 5,
     "history_size": 10,
-    "port": 8151,
+    "port": 8063,
     "host": "localhost",
     "cors": true,
-    "db": "mysql",
+    "db": "sqlite",
     "db_settings": {
-      "mysql": {
-        "user": "prodigy_stt",
-        "password": "e@b3EWE@zkfHKYqfxYE2",
-        "host": "localhost",
-        "port": 3306,
-        "database": "prodigy_stt"
+      "sqlite": {
+        "name": "line_segmentation_review.sqlite",
+        "path": "/usr/local/prodigy"
       }
     },
     "validate": true,
+    "image_manual_stroke_width": 2,
+    "image_manual_font_size": 12,
+    "annotations_per_task": 1,
     "auto_exclude_current": true,
-    "instant_submit": false,
-    "feed_overlap": false,
-    "auto_count_stream": false,
+    "instant_submit": true,
+    "auto_count_stream": true,
     "total_examples_target": 0,
     "ui_lang": "en",
     "project_info": ["dataset", "session", "lang", "recipe_name", "view_id", "label"],
@@ -39,4 +38,3 @@
     "show_whitespace": false,
     "exclude_by": "task"
   }
-  

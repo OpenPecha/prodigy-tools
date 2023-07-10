@@ -10,7 +10,7 @@ Environment=PRODIGY_HOME="/usr/local/prodigy"
 Environment=PRODIGY_LOGGING=verbose
 Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/line_segmentation_modern.json"
 WorkingDirectory=/usr/local/prodigy
-ExecStart=/usr/bin/python3.9 -m prodigy line-segmentation-recipe line_segments_modern '/usr/local/prodigy/prodigy-tools/data/line_segmentation_modern.csv' -F /usr/local/prodigy/prodigy-tools/recipes/line_segmentation.py
+ExecStart=/usr/bin/python3.9 -m prodigy line-segmentation-recipe line_segments_modern_01 '/usr/local/prodigy/prodigy-tools/data/line_segmentation_modern.csv' -F /usr/local/prodigy/prodigy-tools/recipes/line_segmentation.py
 
 User=prodigy
 Group=prodigy
