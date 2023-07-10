@@ -15,9 +15,11 @@
       }
     },
     "validate": true,
+    "image_manual_stroke_width": 2,
+    "image_manual_font_size": 12,
+    "annotations_per_task": 1,
     "auto_exclude_current": true,
     "instant_submit": true,
-    "feed_overlap": false,
     "auto_count_stream": true,
     "total_examples_target": 0,
     "ui_lang": "en",
