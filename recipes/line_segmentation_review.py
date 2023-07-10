@@ -49,6 +49,8 @@ def get_new_url(image_url):
 def stream_from_jsonl(jsonl_file):
     with jsonlines.open(jsonl_file) as reader:
         for line in reader:
+            if "spans" not in line:
+                continue
             image_id = line["id"]
             image_url = line["image"]
             obj_key = get_obj_key(image_url)
