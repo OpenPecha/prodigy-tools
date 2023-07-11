@@ -79,3 +79,10 @@ sudo -u prodigy PRODIGY_CONFIG="./stt_ns.json" /usr/bin/python3.9 -m prodigy db-
 
 sudo -u prodigy PRODIGY_CONFIG="./config_mysql.json" /usr/bin/python3.9 -m prodigy db-in stt_ns_gc ./stt_ns_gc.jsonl
 sudo -u prodigy PRODIGY_CONFIG="./config_mysql.json" /usr/bin/python3.9 -m prodigy db-in stt_ns_gc_review ./stt_ns_gc_review.jsonl
+
+# stt_ns_gd
+sudo -u prodigy PRODIGY_CONFIG="./stt_ns.json" /usr/bin/python3.9 -m prodigy db-out stt_ns_gd > ./stt_ns_gd.jsonl
+sudo -u prodigy PRODIGY_CONFIG="./stt_ns.json" /usr/bin/python3.9 -m prodigy db-out stt_ns_gd_review > ./stt_ns_gd_review.jsonl
+
+sudo -u prodigy PRODIGY_CONFIG="./config_mysql.json" /usr/bin/python3.9 -m prodigy db-in stt_ns_gd ./stt_ns_gd.jsonl
+sudo -u prodigy PRODIGY_CONFIG="./config_mysql.json" /usr/bin/python3.9 -m prodigy db-in stt_ns_gd_review ./stt_ns_gd_review.jsonl
