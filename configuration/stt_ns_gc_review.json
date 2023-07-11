@@ -7,11 +7,14 @@
     "port": 8184,
     "host": "localhost",
     "cors": true,
-    "db": "sqlite",
+    "db": "mysql",
     "db_settings": {
-      "sqlite": {
-        "name": "stt_ns.sqlite",
-        "path": "/usr/local/prodigy"
+      "mysql": {
+        "user": "prodigy_stt",
+        "password": "e@b3EWE@zkfHKYqfxYE2",
+        "host": "localhost",
+        "port": 3306,
+        "database": "prodigy_stt"
       }
     },
     "validate": true,
