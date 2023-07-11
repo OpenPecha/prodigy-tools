@@ -4,7 +4,7 @@ import prodigy
 import jsonlines
 import pymysql
 from tools.diff import Diff
-
+import base64
 # log config 
 logging.basicConfig(
     filename="/usr/local/prodigy/logs/color_diff.log",
@@ -84,4 +84,6 @@ def stream_from_jsonl(jsonl_file):
             diff_obj = Diff(reviewed, first)
             diffs = diff_obj.compute()
             html = generate_diffs_html(diffs)
-            yield {"audio": audio_path, "text": audio_id, "path": audio_path, "transcript": reviewed, "html": html}
+            audio_file = open(audio_path, 'rb')
+            audio_64 = base64.b64encode(audio_file.read())
+            yield {"audio": audio_64, "text": audio_id, "path": audio_path, "transcript": reviewed, "html": html}
