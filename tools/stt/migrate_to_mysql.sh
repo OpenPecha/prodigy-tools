@@ -100,3 +100,10 @@ sudo -u prodigy PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/s
 
 sudo -u prodigy PRODIGY_CONFIG="./config_mysql.json" /usr/bin/python3.9 -m prodigy db-in stt_cs_gb ./stt_cs_gb.jsonl
 sudo -u prodigy PRODIGY_CONFIG="./config_mysql.json" /usr/bin/python3.9 -m prodigy db-in stt_cs_gb_review ./stt_cs_gb_review.jsonl
+
+# stt_cs_gc
+sudo -u prodigy PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/stt_cs_gc.json" /usr/bin/python3.9 -m prodigy db-out stt_cs_gc > ./stt_cs_gc.jsonl
+sudo -u prodigy PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/stt_cs_gc_review.json" /usr/bin/python3.9 -m prodigy db-out stt_cs_gc_review > ./stt_cs_gc_review.jsonl
+
+sudo -u prodigy PRODIGY_CONFIG="./config_mysql.json" /usr/bin/python3.9 -m prodigy db-in stt_cs_gc ./stt_cs_gc.jsonl
+sudo -u prodigy PRODIGY_CONFIG="./config_mysql.json" /usr/bin/python3.9 -m prodigy db-in stt_cs_gc_review ./stt_cs_gc_review.jsonl
