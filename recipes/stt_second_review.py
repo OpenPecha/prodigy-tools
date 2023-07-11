@@ -77,11 +77,11 @@ def color_diff_recipe(dataset, jsonl_file):
 def stream_from_jsonl(jsonl_file):
     with jsonlines.open(jsonl_file) as reader:
         for line in reader:
-            image_id = line["id"]
-            image_url = line["audio_url"]
+            audio_id = line["id"]
+            audio_path = line["audio_url"]
             first = line["first_annotation"]
             reviewed = line["reviewed_annotation"]
-            diff_obj = Diff(first, reviewed)
+            diff_obj = Diff(reviewed, first)
             diffs = diff_obj.compute()
             html = generate_diffs_html(diffs)
-            yield {"id": image_id, "audio": image_url, "transcript": reviewed, "html": html}
+            yield {"audio": audio_path, "text": audio_id, "path": audio_path, "transcript": reviewed, "html": html}
