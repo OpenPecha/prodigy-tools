@@ -12,8 +12,8 @@ merged = pd.merge(review_df, transcript_df, on='text', how='inner')
 
 with open(merged_jsonl, 'w+', encoding='utf-8') as the_file:
     for i in range(len(merged)):
-        first_annotation = merged.loc[i, 'transcript_x']
-        reviewed_annotation = merged.loc[i, 'transcript_y']
+        first_annotation = merged.loc[i, 'transcript_y']
+        reviewed_annotation = merged.loc[i, 'transcript_x']
         if(not isinstance(reviewed_annotation, str)):
             reviewed_annotation = ''
         if(not isinstance(first_annotation, str)):
