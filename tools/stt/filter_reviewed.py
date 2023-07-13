@@ -14,7 +14,7 @@ def filter_and_save_jsonl(review_jsonl, transcript_jsonl, filtered_jsonl):
     with open(filtered_jsonl, 'w+', encoding='utf-8') as the_file:
         for i in range(len(transcript_df)):
             transcript = transcript_df.iloc[i]['transcript']
-            the_file.write(f"""{{"audio":"{transcript_df.iloc[i]['audio']}","text":"{transcript_df.iloc[i]['text']}","meta":{transcript_df.iloc[i]['meta']},"path":"{transcript_df.iloc[i]['audio']}","_input_hash":{transcript_df.iloc[i]['_input_hash']},"_task_hash":{transcript_df.iloc[i]['_task_hash']},"_is_binary":{transcript_df.iloc[i]['_is_binary']},"_view_id":"{transcript_df.iloc[i]['_view_id']}","transcript":"{transcript.encode('unicode-escape').decode('ascii')}","answer":"{transcript_df.iloc[i]['answer']}","_timestamp":{transcript_df.iloc[i]['_timestamp']},"_annotator_id":"{transcript_df.iloc[i]['_annotator_id']}","_session_id":"{transcript_df.iloc[i]['_session_id']}"}}\n""")
+            the_file.write(f"""{{"audio":"{transcript_df.iloc[i]['audio']}","text":"{transcript_df.iloc[i]['text']}","path":"{transcript_df.iloc[i]['audio']}","_input_hash":{transcript_df.iloc[i]['_input_hash']},"_task_hash":{transcript_df.iloc[i]['_task_hash']},"_view_id":"{transcript_df.iloc[i]['_view_id']}","transcript":"{transcript.encode('unicode-escape').decode('ascii')}","answer":"{transcript_df.iloc[i]['answer']}","_timestamp":{transcript_df.iloc[i]['_timestamp']},"_annotator_id":"{transcript_df.iloc[i]['_annotator_id']}","_session_id":"{transcript_df.iloc[i]['_session_id']}"}}\n""")
 
 def filter_and_save_jsonl_ab(review_jsonl, transcript_jsonl, filtered_jsonl):
     review_pd = pd.read_json(path_or_buf=review_jsonl, lines=True)

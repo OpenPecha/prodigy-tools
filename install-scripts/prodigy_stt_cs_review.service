@@ -10,7 +10,8 @@ Environment="PRODIGY_HOME=/usr/local/prodigy"
 Environment="PRODIGY_LOGGING=verbose"
 Environment="PRODIGY_CONFIG=/usr/local/prodigy/prodigy-tools/configuration/stt_cs_review.json"
 WorkingDirectory=/usr/local/prodigy
-ExecStart=/usr/bin/python3.9 -m prodigy audio.transcribe stt_cs_review dataset:stt_cs --fetch-media
+#ExecStart=/usr/bin/python3.9 -m prodigy audio.transcribe stt_cs_review dataset:stt_cs --fetch-media
+ExecStart=/usr/bin/python3.9 -m prodigy audio.transcribe stt_cs_review /home/spsither/staging/stt_cs_ga_filtered.jsonl --loader jsonl --fetch-media
 
 User=prodigy
 Group=prodigy
