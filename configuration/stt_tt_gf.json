@@ -37,6 +37,6 @@
     "javascript": null,
     "writing_dir": "ltr",
     "show_whitespace": false,
-    "exclude_by": "task"
+    "exclude_by": "input"
   }
   
