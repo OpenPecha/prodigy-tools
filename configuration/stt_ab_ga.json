@@ -32,11 +32,11 @@
     "view_id",
     "label"
   ],
-  "show_stats": false,
+  "show_stats": true,
   "hide_meta": false,
   "show_flag": false,
   "instructions": false,
-  "swipe": false,
+  "swipe": true,
   "swipe_gestures": { "left": "accept", "right": "reject" },
   "split_sents_threshold": false,
   "html_template":false,
