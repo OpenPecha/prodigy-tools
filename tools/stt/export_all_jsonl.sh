@@ -79,3 +79,14 @@ sudo -u prodigy PRODIGY_CONFIG="./config_mysql.json" /usr/bin/python3.9 -m prodi
 # stt_ab_gb
 sudo -u prodigy PRODIGY_CONFIG="./config_mysql.json" /usr/bin/python3.9 -m prodigy db-out stt_ab_gb > ./stt_ab_gb.jsonl
 sudo -u prodigy PRODIGY_CONFIG="./config_mysql.json" /usr/bin/python3.9 -m prodigy db-out stt_ab_gb_review > ./stt_ab_gb_review.jsonl
+
+sudo -u prodigy PRODIGY_CONFIG="./config_mysql.json" /usr/bin/python3.9 -m prodigy stats stt_review_merged -l
+sudo -u prodigy PRODIGY_CONFIG="./config_mysql.json" /usr/bin/python3.9 -m prodigy stats stt_transcribe_merged -l
+
+sudo -u prodigy PRODIGY_CONFIG="./config_mysql.json" /usr/bin/python3.9 -m prodigy drop stt_review_merged
+sudo -u prodigy PRODIGY_CONFIG="./config_mysql.json" /usr/bin/python3.9 -m prodigy db-merge stt_tt_gg_review,stt_tt_ga_review,stt_tt_gh_review,stt_tt_gc_review,stt_tt_gb_review,stt_tt_gd_review,stt_tt_ge_review,stt_tt_gf_review,stt_ns_gb_review,stt_ns_gc_review,stt_ns_ga_review,stt_cs_review,stt_cs_gb_review,stt_cs_gc_review,stt_cs_gd_review,stt_cs_ge_review,stt_cs_gf_review,stt_ab_gc_review,stt_ab_ga_review,stt_ns_gd_review,stt_ab_gb_review stt_review_merged
+sudo -u prodigy PRODIGY_CONFIG="./config_mysql.json" /usr/bin/python3.9 -m prodigy db-out stt_review_merged > ./stt_review_merged.jsonl
+
+sudo -u prodigy PRODIGY_CONFIG="./config_mysql.json" /usr/bin/python3.9 -m prodigy drop stt_transcribe_merged
+sudo -u prodigy PRODIGY_CONFIG="./config_mysql.json" /usr/bin/python3.9 -m prodigy db-merge stt_tt_gg,stt_ns_gb,stt_ab_gb,stt_tt_ga,stt_tt_gc,stt_tt_gb,stt_tt_gd,stt_tt_ge,stt_tt_gf,stt_tt_gh,stt_ns_ga,stt_ns_gc,stt_cs,stt_cs_gb,stt_cs_gc,stt_cs_gd,stt_cs_ge,stt_cs_gf,stt_ns_gd,stt_ab_ga,stt_ab_gc stt_transcribe_merged
+sudo -u prodigy PRODIGY_CONFIG="./config_mysql.json" /usr/bin/python3.9 -m prodigy db-out stt_transcribe_merged > ./stt_transcribe_merged.jsonl
