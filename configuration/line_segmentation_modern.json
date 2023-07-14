@@ -17,7 +17,7 @@
     "validate": true,
     "image_manual_stroke_width": 2,
     "image_manual_font_size": 12,
-    "annotations_per_task": 1,
+    "feed_overlap": false,
     "auto_exclude_current": true,
     "instant_submit": true,
     "auto_count_stream": true,
@@ -36,6 +36,6 @@
     "javascript": null,
     "writing_dir": "ltr",
     "show_whitespace": false,
-    "exclude_by": "task"
+    "exclude_by": "input"
   }
   
