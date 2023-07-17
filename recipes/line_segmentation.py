@@ -3,6 +3,7 @@ import json
 import logging
 
 import prodigy
+from prodigy import set_hashes
 
 from tools.config import LAYOUT_ANALYSIS_BUCKET, layout_analysis_s3_client
 
@@ -43,10 +44,12 @@ def line_segmentation_recipe(dataset, csv_file):
 
 def stream_from_s3(obj_keys):
     for obj_key in obj_keys:
+        eg = {}
         image_url = s3_client.generate_presigned_url(
             ClientMethod="get_object",
             Params={"Bucket": bucket_name, "Key": obj_key},
             ExpiresIn=31536000
         )
         image_id = (obj_key.split("/"))[-1]
-        yield {"id": image_id, "image": image_url}
+        eg = {"id": image_id, "image": image_url}
+        yield set_hashes(eg, input_keys=("id"))
