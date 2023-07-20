@@ -2,6 +2,7 @@ import logging
 import jsonlines
 
 import prodigy
+from prodigy import set_hashes
 
 from tools.config import LAYOUT_ANALYSIS_BUCKET, layout_analysis_s3_client
 
@@ -49,6 +50,7 @@ def get_new_url(image_url):
 def stream_from_jsonl(jsonl_file):
     with jsonlines.open(jsonl_file) as reader:
         for line in reader:
+            eg = {}
             if "spans" not in line:
                 continue
             image_id = line["id"]
@@ -56,5 +58,6 @@ def stream_from_jsonl(jsonl_file):
             obj_key = get_obj_key(image_url)
             spans = line["spans"]
             image_url = get_new_url(obj_key)
-            yield {"id": image_id, "image": image_url, "spans": spans}
+            eg = {"id": image_id, "image": image_url, "spans": spans}
+            yield set_hashes(eg, input_keys=("id"))
 
