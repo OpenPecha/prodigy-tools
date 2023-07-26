@@ -12,8 +12,8 @@ bucket_name = MONLAM_AI_OCR_BUCKET
 
 
 
-@prodigy.recipe("glyph-recipe")
-def glyph_recipe(dataset, jsonl_file):
+@prodigy.recipe("glyph-annotation-recipe")
+def glyph_annotation_recipe(dataset, jsonl_file):
     logging.info(f"dataset:{dataset}, jsonl_file_path:{jsonl_file}")
     blocks = [
         {
