@@ -1,0 +1,23 @@
+[Unit]
+Description=Prodigy for glyph annotation
+After=syslog.target network.target
+
+[Service]
+Type=simple
+
+SyslogIdentifier=line to text
+Environment=PRODIGY_HOME="/usr/local/prodigy"
+Environment=PRODIGY_LOGGING=verbose
+Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/glyph_annotation.json"
+WorkingDirectory=/usr/local/prodigy
+ExecStart=/usr/bin/python3.9 -m prodigy glyph-annotation-recipe glyph_annotation '/usr/local/prodigy/prodigy-tools/data/glyph_annotation.jsonl' -F /usr/local/prodigy/prodigy-tools/recipes/glyph_annotation.py
+
+User=prodigy
+Group=prodigy
+
+UMask=0007
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
