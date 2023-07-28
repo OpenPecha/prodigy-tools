@@ -2,6 +2,7 @@ import logging
 import prodigy
 import sqlite3
 import json
+from prodigy import set_hashes
 
 # log config
 logging.basicConfig(
@@ -72,4 +73,4 @@ AND json_extract(example.content, '$.id') NOT IN (
         audio_id = json_content["id"]
         audio_url = json_content["audio"]
         transcript = json_content["transcript"] 
-        yield {"id": audio_id, "audio": audio_url, "transcript": transcript}
+        yield set_hashes({"id": audio_id, "audio": audio_url, "transcript": transcript}, input_keys=("id"))

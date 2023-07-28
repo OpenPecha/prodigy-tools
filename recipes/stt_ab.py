@@ -1,7 +1,7 @@
 import logging
 import prodigy
 import jsonlines
-
+from prodigy import set_hashes
 # log config 
 logging.basicConfig(
     filename="/usr/local/prodigy/logs/stt_ab.log",
@@ -50,6 +50,6 @@ def stream_from_jsonl(jsonl_file):
             audio_url = line["audio_url"]
             transcript = line["transcript"]
             # If the ID is not in the dataset, yield this line
-            yield {"id": audio_id, "audio": audio_url, "url": audio_url, "transcript": transcript}
+            yield set_hashes({"id": audio_id, "audio": audio_url, "url": audio_url, "transcript": transcript}, input_keys=("id"))
 
     # Don't forget to close the connection when you're done
