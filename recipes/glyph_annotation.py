@@ -1,15 +1,12 @@
 import logging
 import jsonlines
-
 import prodigy
 from tools.config import MONLAM_AI_OCR_BUCKET, monlam_ocr_s3_client
-import jsonlines
 from prodigy import set_hashes
 
 
 s3_client = monlam_ocr_s3_client
 bucket_name = MONLAM_AI_OCR_BUCKET
-
 
 
 @prodigy.recipe("glyph-annotation-recipe")
@@ -18,11 +15,9 @@ def glyph_annotation_recipe(dataset, jsonl_file):
     blocks = [
         {
             "view_id": "image_manual",
-            "labels": ["Base Line", "Glyph"],
+            "labels": ["Base Line", "Glyph"]
         },
-        {
-            "view_id": "text"
-        },
+        {"view_id": "html"},
     ]
     return {
         "dataset": dataset,
@@ -48,6 +43,6 @@ def stream_from_jsonl(jsonl_file):
             obj_key = line["image_url"]
             text = line["text"]
             image_url = get_new_url(obj_key)
-            eg = {"id": image_id, "image": image_url, "text": text}
+            html = f"<p style='font-size: 10em;'>{text}</p>"
+            eg = {"id": image_id, "image": image_url, 'html':html }
             yield set_hashes(eg, input_keys=("id"))
-
