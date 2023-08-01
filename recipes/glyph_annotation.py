@@ -13,7 +13,10 @@ bucket_name = MONLAM_AI_OCR_BUCKET
 def glyph_annotation_recipe(dataset, jsonl_file):
     logging.info(f"dataset:{dataset}, jsonl_file_path:{jsonl_file}")
     blocks = [
-        {"view_id": "image_manual"},
+        {
+            "view_id": "image_manual",
+            "labels": ["Base Line", "Glyph"]
+        },
         {"view_id": "html"},
     ]
     return {
