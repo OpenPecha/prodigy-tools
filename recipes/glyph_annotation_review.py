@@ -1,6 +1,7 @@
 import logging
 import jsonlines
 import prodigy
+import urllib.parse
 from tools.config import MONLAM_AI_OCR_BUCKET, monlam_ocr_s3_client
 from prodigy import set_hashes
 
@@ -9,8 +10,8 @@ s3_client = monlam_ocr_s3_client
 bucket_name = MONLAM_AI_OCR_BUCKET
 
 
-@prodigy.recipe("glyph-annotation-recipe")
-def glyph_annotation_recipe(dataset, jsonl_file):
+@prodigy.recipe("glyph-annotation-review-recipe")
+def glyph_annotation_review_recipe(dataset, jsonl_file):
     logging.info(f"dataset:{dataset}, jsonl_file_path:{jsonl_file}")
     blocks = [
         {
@@ -28,6 +29,14 @@ def glyph_annotation_recipe(dataset, jsonl_file):
         }
     }
 
+
+def get_obj_key(image_url):
+    parts = image_url.split("/")
+    obj_key = "/".join(parts[4:8]).split("?")[0]
+    decoded_key = urllib.parse.unquote(obj_key)
+    return decoded_key
+
+
 def get_new_url(image_url):
     new_image_url = s3_client.generate_presigned_url(
         ClientMethod="get_object",
@@ -36,13 +45,21 @@ def get_new_url(image_url):
     )
     return new_image_url
 
+
 def stream_from_jsonl(jsonl_file):
     with jsonlines.open(jsonl_file) as reader:
         for line in reader:
+            eg = {}
+            if "spans" not in line:
+                continue
+            if "answer" in line:
+                if line["answer"] == "ignore":
+                    continue
             image_id = line["id"]
-            obj_key = line["image_url"]
-            text = line["text"]
+            text = image_id.split("_")[0]
+            obj_key = get_obj_key(line["image"])
             image_url = get_new_url(obj_key)
+            spans = line["spans"]
             html = f"<p style='font-size: 10em;'>{text}</p>"
-            eg = {"id": image_id, "image": image_url, 'html':html }
+            eg = {"id": image_id, "image": image_url, "spans": spans, "html":html}
             yield set_hashes(eg, input_keys=("id"))

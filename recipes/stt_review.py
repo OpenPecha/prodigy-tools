@@ -4,6 +4,7 @@ import prodigy
 import jsonlines
 from tools.diff import Diff
 import base64
+from prodigy import set_hashes
 # log config 
 logging.basicConfig(
     filename="/usr/local/prodigy/logs/color_diff.log",
@@ -49,4 +50,4 @@ def stream_from_jsonl(jsonl_file):
             transcript = line["transcript"]
             audio_file = open(audio_path, 'rb')
             audio_64 = base64.b64encode(audio_file.read())
-            yield {"audio": f"data:audio/*;base64,{audio_64.decode('utf-8')}", "text": audio_id, "path": audio_path, "transcript": transcript}
+            yield set_hashes({"audio": f"data:audio/*;base64,{audio_64.decode('utf-8')}", "text": audio_id, "path": audio_path, "transcript": transcript}, input_keys=("text"))
