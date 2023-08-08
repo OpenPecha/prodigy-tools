@@ -10,7 +10,7 @@
     "db": "sqlite",
     "db_settings": {
       "sqlite": {
-        "name": "glyph_annotation_batch1.sqlite",
+        "name": "glyph_annotation_batch2.sqlite",
         "path": "/usr/local/prodigy"
       }
     },
