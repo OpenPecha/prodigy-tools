@@ -4,29 +4,33 @@
     "buttons": ["accept", "reject", "ignore", "undo"],
     "batch_size": 10,
     "history_size": 10,
-    "port": 8040,
+    "port": 8037,
     "host": "localhost",
     "cors": true,
-    "db": "sqlite",
+    "db": "mysql",
     "db_settings": {
-      "sqlite": {
-        "name": "line_to_text.sqlite",
-        "path": "/usr/local/prodigy"
+      "mysql": {
+        "user": "prodigy_stt",
+        "password": "e@b3EWE@zkfHKYqfxYE2",
+        "host": "localhost",
+        "port": 3306,
+        "database": "prodigy_stt"
       }
     },
     "validate": true,
     "auto_exclude_current": true,
-    "instant_submit": true,
+    "instant_submit": false,
     "feed_overlap": false,
+    "allow_work_stealing": false,
     "auto_count_stream": false,
     "total_examples_target": 0,
     "ui_lang": "en",
     "project_info": ["dataset", "session", "lang", "recipe_name", "view_id", "label"],
-    "show_stats": false,
+    "show_stats": true,
     "hide_meta": false,
     "show_flag": false,
     "instructions": false,
-    "swipe": false,
+    "swipe": true,
     "swipe_gestures": { "left": "accept", "right": "reject" },
     "split_sents_threshold": false,
     "html_template": false,
@@ -34,6 +38,6 @@
     "javascript": null,
     "writing_dir": "ltr",
     "show_whitespace": false,
-    "exclude_by": "task"
+    "exclude_by": "input"
   }
   

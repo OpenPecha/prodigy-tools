@@ -1,0 +1,22 @@
+[Unit]
+Description=Prodigy for glyph annotation review ga
+After=syslog.target network.target
+
+[Service]
+Type=simple
+
+SyslogIdentifier=line_segmentation_test
+Environment=PRODIGY_HOME="/usr/local/prodigy"
+Environment=PRODIGY_LOGGING=verbose
+Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/glyph_ann_review_gb.json"
+WorkingDirectory=/usr/local/prodigy
+ExecStart=/usr/bin/python3.9 -m prodigy glyph-annotation-review-recipe glyph_ann_reviewed_gb '/usr/local/prodigy/data/glyph/glyph_ann_gb.jsonl' -F /usr/local/prodigy/prodigy-tools/recipes/glyph_annotation_review.py
+User=prodigy
+Group=prodigy
+
+UMask=0007
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

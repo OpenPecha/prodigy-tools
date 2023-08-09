@@ -3,6 +3,7 @@ import logging
 import prodigy
 from tools.config import MONLAM_AI_OCR_BUCKET, monlam_ocr_s3_client
 import jsonlines
+from prodigy import set_hashes
 
 
 s3_client = monlam_ocr_s3_client
@@ -45,7 +46,8 @@ def stream_from_jsonl(jsonl_file):
             obj_key = line["image_url"]
             text = line["user_input"]
             image_url = get_new_url(obj_key)
-            yield {"id": image_id, "image": image_url, "user_input": text}
+            eg = {"id": image_id, "image": image_url, "user_input": text}
+            yield set_hashes(eg, input_keys=("id"))
 
 def get_new_url(image_url):
     new_image_url = s3_client.generate_presigned_url(
