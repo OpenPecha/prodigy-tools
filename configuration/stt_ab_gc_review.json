@@ -19,7 +19,7 @@
     },
     "validate": true,
     "auto_exclude_current": true,
-    "instant_submit": false,
+    "instant_submit": true,
     "feed_overlap": false,
     "allow_work_stealing": false,
     "auto_count_stream": false,
