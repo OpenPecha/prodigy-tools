@@ -1,0 +1,23 @@
+[Unit]
+Description=Prodigy for Image to text
+After=syslog.target network.target
+
+[Service]
+Type=simple
+
+SyslogIdentifier=Image to text
+Environment=PRODIGY_HOME="/usr/local/prodigy"
+Environment=PRODIGY_LOGGING=verbose
+Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/image_to_text.json"
+WorkingDirectory=/usr/local/prodigy
+ExecStart=/usr/bin/python3.9 -m prodigy image-to-text-recipe image_to_text '/usr/local/prodigy/prodigy-tools/data/image_to_text.jsonl' -F /usr/local/prodigy/prodigy-tools/recipes/line_to_text.py
+
+User=prodigy
+Group=prodigy
+
+UMask=0007
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
