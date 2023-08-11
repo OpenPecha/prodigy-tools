@@ -10,7 +10,7 @@ Environment=PRODIGY_HOME="/usr/local/prodigy"
 Environment=PRODIGY_LOGGING=verbose
 Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/image_to_text.json"
 WorkingDirectory=/usr/local/prodigy
-ExecStart=/usr/bin/python3.9 -m prodigy image-to-text-recipe image_to_text '/usr/local/prodigy/prodigy-tools/data/image_to_text.jsonl' -F /usr/local/prodigy/prodigy-tools/recipes/image_to_text.py
+ExecStart=/usr/bin/python3.9 -m prodigy image-to-text-recipe image_to_text '/usr/local/prodigy/prodigy-tools/data/Corr1-20230809.jsonl' -F /usr/local/prodigy/prodigy-tools/recipes/image_to_text.py
 
 User=prodigy
 Group=prodigy

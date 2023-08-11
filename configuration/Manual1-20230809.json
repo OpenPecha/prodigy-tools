@@ -4,13 +4,13 @@
     "buttons": ["accept", "reject", "ignore", "undo"],
     "batch_size": 10,
     "history_size": 10,
-    "port": 8045,
+    "port": 8046,
     "host": "localhost",
     "cors": true,
     "db": "sqlite",
     "db_settings": {
       "sqlite": {
-        "name": "Image_to_text_batch1.sqlite",
+        "name": "Manual1-20230809_batch1.sqlite",
         "path": "/usr/local/prodigy"
       }
     },
@@ -36,4 +36,3 @@
     "show_whitespace": false,
     "exclude_by": "input"
   }
-  
