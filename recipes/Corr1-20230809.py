@@ -1,17 +1,17 @@
 
 import logging
 import prodigy
-from tools.config import PAGE_CROPPING_BUCKET, page_cropping_s3_client
+from tools.config import MONLAM_AI_OCR_BUCKET, monlam_ocr_s3_client
 import jsonlines
 from prodigy import set_hashes
 
 
-s3_client = page_cropping_s3_client
-bucket_name = PAGE_CROPPING_BUCKET
+s3_client = monlam_ocr_s3_client
+bucket_name = MONLAM_AI_OCR_BUCKET
 
 # log config 
 logging.basicConfig(
-    filename="/usr/local/prodigy/logs/image_to_text.log",
+    filename="/usr/local/prodigy/logs/Corr1-20230809.log",
     format="%(levelname)s: %(message)s",
     level=logging.INFO,
     )
@@ -22,8 +22,8 @@ prodigy_logger = logging.getLogger('prodigy')
 prodigy_logger.setLevel(logging.INFO)
 
 
-@prodigy.recipe("image-to-text-recipe")
-def image_to_text_recipe(dataset, jsonl_file):
+@prodigy.recipe("Corr1-20230809-recipe")
+def Corr1_20230809_recipe(dataset, jsonl_file):
     logging.info(f"dataset:{dataset}, jsonl_file_path:{jsonl_file}")
     blocks = [ 
         {"view_id": "image"},
