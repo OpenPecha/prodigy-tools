@@ -27,7 +27,10 @@ def Manual1_20230809_recipe(dataset, jsonl_file):
     logging.info(f"dataset:{dataset}, jsonl_file_path:{jsonl_file}")
     blocks = [ 
         {"view_id": "image"},
-        {"view_id": "text_input"}
+        {
+            "view_id": "text_input",
+            "field_rows": 12
+            }
     ]
     return {
         "dataset": dataset,
