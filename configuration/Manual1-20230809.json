@@ -10,7 +10,7 @@
     "db": "sqlite",
     "db_settings": {
       "sqlite": {
-        "name": "Manual1-20230809_batch1.sqlite",
+        "name": "Manual1-20230809.sqlite",
         "path": "/usr/local/prodigy"
       }
     },
