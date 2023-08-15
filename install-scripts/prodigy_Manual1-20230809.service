@@ -1,0 +1,23 @@
+[Unit]
+Description=Prodigy for Image to text for Manual1-20230809
+After=syslog.target network.target
+
+[Service]
+Type=simple
+
+SyslogIdentifier=Manual1-20230809
+Environment=PRODIGY_HOME="/usr/local/prodigy"
+Environment=PRODIGY_LOGGING=verbose
+Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/Manual1-20230809.json"
+WorkingDirectory=/usr/local/prodigy
+ExecStart=/usr/bin/python3.9 -m prodigy Manual1-20230809-recipe manual_1 '/usr/local/prodigy/prodigy-tools/data/Manual1-20230809.jsonl' -F /usr/local/prodigy/prodigy-tools/recipes/Manual1-20230809.py
+
+User=prodigy
+Group=prodigy
+
+UMask=0007
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
