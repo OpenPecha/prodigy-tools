@@ -1,16 +1,16 @@
 {
     "theme": "basic",
     "custom_theme": { "cardMaxWidth": 2000 },
-    "buttons": ["accept", "ignore"],
+    "buttons": ["accept", "reject"],
     "batch_size": 5,
     "history_size": 5,
-    "port": 8046,
+    "port": 8048,
     "host": "localhost",
     "cors": true,
     "db": "sqlite",
     "db_settings": {
       "sqlite": {
-        "name": "Manual1-20230809.sqlite",
+        "name": "Manual1-review.sqlite",
         "path": "/usr/local/prodigy"
       }
     },
