@@ -25,7 +25,10 @@ def Manual1_review_recipe(dataset, jsonl_file):
     logging.info(f"dataset:{dataset}, jsonl_file_path:{jsonl_file}")
     blocks = [ 
         {"view_id": "image"},
-        {"view_id": "text_input"}
+        {
+            "view_id": "text_input",
+            "field_rows": 12
+            }
     ]
     return {
         "dataset": dataset,
@@ -39,7 +42,7 @@ def Manual1_review_recipe(dataset, jsonl_file):
 
 def get_obj_key(image_url):
     parts = image_url.split("/")
-    obj_key = "/".join(parts[4:7]).split("?")[0]
+    obj_key = "/".join(parts[4:8]).split("?")[0]
     return obj_key
 
 
