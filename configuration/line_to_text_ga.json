@@ -10,7 +10,7 @@
     "db": "sqlite",
     "db_settings": {
       "sqlite": {
-        "name": "ltt_batch11-12.sqlite",
+        "name": "ltt_batch15-16.sqlite",
         "path": "/usr/local/prodigy"
       }
     },
@@ -20,6 +20,7 @@
     "feed_overlap": false,
     "auto_count_stream": false,
     "total_examples_target": 0,
+    "allow_work_stealing": false,
     "ui_lang": "en",
     "project_info": ["dataset", "session", "lang", "recipe_name", "view_id", "label"],
     "show_stats": false,

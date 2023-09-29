@@ -1,4 +1,3 @@
-
 import logging
 import prodigy
 from tools.config import PAGE_CROPPING_BUCKET, page_cropping_s3_client

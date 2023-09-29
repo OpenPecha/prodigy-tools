@@ -1,0 +1,23 @@
+[Unit]
+Description=Prodigy for Image to text for Corr1-review
+After=syslog.target network.target
+
+[Service]
+Type=simple
+
+SyslogIdentifier=Image to text for Corr1-review
+Environment=PRODIGY_HOME="/usr/local/prodigy"
+Environment=PRODIGY_LOGGING=verbose
+Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/Corr1-review.json"
+WorkingDirectory=/usr/local/prodigy
+ExecStart=/usr/bin/python3.9 -m prodigy Corr1-review-recipe correction1_review '/usr/local/prodigy/data/Correction/Corr1-review.jsonl' -F /usr/local/prodigy/prodigy-tools/recipes/Corr1-review.py
+
+User=prodigy
+Group=prodigy
+
+UMask=0007
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

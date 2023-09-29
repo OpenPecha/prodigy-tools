@@ -1,4 +1,3 @@
-
 import logging
 import prodigy
 from tools.config import MONLAM_AI_OCR_BUCKET, monlam_ocr_s3_client
