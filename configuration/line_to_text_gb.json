@@ -1,7 +1,7 @@
 {
     "theme": "basic",
     "custom_theme": { "cardMaxWidth": 2000 },
-    "buttons": ["accept", "reject", "ignore", "undo"],
+    "buttons": ["accept", "ignore"],
     "batch_size": 10,
     "history_size": 10,
     "port": 8042,
@@ -10,7 +10,7 @@
     "db": "sqlite",
     "db_settings": {
       "sqlite": {
-        "name": "ltt_batch15-16.sqlite",
+        "name": "ltt_batch17-18.sqlite",
         "path": "/usr/local/prodigy"
       }
     },
