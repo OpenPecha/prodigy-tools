@@ -1,7 +1,7 @@
 {
   "theme": "basic",
   "custom_theme": { "cardMaxWidth": 2000 },
-  "buttons": ["accept", "reject", "ignore", "undo"],
+  "buttons": ["accept", "reject"],
   "batch_size": 10,
   "history_size": 10,
   "port": 8059,
@@ -10,7 +10,7 @@
   "db": "sqlite",
   "db_settings": {
     "sqlite": {
-      "name": "glyph_ann_batch9_review.sqlite",
+      "name": "glyph_ann_batch11_review.sqlite",
       "path": "/usr/local/prodigy"
     }
   },
