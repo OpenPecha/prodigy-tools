@@ -11,7 +11,7 @@ bucket_name = MONLAM_AI_OCR_BUCKET
 
 # log config 
 logging.basicConfig(
-    filename="/usr/local/prodigy/logs/line_to_text.log",
+    filename="/usr/local/prodigy/logs/recheck_ltt.log",
     format="%(levelname)s: %(message)s",
     level=logging.INFO,
     )
@@ -21,8 +21,8 @@ logging.basicConfig(
 prodigy_logger = logging.getLogger('prodigy')
 prodigy_logger.setLevel(logging.INFO)
 
-@prodigy.recipe("ltt-review-recipe")
-def ltt_review_recipe(dataset, jsonl_file):
+@prodigy.recipe("recheck-ltt-recipe")
+def recheck_ltt_recipe(dataset, jsonl_file):
     logging.info(f"dataset:{dataset}, jsonl_file_path:{jsonl_file}")
     blocks = [ 
         {"view_id": "image"},
@@ -34,7 +34,7 @@ def ltt_review_recipe(dataset, jsonl_file):
         "view_id": "blocks",
         "config": {
             "blocks": blocks,
-            "editable": True
+            "editable": False
         }
     }
 
