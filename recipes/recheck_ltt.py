@@ -31,7 +31,7 @@ def recheck_ltt_recipe(dataset, jsonl_file):
     ]
     options = [
                 {"id": 2,"text": "དབུ་ཅན།"},
-                {"id": 1, "text": "དབུ་མེད་།"},
+                {"id": 1, "text": "དབུ་མེད།"},
                 { "id": 0, "text": "others" }
     ]
 
