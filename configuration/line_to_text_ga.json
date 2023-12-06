@@ -31,7 +31,7 @@
     "swipe_gestures": { "left": "accept", "right": "reject" },
     "split_sents_threshold": false,
     "html_template": false,
-    "global_css": "@font-face { font-family: 'Monlam Uni PayTsik'; src: url('https://drive.google.com/file/d/1SXBPNgTeZvour230j4fXsBighAXe8IAj/view?usp=sharing') format('truetype'); } .prodigy-text-input { font-family: 'Monlam Uni PayTsik'; }",
+    "global_css": "@font-face { font-family: 'Qomolangma-Betsu'; src: url('https://drive.google.com/file/d/1IKija3dtZuwhRhUuYUdd5lYhYRggJ5Ig/view?usp=sharing') format('truetype'); } .prodigy-text-input { font-family: 'Qomolangma-Betsu'; }",
     "javascript": null,
     "writing_dir": "ltr",
     "show_whitespace": false,
