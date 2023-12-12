@@ -53,13 +53,12 @@ def stream_from_jsonl(jsonl_file):
             if "spans" not in line:
                 continue
             if "answer" in line:
-                if line["answer"] == "ignore":
-                    continue
-            image_id = line["id"]
-            text = image_id.split("_")[0]
-            obj_key = get_obj_key(line["image"])
-            image_url = get_new_url(obj_key)
-            spans = line["spans"]
-            html = f"<p style='font-size: 10em;'>{text}</p>"
-            eg = {"id": image_id, "image": image_url, "spans": spans, "html":html}
-            yield set_hashes(eg, input_keys=("id"))
+                if line["answer"] == "accept":
+                    image_id = line["id"]
+                    text = image_id.split("_")[0]
+                    obj_key = get_obj_key(line["image"])
+                    image_url = get_new_url(obj_key)
+                    spans = line["spans"]
+                    html = f"<p style='font-size: 10em;'>{text}</p>"
+                    eg = {"id": image_id, "image": image_url, "spans": spans, "html":html}
+                    yield set_hashes(eg, input_keys=("id"))
