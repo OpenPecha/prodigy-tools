@@ -28,13 +28,9 @@ def glyph_annotation_recipe(dataset, jsonl_file):
         }
     }
 
-def get_new_url(image_url):
-    new_image_url = s3_client.generate_presigned_url(
-        ClientMethod="get_object",
-        Params={"Bucket": bucket_name, "Key": image_url},
-        ExpiresIn=31536000
-    )
-    return new_image_url
+def get_url(obj_key):
+    image_url = f"https://s3.amazonaws.com/monlam.ai.ocr/{obj_key}"
+    return image_url
 
 def stream_from_jsonl(jsonl_file):
     with jsonlines.open(jsonl_file) as reader:
@@ -42,7 +38,7 @@ def stream_from_jsonl(jsonl_file):
             image_id = line["id"]
             obj_key = line["image_url"]
             text = line["text"]
-            image_url = get_new_url(obj_key)
+            image_url = get_url(obj_key)
             html = f"<p style='font-size: 10em;'>{text}</p>"
             eg = {"id": image_id, "image": image_url, 'html':html }
             yield set_hashes(eg, input_keys=("id"))
