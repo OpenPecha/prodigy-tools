@@ -10,7 +10,7 @@
     "db": "sqlite",
     "db_settings": {
       "sqlite": {
-        "name": "recheck_ltt_batch16.sqlite",
+        "name": "recheck_ltt_batch15.sqlite",
         "path": "/usr/local/prodigy"
       }
     },
