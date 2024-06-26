@@ -10,7 +10,7 @@
     "db": "sqlite",
     "db_settings": {
       "sqlite": {
-        "name": "Corr1-20230809.sqlite",
+        "name": "NER.sqlite",
         "path": "/usr/local/prodigy"
       }
     },

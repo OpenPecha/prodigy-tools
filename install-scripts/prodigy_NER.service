@@ -1,0 +1,23 @@
+[Unit]
+Description=Prodigy for NER
+After=syslog.target network.target
+
+[Service]
+Type=simple
+
+SyslogIdentifier=NER
+Environment=PRODIGY_HOME="/usr/local/prodigy"
+Environment=PRODIGY_LOGGING=verbose
+Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/NER.json"
+WorkingDirectory=/usr/local/prodigy
+ExecStart=/usr/bin/python3.9 -m prodigy NER-recipe NER_1 '/usr/local/prodigy/prodigy-tools/data/NER.jsonl' -F /usr/local/prodigy/prodigy-tools/recipes/NER.py
+
+User=prodigy
+Group=prodigy
+
+UMask=0007
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
