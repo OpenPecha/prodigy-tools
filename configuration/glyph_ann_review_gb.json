@@ -10,7 +10,7 @@
   "db": "sqlite",
   "db_settings": {
     "sqlite": {
-      "name": "glyph_ann_batch11_review.sqlite",
+      "name": "glyph_annotation_gb_B1_review.sqlite",
       "path": "/usr/local/prodigy"
     }
   },
@@ -22,7 +22,14 @@
   "total_examples_target": 0,
   "allow_work_stealing": false,
   "ui_lang": "en",
-  "project_info": ["dataset", "session", "lang", "recipe_name", "view_id", "label"],
+  "project_info": [
+    "dataset",
+    "session",
+    "lang",
+    "recipe_name",
+    "view_id",
+    "label"
+  ],
   "show_stats": false,
   "hide_meta": false,
   "show_flag": false,
