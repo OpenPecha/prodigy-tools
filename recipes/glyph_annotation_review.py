@@ -37,14 +37,6 @@ def get_obj_key(image_url):
     return decoded_key
 
 
-def get_new_url(image_url):
-    new_image_url = s3_client.generate_presigned_url(
-        ClientMethod="get_object",
-        Params={"Bucket": bucket_name, "Key": image_url},
-        ExpiresIn=31536000
-    )
-    return new_image_url
-
 
 def stream_from_jsonl(jsonl_file):
     with jsonlines.open(jsonl_file) as reader:
@@ -56,8 +48,7 @@ def stream_from_jsonl(jsonl_file):
                 if line["answer"] == "accept":
                     image_id = line["id"]
                     text = image_id.split("_")[0]
-                    obj_key = get_obj_key(line["image"])
-                    image_url = get_new_url(obj_key)
+                    image_url = line['image']
                     spans = line["spans"]
                     html = f"<p style='font-size: 10em;'>{text}</p>"
                     eg = {"id": image_id, "image": image_url, "spans": spans, "html":html}

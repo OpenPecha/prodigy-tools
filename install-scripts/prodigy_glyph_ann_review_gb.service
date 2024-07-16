@@ -10,7 +10,7 @@ Environment=PRODIGY_HOME="/usr/local/prodigy"
 Environment=PRODIGY_LOGGING=verbose
 Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/glyph_ann_review_gb.json"
 WorkingDirectory=/usr/local/prodigy
-ExecStart=/usr/bin/python3.9 -m prodigy glyph-annotation-review-recipe glyph_ann_reviewed_gb '/usr/local/prodigy/data/glyph/ glyph_annotation_gb_B1_review.jsonl' -F /usr/local/prodigy/prodigy-tools/recipes/glyph_annotation_review.py
+ExecStart=/usr/bin/python3.9 -m prodigy glyph-annotation-review-recipe glyph_ann_reviewed_gb '/usr/local/prodigy/data/glyph/glyph_ann_gb.jsonl' -F /usr/local/prodigy/prodigy-tools/recipes/glyph_annotation_review.py
 User=prodigy
 Group=prodigy
 
