@@ -48,7 +48,7 @@ def stream_from_jsonl(jsonl_file):
                     continue
             image_id = line["id"]
             image = line["image"]
-            text = line["user_input"]
+            text = line["text"]
             line_info = line['line_info']
             image_url = f"s3://monlam.ai.ocr/{image}"
             html = f"<p style='font-size: 10em;'>{text}</p> <p style='font-size: 10em;'> Refer Lines {line_info}</p>"
