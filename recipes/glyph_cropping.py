@@ -43,14 +43,11 @@ def glyph_cropping_recipe(dataset, jsonl_file):
 def stream_from_jsonl(jsonl_file):
     with jsonlines.open(jsonl_file) as reader:
         for line in reader:
-            if "answer" in line:
-                if line["answer"] == "ignore":
-                    continue
             image_id = line["id"]
             image = line["image"]
             text = line["text"]
             line_info = line['line_info']
-            image_url = f"s3://monlam.ai.ocr/{image}"
+            image_url = f"https://s3.amazonaws.com/monlam.ai.ocr/{image}"
             html = f"<p style='font-size: 10em;'>{text}</p> <p style='font-size: 10em;'> Refer Lines {line_info}</p>"
             eg = {"id": image_id, "image": image_url, 'html':html }
             yield set_hashes(eg, input_keys=("id"))
