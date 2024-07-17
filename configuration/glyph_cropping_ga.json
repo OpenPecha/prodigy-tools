@@ -10,7 +10,7 @@
     "db": "sqlite",
     "db_settings": {
       "sqlite": {
-        "name": "Corr1-review.sqlite",
+        "name": "glyph_cropping_T1.sqlite",
         "path": "/usr/local/prodigy"
       }
     },

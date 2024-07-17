@@ -20,27 +20,24 @@ logging.basicConfig(
 prodigy_logger = logging.getLogger('prodigy')
 prodigy_logger.setLevel(logging.INFO)
 
-@prodigy.recipe("Corr1-review-recipe")
-def Corr1_review_recipe(dataset, jsonl_file):
+@prodigy.recipe("glyph-cropping-recipe")
+def glyph_cropping_recipe(dataset, jsonl_file):
     logging.info(f"dataset:{dataset}, jsonl_file_path:{jsonl_file}")
-    blocks = [ 
-        {"view_id": "image"},
-        {"view_id": "text_input"}
+    blocks = [
+        {
+            "view_id": "image_manual",
+            "labels": ["Ch-1", "Ch-2", "Ch-3", "Ch-4"]
+        },
+        {"view_id": "html"},
     ]
     return {
         "dataset": dataset,
         "stream": stream_from_jsonl(jsonl_file),
         "view_id": "blocks",
         "config": {
-            "blocks": blocks,
-            "editable": True
+            "blocks": blocks
         }
     }
-
-def get_obj_key(image_url):
-    parts = image_url.split("/")
-    obj_key = "/".join(parts[4:7]).split("?")[0]
-    return obj_key
 
 
 def stream_from_jsonl(jsonl_file):
@@ -50,18 +47,10 @@ def stream_from_jsonl(jsonl_file):
                 if line["answer"] == "ignore":
                     continue
             image_id = line["id"]
-            image_url = line["image"]
-            obj_key = get_obj_key(image_url)
+            image = line["image"]
             text = line["user_input"]
-            image_url = get_new_url(obj_key)
-            eg = {"id": image_id, "image": image_url, "user_input": text}
+            line_info = line['line_info']
+            image_url = f"s3://monlam.ai.ocr/{image}"
+            html = f"<p style='font-size: 10em;'>{text}</p> <p style='font-size: 10em;'> Refer Lines {line_info}</p>"
+            eg = {"id": image_id, "image": image_url, 'html':html }
             yield set_hashes(eg, input_keys=("id"))
-
-
-def get_new_url(image_url):
-    new_image_url = s3_client.generate_presigned_url(
-        ClientMethod="get_object",
-        Params={"Bucket": bucket_name, "Key": image_url},
-        ExpiresIn=31536000
-    )
-    return new_image_url

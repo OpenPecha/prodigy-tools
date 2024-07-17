@@ -1,0 +1,23 @@
+[Unit]
+Description=Prodigy for Image to text for glyph_cropping_ga
+After=syslog.target network.target
+
+[Service]
+Type=simple
+
+SyslogIdentifier=Image to text for glyph_cropping_ga
+Environment=PRODIGY_HOME="/usr/local/prodigy"
+Environment=PRODIGY_LOGGING=verbose
+Environment=PRODIGY_CONFIG="/usr/local/prodigy/prodigy-tools/configuration/glyph_cropping_ga.json"
+WorkingDirectory=/usr/local/prodigy
+ExecStart=/usr/bin/python3.9 -m prodigy glyph-cropping-recipe glyph_cropping_ga '/usr/local/prodigy/prodigy-tools/data/glyph_cropping_ga.jsonl' -F /usr/local/prodigy/prodigy-tools/recipes/glyph_cropping.py
+
+User=prodigy
+Group=prodigy
+
+UMask=0007
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
