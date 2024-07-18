@@ -48,6 +48,6 @@ def stream_from_jsonl(jsonl_file):
             text = line["text"]
             line_info = line['line_info']
             image_url = f"https://s3.amazonaws.com/monlam.ai.ocr/{image}"
-            html = f"<p style='font-size: 10em;'>{text}</p> <p style='font-size: 10em;'> Refer Lines {line_info}</p>"
+            html = f"<p style='font-size: 5em;'>{text}</p> <p style='font-size: 3em;'> Refer Lines {line_info}</p>"
             eg = {"id": image_id, "image": image_url, 'html':html }
             yield set_hashes(eg, input_keys=("id"))
