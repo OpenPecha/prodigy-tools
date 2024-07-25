@@ -10,7 +10,7 @@
   "db": "sqlite",
   "db_settings": {
     "sqlite": {
-      "name": "glyph_cropping_b1_ga.sqlite",
+      "name": "glyph_cropping_b1_ga_9_variant.sqlite",
       "path": "/usr/local/prodigy"
     }
   },
