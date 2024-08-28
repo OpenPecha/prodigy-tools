@@ -10,7 +10,7 @@
   "db": "sqlite",
   "db_settings": {
     "sqlite": {
-      "name": "pecing_glyph_cropping_b1_ga_10_variant.sqlite",
+      "name": "derge_b2_glyphs.sqlite",
       "path": "/usr/local/prodigy"
     }
   },
