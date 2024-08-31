@@ -10,7 +10,7 @@
   "db": "sqlite",
   "db_settings": {
     "sqlite": {
-      "name": "glyph_annotation_gb_opf_9_variant_review.sqlite",
+      "name": "pecing_b2_glyph_ann_review.sqlite",
       "path": "/usr/local/prodigy"
     }
   },
