@@ -10,7 +10,7 @@
   "db": "sqlite",
   "db_settings": {
     "sqlite": {
-      "name": "kumbum_b2_glyph_ann_gb.sqlite",
+      "name": "palpung_b1_glyph_ann_gb.sqlite",
       "path": "/usr/local/prodigy"
     }
   },
